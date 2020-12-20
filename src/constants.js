@@ -1,4 +1,5 @@
 export const AuthRoute = {
-  LOGIN: "/login",
-  SIGNUP: "/signup",
+  LOGIN: '/login',
+  REGISTER: '/register',
+  LOCK: '/lock',
 };

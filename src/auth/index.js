@@ -9,6 +9,8 @@ import { Footer } from '../common/Footer';
 import { useIsDesktop } from '../hooks';
 
 const LoginPage = lazyload(() => import('./AuthLogin'));
+const RegisterPage = lazyload(() => import('./Register'));
+const LockScreen = lazyload(() => import('./ScreenLock'));
 
 function AuthPage(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,6 +35,8 @@ function AuthPage(props) {
       <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
         <Switch>
           <Route exact path={AuthRoute.LOGIN} component={LoginPage} />
+          <Route path={AuthRoute.REGISTER} component={RegisterPage} />
+          <Route path={AuthRoute.LOCK} component={LockScreen} />
           <Redirect to={AuthRoute.LOGIN} />
         </Switch>
       </Box>

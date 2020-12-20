@@ -4,12 +4,15 @@ import React from 'react';
 import { useIsDesktop } from '../hooks';
 import { Box, makeStyles, IconButton } from '@material-ui/core';
 import { NavRouteButton } from './AuthCommon';
+import { useLocation, useHistory } from 'react-router-dom';
 import { MdFingerprint, MdPersonAdd, MdLockOpen, MdMenu } from 'react-icons/md';
 
 export function NavBar(props) {
   const { toggleDrawer } = props;
   const styles = useStyles();
   const isDesktop = useIsDesktop();
+  const location = useLocation();
+  const history = useHistory();
 
   return (
     <Box
@@ -27,17 +30,20 @@ export function NavBar(props) {
       {isDesktop ? (
         <Box display='flex' flex={1} justifyContent='center'>
           <NavRouteButton
-            active={false}
+            active={location.pathname === '/register'}
+            onClick={() => history.push('/register')}
             icon={<MdPersonAdd size={20} className={styles.icon} />}
             title='Register'
           />
           <NavRouteButton
-            active={true}
+            active={location.pathname === '/login'}
+            onClick={() => history.push('/login')}
             icon={<MdFingerprint size={20} className={styles.icon} />}
             title='Login'
           />
           <NavRouteButton
-            active={false}
+            active={location.pathname === '/lock'}
+            onClick={() => history.push('/lock')}
             icon={<MdLockOpen size={20} className={styles.icon} />}
             title='Lock'
           />

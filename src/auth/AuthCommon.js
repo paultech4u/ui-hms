@@ -100,7 +100,7 @@ export function NavRouteButton(props) {
       bgcolor={active ? 'primary.main' : null}
       borderRadius='borderRadius'
       {...others}>
-      <a href='' className={styles.navRoute_link}>
+      <a className={styles.navRoute_link}>
         {icon}
         <Box>{title}</Box>
       </a>
