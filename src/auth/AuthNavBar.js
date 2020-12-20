@@ -1,56 +1,60 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Box, makeStyles } from '@material-ui/core';
-import { MdFingerprint, MdPersonAdd, MdLockOpen } from 'react-icons/md';
+// import clsx from 'clsx';
+import { useIsDesktop } from '../hooks';
+import { Box, makeStyles, IconButton } from '@material-ui/core';
+import { NavRouteButton } from './AuthCommon';
+import { MdFingerprint, MdPersonAdd, MdLockOpen, MdMenu } from 'react-icons/md';
 
 export function NavBar(props) {
+  const { toggleDrawer } = props;
   const styles = useStyles();
+  const isDesktop = useIsDesktop();
+
   return (
-    <Box display='flex' flex={1} justifyContent='space-between' marginX={220}>
+    <Box
+      display='flex'
+      flex={1}
+      justifyContent='space-between'
+      marginX={isDesktop ? 150 : 10}>
       <Box flex={1}>
         <Box display='flex' fontSize={19}>
-          <a href='' className={styles.link}>
+          <a href='/login' className={styles.navRoute_link}>
             Login Page
           </a>
         </Box>
       </Box>
-      <Box display='flex' flex={1} justifyContent='center'>
-        <NavRouteButton
-          icon={<MdPersonAdd size={20} className={styles.icon} />}
-          title='Register'
-        />
-        <NavRouteButton
-          icon={<MdFingerprint size={20} className={styles.icon} />}
-          title='Login'
-        />
-        <NavRouteButton
-          icon={<MdLockOpen size={20} className={styles.icon} />}
-          title='Lock'
-        />
-      </Box>
-    </Box>
-  );
-}
-
-function NavRouteButton(props) {
-  const styles = useStyles();
-  return (
-    <Box
-      display='flex'
-      alignItems='center'
-      fontSize={16}
-      borderRadius='borderRadius'
-      {...props}>
-      <a className={styles.link}>
-        {props.icon}
-        <Box>{props.title}</Box>
-      </a>
+      {isDesktop ? (
+        <Box display='flex' flex={1} justifyContent='center'>
+          <NavRouteButton
+            active={false}
+            icon={<MdPersonAdd size={20} className={styles.icon} />}
+            title='Register'
+          />
+          <NavRouteButton
+            active={true}
+            icon={<MdFingerprint size={20} className={styles.icon} />}
+            title='Login'
+          />
+          <NavRouteButton
+            active={false}
+            icon={<MdLockOpen size={20} className={styles.icon} />}
+            title='Lock'
+          />
+        </Box>
+      ) : (
+        <Box>
+          <IconButton onClick={toggleDrawer}>
+            <MdMenu />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  link: {
+  navRoute_link: {
     padding: '15px',
     margin: '0 5px',
     lineHeight: '20px',

@@ -1,9 +1,9 @@
-import { createMuiTheme, withStyles } from "@material-ui/core";
+import { createMuiTheme, withStyles } from '@material-ui/core';
 
-const secondary = "";
-const darkBlack = "";
-const background = "";
-const backgroundPaper = "";
+const secondary = '';
+const darkBlack = '';
+const background = '';
+const backgroundPaper = '';
 // const warningLight = "";
 // const warningMain = "";
 // const warningDark = "";
@@ -20,13 +20,8 @@ const spacing = 2;
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#8256DE", light: "#8c14fc", dark: "#663399" },
-    secondary: { main: "#0000" },
-    common: {
-      black: "#000000",
-      darkBlack,
-    },
-    background: { default: background, paper: backgroundPaper },
+    primary: { main: '#8256DE', light: '#8c14fc', dark: '#663399' },
+    secondary: { main: '#0000' },
   },
   breakpoints: {
     values: {
@@ -42,9 +37,9 @@ const theme = createMuiTheme({
 });
 
 export const GlobalCss = withStyles({
-  "@global": {
-    "html, body, #root": {
-      height: "100%",
+  '@global': {
+    'html, body, #root': {
+      height: '100%',
     },
   },
 })(() => null);

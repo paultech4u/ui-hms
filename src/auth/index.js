@@ -1,23 +1,43 @@
-import React from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { lazyload } from '../common/Loading';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { NavBar } from './AuthNavBar';
 import { AuthRoute } from '../constants';
+import { DrawerBar } from './AuthDrawer';
+import { Footer } from '../common/Footer';
+import { useIsDesktop } from '../hooks';
 
 const LoginPage = lazyload(() => import('./AuthLogin'));
 
 function AuthPage(props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const isDesktop = useIsDesktop();
+
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen);
+  };
+
+  useLayoutEffect(() => {
+    if (isDesktop) {
+      setIsOpen(false);
+    }
+  }, [isDesktop]);
+
   return (
-    <Box height={1} display='flex' flexDirection='column'>
+    <Box height={1} display='flex' flexDirection='column' overflow='auto'>
       <Box display='flex' paddingY={8}>
-        <NavBar />
+        <NavBar toggleDrawer={toggleDrawer} />
+        <DrawerBar open={isOpen} close={toggleDrawer} />
       </Box>
       <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
         <Switch>
           <Route exact path={AuthRoute.LOGIN} component={LoginPage} />
           <Redirect to={AuthRoute.LOGIN} />
         </Switch>
+      </Box>
+      <Box paddingY={8}>
+        <Footer />
       </Box>
     </Box>
   );
