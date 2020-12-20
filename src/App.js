@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
-function App() {
+// Router import
+import { BrowserRouter } from "react-router-dom";
+
+// Material import
+import { CssBaseline } from "@material-ui/core";
+
+// Files import
+import { lazyload } from "./common/Loading";
+import { GlobalCss } from "./theme";
+
+const AuthPage = lazyload(() => import("./auth"));
+
+function App(props) {
+  const Main = true ? AuthPage : null;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <CssBaseline />
+      <GlobalCss />
+      <Main />
+    </BrowserRouter>
   );
 }
 
