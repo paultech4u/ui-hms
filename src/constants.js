@@ -3,3 +3,9 @@ export const AuthRoute = {
   REGISTER: '/register',
   LOCK: '/lock',
 };
+
+export const HospitalRoles = [
+  { value: 'NURSE' },
+  { value: 'ADMIN' },
+  { value: 'DOCTOR' },
+];

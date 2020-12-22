@@ -1,15 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Typography, makeStyles, Slide, Link } from '@material-ui/core';
+import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
 import { AuthCard, ActionButton, PasswordInput, TextInput } from './AuthCommon';
 import { Progress } from '../common/Progress';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 function AuthLogin(props) {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+
   const [query, setQuery] = useState('idle');
-  //   const [error, setError] = useState(true);
 
   const styles = useStyles();
 
@@ -23,6 +24,28 @@ function AuthLogin(props) {
     },
     []
   );
+
+  const loginSchema = Yup.object().shape({
+    username: Yup.string()
+      .trim()
+      .min(4, 'Min of 4 character')
+      .max(20, 'Max of 20'),
+    password: Yup.string()
+      .trim()
+      .min(4, 'Min of 4 character')
+      .max(50, 'Max of 20'),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: username,
+      password: '',
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+    validationSchema: loginSchema,
+  });
 
   const handleClickQuery = () => {
     clearTimeout(timerRef.current);
@@ -38,12 +61,13 @@ function AuthLogin(props) {
     }, 2000);
   };
 
-  const clearfix = () => {
-    setUsername('');
-  };
-
   return (
-    <Slide direction='down' in={location.pathname === '/login'}>
+    <Fade
+      style={{
+        transitionDelay: '600ms',
+        transitionTimingFunction: 'ease-in-out',
+      }}
+      in={location.pathname === '/login'}>
       <Box>
         <AuthCard marginTop={30} display='flex'>
           <Box
@@ -62,15 +86,31 @@ function AuthLogin(props) {
               <TextInput
                 label='Enter Username'
                 id='username'
-                value={username}
-                onInput={(e) => setUsername(e.target.value)}
-                cleartext={clearfix}
+                value={formik.values.username}
+                onInput={formik.handleChange}
+                onBlur={formik.handleBlur}
+                errortext={
+                  !!formik.errors.username && formik.touched.username
+                    ? formik.errors.username
+                    : null
+                }
+                error={!!formik.errors.username && formik.touched.username}
+                cleartext={() =>
+                  formik.resetForm({ values: { username: username } })
+                }
               />
             </Box>
             <Box marginTop={10}>
               <PasswordInput
-                value={password}
-                onInput={(e) => setPassword(e.target.value)}
+                onBlur={formik.handleBlur}
+                errortext={
+                  !!formik.errors.password && formik.touched.password
+                    ? formik.errors.password
+                    : null
+                }
+                error={!!formik.errors.password && formik.touched.password}
+                value={formik.values.password}
+                onInput={formik.handleChange}
               />
             </Box>
           </Box>
@@ -93,7 +133,7 @@ function AuthLogin(props) {
           </Box>
         </AuthCard>
       </Box>
-    </Slide>
+    </Fade>
   );
 }
 

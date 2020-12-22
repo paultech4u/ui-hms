@@ -15,6 +15,7 @@ import { MdVisibility, MdVisibilityOff, MdCancel } from 'react-icons/md';
 
 export function TextInput(props) {
   const { value, cleartext, error, errortext, ...others } = props;
+
   const styles = useStyles();
   return (
     <TextField
@@ -27,7 +28,7 @@ export function TextInput(props) {
         endAdornment: (
           <InputAdornment>
             <IconButton aria-label='clear-text' onClick={cleartext}>
-              {value.length ? <MdCancel /> : null}
+              {!!value ? <MdCancel /> : null}
             </IconButton>
           </InputAdornment>
         ),
@@ -40,7 +41,7 @@ TextInput.propTypes = {
   value: PropTypes.string,
   cleartext: PropTypes.func,
   error: PropTypes.bool,
-  errortext: PropTypes.string,
+  errortext: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
 };
 
 export function PasswordInput(props) {
@@ -58,7 +59,7 @@ export function PasswordInput(props) {
     <TextField
       error={error}
       id='password'
-      label='Enter Password'
+      label='Enter password'
       type={isVisible ? 'text' : 'password'}
       value={value}
       helperText={errortext}

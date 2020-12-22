@@ -9,8 +9,8 @@ import { Footer } from '../common/Footer';
 import { useIsDesktop } from '../hooks';
 
 const LoginPage = lazyload(() => import('./AuthLogin'));
-const RegisterPage = lazyload(() => import('./Register'));
-const LockScreen = lazyload(() => import('./ScreenLock'));
+const RegisterPage = lazyload(() => import('./AuthRegister'));
+const ScreenLock = lazyload(() => import('./AuthScreenLock'));
 
 function AuthPage(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +36,7 @@ function AuthPage(props) {
         <Switch>
           <Route exact path={AuthRoute.LOGIN} component={LoginPage} />
           <Route path={AuthRoute.REGISTER} component={RegisterPage} />
-          <Route path={AuthRoute.LOCK} component={LockScreen} />
+          <Route path={AuthRoute.LOCK} component={ScreenLock} />
           <Redirect to={AuthRoute.LOGIN} />
         </Switch>
       </Box>
