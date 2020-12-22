@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import {
   Box,
@@ -35,6 +36,13 @@ export function TextInput(props) {
   );
 }
 
+TextInput.propTypes = {
+  value: PropTypes.string,
+  cleartext: PropTypes.func,
+  error: PropTypes.bool,
+  errortext: PropTypes.string,
+};
+
 export function PasswordInput(props) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -69,16 +77,28 @@ export function PasswordInput(props) {
   );
 }
 
+PasswordInput.propTypes = {
+  value: PropTypes.string,
+  isVisible: PropTypes.bool,
+  error: PropTypes.bool,
+  errortext: PropTypes.string,
+  toggleVisibility: PropTypes.func,
+};
+
 export function AuthCard(props) {
   const { children, cardContentClass, ...others } = props;
   return (
     <Box {...others}>
-      <Paper elevation={3} className={clsx(props.cardContentClass)}>
+      <Paper elevation={3} className={clsx(props.paperClassName)}>
         {children}
       </Paper>
     </Box>
   );
 }
+
+AuthCard.propTypes = {
+  paperClassName: PropTypes.object,
+};
 
 export function ActionButton(props) {
   return (
@@ -107,6 +127,12 @@ export function NavRouteButton(props) {
     </Box>
   );
 }
+
+NavRouteButton.propTypes = {
+  active: PropTypes.bool,
+  icon: PropTypes.element,
+  title: PropTypes.string,
+};
 
 const useStyles = makeStyles((theme) => ({
   navRoute_link: {
