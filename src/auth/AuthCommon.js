@@ -14,7 +14,14 @@ import clsx from 'clsx';
 import { MdVisibility, MdVisibilityOff, MdCancel } from 'react-icons/md';
 
 export function TextInput(props) {
-  const { value, cleartext, error, errortext, ...others } = props;
+  const {
+    value,
+    cleartext,
+    error,
+    errortext,
+    showClearIcon,
+    ...others
+  } = props;
 
   const styles = useStyles();
   return (
@@ -25,13 +32,13 @@ export function TextInput(props) {
       helperText={errortext}
       {...others}
       InputProps={{
-        endAdornment: (
+        endAdornment: showClearIcon ? (
           <InputAdornment>
             <IconButton aria-label='clear-text' onClick={cleartext}>
-              {!!value ? <MdCancel /> : null}
+              {!!value && showClearIcon ? <MdCancel /> : null}
             </IconButton>
           </InputAdornment>
-        ),
+        ) : null,
       }}
     />
   );
@@ -40,6 +47,7 @@ export function TextInput(props) {
 TextInput.propTypes = {
   value: PropTypes.string,
   cleartext: PropTypes.func,
+  showClearIcon: PropTypes.bool,
   error: PropTypes.bool,
   errortext: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
 };

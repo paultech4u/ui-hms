@@ -61,6 +61,17 @@ function Register(props) {
     zip_code: Yup.number()
       .positive('Must be a non-negative number')
       .notRequired(),
+    admin: Yup.string()
+      .trim()
+      .min(6, 'Minimum of 6 character')
+      .max(20, 'Max 20')
+      .required('Required*'),
+    adminEmail: Yup.string().email('Invalid email').required('Required*'),
+    phone: Yup.number().required('Required*'),
+    password: Yup.string()
+      .min(6, 'Minimum of 6 character')
+      .max(20, 'Maximum of 20 character')
+      .required('Required*'),
   });
 
   const formik = useFormik({
@@ -127,7 +138,8 @@ function Register(props) {
               />
               <AuthPreference hidden={current === 1 || current === 0} />
             </Box>
-            <Box display='flex' justifyContent='flex-end' paddingBottom={10}>
+            <Divider />
+            <Box display='flex' justifyContent='flex-end' paddingY={10}>
               <Box paddingRight={10}>
                 <ActionButton disabled={current === 0} onClick={handlePrev}>
                   Previous
@@ -153,14 +165,7 @@ function Register(props) {
 }
 
 function HospitalForm(props) {
-  const {
-    values,
-    handleChange,
-    errors,
-    handleBlur,
-    touched,
-    cleartext,
-  } = props;
+  const { values, handleChange, errors, handleBlur, touched } = props;
   const { hospital, hospitalEmail, state, address, zip_code } = errors;
 
   const isDesktop = useIsDesktop();
@@ -180,7 +185,7 @@ function HospitalForm(props) {
             value={values.hospital}
             onInput={handleChange}
             onBlur={handleBlur}
-            cleartext={() => cleartext({ values: { hospital: '' } })}
+            showClearIcon={false}
             label='Enter hospital name'
             errortext={!!hospital && touched.hospital ? hospital : null}
             error={!!hospital && touched.hospital}
@@ -197,7 +202,7 @@ function HospitalForm(props) {
             errortext={
               !!hospitalEmail && touched.hospitalEmail ? hospitalEmail : null
             }
-            cleartext={() => cleartext({ values: { hospitalEmail: '' } })}
+            showClearIcon={false}
             label='Enter hospital email'
             error={!!hospitalEmail && touched.hospitalEmail}
           />
@@ -217,7 +222,7 @@ function HospitalForm(props) {
             value={values.state}
             onInput={handleChange}
             onBlur={handleBlur}
-            cleartext={() => cleartext({ values: { state: '' } })}
+            showClearIcon={false}
             errortext={!!state && touched.state ? state : null}
             error={!!state && touched.state}
           />
@@ -230,7 +235,7 @@ function HospitalForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             value={values.address}
-            cleartext={() => cleartext({ values: { address: '' } })}
+            showClearIcon={false}
             errortext={!!address && touched.address ? address : null}
             error={!!address && touched.address}
           />
@@ -250,7 +255,7 @@ function HospitalForm(props) {
             value={values.zip_code}
             onInput={handleChange}
             onBlur={handleBlur}
-            cleartext={() => cleartext({ values: { zip_code: '' } })}
+            showClearIcon={false}
             errortext={!!zip_code && touched.zip_code ? zip_code : null}
             error={!!zip_code && touched.zip_code}
           />
@@ -261,15 +266,7 @@ function HospitalForm(props) {
 }
 
 function AdminForm(props) {
-  const {
-    values,
-    handleChange,
-    errors,
-    handleBlur,
-    touched,
-    hidden,
-    cleartext,
-  } = props;
+  const { values, handleChange, errors, handleBlur, touched, hidden } = props;
   const { admin, adminEmail, phone, password } = errors;
 
   const isDesktop = useIsDesktop();
@@ -289,7 +286,7 @@ function AdminForm(props) {
             value={values.admin}
             onInput={handleChange}
             onBlur={handleBlur}
-            cleartext={() => cleartext({ values: { admin: '' } })}
+            showClearIcon={false}
             label='Enter name'
             errortext={!!admin && touched.admin ? admin : null}
             error={!!admin && touched.admin}
@@ -304,7 +301,7 @@ function AdminForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             errortext={!!adminEmail && touched.adminEmail ? adminEmail : null}
-            cleartext={() => cleartext({ values: { adminEmail: '' } })}
+            showClearIcon={false}
             label='Enter email'
             error={!!adminEmail && touched.adminEmail}
           />
@@ -325,7 +322,7 @@ function AdminForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             label='Enter phone'
-            cleartext={() => cleartext({ values: { phone: '' } })}
+            showClearIcon={false}
             errortext={!!phone && touched.phone ? phone : null}
             error={!!phone && touched.phone}
           />

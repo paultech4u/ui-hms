@@ -18,7 +18,6 @@ function AuthPreference(props) {
         <AccordionDetails>
           <Typography color='textSecondary'>
             The click event of the nested action will propagate up and expand
-            the accordion unless you explicitly stop it.
           </Typography>
         </AccordionDetails>
       </Accordion>
@@ -29,7 +28,6 @@ function AuthPreference(props) {
         <AccordionDetails>
           <Typography color='textSecondary'>
             The click event of the nested action will propagate up and expand
-            the accordion unless you explicitly stop it.
           </Typography>
         </AccordionDetails>
       </Accordion>

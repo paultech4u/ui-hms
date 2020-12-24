@@ -2,9 +2,19 @@ import React from 'react';
 import clsx from 'clsx';
 import { AuthCard, PasswordInput, ActionButton } from './AuthCommon';
 import { Avatar, Box, makeStyles, Typography } from '@material-ui/core';
+import { useFormik } from 'formik';
 
 function LockScreen(props) {
   const styles = useStyles();
+
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
   return (
     <AuthCard>
       <Box display='flex' justifyContent='center' paddingTop={8}>
@@ -16,10 +26,13 @@ function LockScreen(props) {
         <Box textAlign='center'>
           <Typography>Admin</Typography>
         </Box>
-        <PasswordInput />
+        <PasswordInput
+          value={formik.values.password}
+          onInput={formik.handleChange}
+        />
       </Box>
       <Box display='flex' justifyContent='center' marginTop={7} padding={5}>
-        <ActionButton>Unlock</ActionButton>
+        <ActionButton onClick={formik.handleSubmit}>Unlock</ActionButton>
       </Box>
     </AuthCard>
   );
