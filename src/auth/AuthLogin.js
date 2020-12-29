@@ -89,6 +89,7 @@ function AuthLogin(props) {
                 value={formik.values.username}
                 onInput={formik.handleChange}
                 onBlur={formik.handleBlur}
+                showClearIcon={true}
                 errortext={
                   !!formik.errors.username && formik.touched.username
                     ? formik.errors.username

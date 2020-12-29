@@ -1,5 +1,5 @@
 {
-    "editor.fontFamily": "\"purisa\"",
+    "editor.fontFamily": "'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
     "editor.fontSize": 20,
     "xd.globalEditor": true,
     "xd.lastPackage": "/home/donsimon/Workspace/Design/HMS-Design"

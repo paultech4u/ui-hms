@@ -1,12 +1,12 @@
 import React from 'react';
 
-// Router import
+// router import
 import { BrowserRouter } from 'react-router-dom';
 
-// Material import
+// material-ui import
 import { CssBaseline } from '@material-ui/core';
 
-// Files import
+// local-files import
 import { lazyload } from './common/Loading';
 import { GlobalCss } from './theme';
 

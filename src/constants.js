@@ -9,3 +9,9 @@ export const HospitalRoles = [
   { value: 'ADMIN' },
   { value: 'DOCTOR' },
 ];
+
+export const PageRoute = {
+  DASHBOARD: '/dashboard',
+};
+
+export const DrawerWidth = 240;
