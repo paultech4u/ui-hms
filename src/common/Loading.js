@@ -1,7 +1,7 @@
 import loadable from "@loadable/component";
 import { Box } from "@material-ui/core";
 
-function Loading(props) {
+export function Loading(props) {
   return <Box>Loading...</Box>;
 }
 

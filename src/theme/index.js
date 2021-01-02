@@ -1,13 +1,5 @@
 import { createMuiTheme, withStyles } from '@material-ui/core';
 
-const secondary = '';
-const darkBlack = '';
-const background = '';
-const backgroundPaper = '';
-// const warningLight = "";
-// const warningMain = "";
-// const warningDark = "";
-
 // breakpoints
 const xl = 1920;
 const lg = 1280;
@@ -21,7 +13,6 @@ const spacing = 2;
 const theme = createMuiTheme({
   palette: {
     primary: { main: '#8256DE', light: '#8c14fc', dark: '#663399' },
-    // secondary: { main: '#0000' },
   },
   breakpoints: {
     values: {

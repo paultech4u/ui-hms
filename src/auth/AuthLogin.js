@@ -8,8 +8,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 function AuthLogin(props) {
-  const [username, setUsername] = useState('');
-
   const [query, setQuery] = useState('idle');
 
   const styles = useStyles();
@@ -38,7 +36,7 @@ function AuthLogin(props) {
 
   const formik = useFormik({
     initialValues: {
-      username: username,
+      username: '',
       password: '',
     },
     onSubmit: (values) => {
@@ -84,21 +82,18 @@ function AuthLogin(props) {
           <Box padding={10} display='flex' flexDirection='column'>
             <Box>
               <TextInput
-                label='Enter Username'
+                placeholder='Enter Username'
                 id='username'
                 value={formik.values.username}
                 onInput={formik.handleChange}
                 onBlur={formik.handleBlur}
-                showClearIcon={true}
+                showClearIcon={false}
                 errortext={
                   !!formik.errors.username && formik.touched.username
                     ? formik.errors.username
                     : null
                 }
                 error={!!formik.errors.username && formik.touched.username}
-                cleartext={() =>
-                  formik.resetForm({ values: { username: username } })
-                }
               />
             </Box>
             <Box marginTop={10}>
@@ -122,11 +117,13 @@ function AuthLogin(props) {
             paddingTop={10}
             marginX={15}
             marginBottom={10}>
-            <ActionButton onClick={handleClickQuery}>
-              <Typography style={{ marginRight: '10px' }}>Login</Typography>
+            <ActionButton
+              onClick={handleClickQuery}
+              disabled={formik.values.username.length <= 0 ? true : false}>
               {query === 'progress' ? (
                 <Progress in={query === 'progress'} unmountOnExit />
               ) : null}
+              <Typography style={{ marginRight: '10px' }}>Login</Typography>
             </ActionButton>
             <Box textAlign='center' marginTop={6}>
               <Link style={{ cursor: 'pointer' }}>Forget Password?</Link>

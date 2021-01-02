@@ -4,7 +4,7 @@ import { CircularProgress, Fade } from '@material-ui/core';
 export function Progress(props) {
   return (
     <Fade unmountOnExit {...props}>
-      <CircularProgress color='common.white' size={30} />
+      <CircularProgress color='inherit' size={20} />
     </Fade>
   );
 }

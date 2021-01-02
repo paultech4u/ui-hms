@@ -98,11 +98,16 @@ function AppNavbar(props) {
           </>
         ) : (
           <>
-            <Box marginLeft={8}>
+            <Box marginLeft={8} display='flex'>
+              <Box paddingRight={7}>
+                <IconButton color='inherit' size='medium'>
+                  <MdSearch size={20} />
+                </IconButton>
+              </Box>
               <Button variant='text'>Dashboard</Button>
             </Box>
             <Box marginRight={8}>
-              <IconButton aria-haspopup  onClick={handleDrawerOpen}>
+              <IconButton aria-haspopup onClick={handleDrawerOpen}>
                 <MdSort size={20} />
               </IconButton>
             </Box>

@@ -5,7 +5,7 @@ import { useIsDesktop } from '../hooks';
 import { Box, makeStyles, IconButton } from '@material-ui/core';
 import { NavRouteButton } from './AuthCommon';
 import { useLocation, useHistory } from 'react-router-dom';
-import { MdFingerprint, MdPersonAdd, MdLockOpen, MdMenu } from 'react-icons/md';
+import { MdFingerprint, MdPersonAdd, MdLockOpen, MdSort } from 'react-icons/md';
 
 export function NavBar(props) {
   const { toggleDrawer } = props;
@@ -51,7 +51,7 @@ export function NavBar(props) {
       ) : (
         <Box>
           <IconButton onClick={toggleDrawer}>
-            <MdMenu />
+            <MdSort />
           </IconButton>
         </Box>
       )}

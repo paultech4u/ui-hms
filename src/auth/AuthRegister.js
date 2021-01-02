@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Divider,
@@ -14,20 +15,25 @@ import {
   TextField,
   MenuItem,
 } from '@material-ui/core';
-import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
-import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useIsDesktop } from '../hooks';
 import { HospitalRoles } from '../constants';
+import { useDispatch, useSelector } from 'react-redux';
 import AuthPreference from './AuthPreference';
+import { RegisterAction } from './AuthRegStoreSlice';
+import { Progress } from '../common/Progress';
+import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
+import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
 
 function Register(props) {
   const [toggleForm, setToggleForm] = useState(false);
   const [current, setCurrent] = useState(0);
 
   const isDesktop = useIsDesktop();
+
+  const dispatch = useDispatch();
 
   const toggleToFormScreen = () => {
     setToggleForm(!toggleForm);
@@ -42,15 +48,15 @@ function Register(props) {
   };
 
   const regiterschema = Yup.object().shape({
-    hospital: Yup.string()
+    hospitalName: Yup.string()
       .trim()
       .min(6, 'Must contain 6 character')
-      .max(20, 'Max 20')
+      .max(50, 'Max 50')
       .required('Required*'),
     hospitalEmail: Yup.string().email('Invalid email').required('Required*'),
     state: Yup.string()
       .trim()
-      .min(6, 'Must contain 6 character')
+      .min(3, 'Must contain 3 character')
       .max(20, 'Max 20')
       .required('Required*'),
     address: Yup.string()
@@ -61,13 +67,23 @@ function Register(props) {
     zip_code: Yup.number()
       .positive('Must be a non-negative number')
       .notRequired(),
-    admin: Yup.string()
+    firstname: Yup.string()
       .trim()
       .min(6, 'Minimum of 6 character')
       .max(20, 'Max 20')
       .required('Required*'),
-    adminEmail: Yup.string().email('Invalid email').required('Required*'),
-    phone: Yup.number().required('Required*'),
+    lastname: Yup.string()
+      .trim()
+      .min(6, 'Minimum of 6 character')
+      .max(20, 'Max 20')
+      .required('Required*'),
+    username: Yup.string()
+      .trim()
+      .min(6, 'Minimum of 6 character')
+      .max(20, 'Max 20')
+      .required('Required*'),
+    email: Yup.string().email('Invalid email').required('Required*'),
+    phone_number: Yup.number().required('Required*'),
     password: Yup.string()
       .min(6, 'Minimum of 6 character')
       .max(20, 'Maximum of 20 character')
@@ -76,22 +92,27 @@ function Register(props) {
 
   const formik = useFormik({
     initialValues: {
-      hospital: '',
+      hospitalName: '',
       hospitalEmail: '',
       state: '',
       address: '',
       zip_code: '',
-      admin: '',
-      adminEmail: '',
-      phone: '',
+      firstname: '',
+      lastname: '',
+      username: '',
+      email: '',
+      phone_number: '',
       password: '',
       role: 'ADMIN',
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const data = { ...values };
+      dispatch(RegisterAction(data));
     },
     validationSchema: regiterschema,
   });
+
+  const loading = useSelector((state) => state.hospitalDetails.loading);
 
   return (
     <AuthCard display='flex' marginX={isDesktop ? 0 : 8}>
@@ -148,7 +169,12 @@ function Register(props) {
               <Box paddingRight={10}>
                 {current === 2 ? (
                   <ActionButton onClick={formik.handleSubmit}>
-                    Submit
+                    {loading === 'progress' ? (
+                      <Progress in={loading === 'progress'} unmountOnExit />
+                    ) : null}
+                    <Typography style={{ paddingLeft: false ? '10px' : 0 }}>
+                      Submit
+                    </Typography>
                   </ActionButton>
                 ) : (
                   <ActionButton onClick={handleNext}>Next</ActionButton>
@@ -166,7 +192,7 @@ function Register(props) {
 
 function HospitalForm(props) {
   const { values, handleChange, errors, handleBlur, touched } = props;
-  const { hospital, hospitalEmail, state, address, zip_code } = errors;
+  const { hospitalName, hospitalEmail, state, address, zip_code } = errors;
 
   const isDesktop = useIsDesktop();
 
@@ -180,15 +206,17 @@ function HospitalForm(props) {
         <Box paddingBottom={isDesktop ? 0 : 8}>
           <Typography>Name*:</Typography>
           <TextInput
-            name='hospital'
+            name='hospitalName'
             variant='filled'
-            value={values.hospital}
+            value={values.hospitalName}
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
-            label='Enter hospital name'
-            errortext={!!hospital && touched.hospital ? hospital : null}
-            error={!!hospital && touched.hospital}
+            placeholder='Enter hospital name'
+            errortext={
+              !!hospitalName && touched.hospitalName ? hospitalName : null
+            }
+            error={!!hospitalName && touched.hospitalName}
           />
         </Box>
         <Box paddingLeft={isDesktop ? 10 : 0}>
@@ -203,7 +231,7 @@ function HospitalForm(props) {
               !!hospitalEmail && touched.hospitalEmail ? hospitalEmail : null
             }
             showClearIcon={false}
-            label='Enter hospital email'
+            placeholder='Enter hospital email'
             error={!!hospitalEmail && touched.hospitalEmail}
           />
         </Box>
@@ -267,7 +295,14 @@ function HospitalForm(props) {
 
 function AdminForm(props) {
   const { values, handleChange, errors, handleBlur, touched, hidden } = props;
-  const { admin, adminEmail, phone, password } = errors;
+  const {
+    firstname,
+    lastname,
+    username,
+    email,
+    phone_number,
+    password,
+  } = errors;
 
   const isDesktop = useIsDesktop();
 
@@ -278,57 +313,61 @@ function AdminForm(props) {
         justifyContent='space-between'
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Name*:</Typography>
+        {/* First row */}
+        <Box
+          paddingBottom={isDesktop ? 0 : 8}
+          paddingRight={isDesktop ? 10 : 0}>
+          <Typography>FirstName*:</Typography>
           <TextInput
-            name='admin'
+            name='firstname'
             variant='filled'
-            value={values.admin}
+            value={values.firstname}
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
-            label='Enter name'
-            errortext={!!admin && touched.admin ? admin : null}
-            error={!!admin && touched.admin}
+            placeholder='Enter Firstname'
+            errortext={!!firstname && touched.firstname ? firstname : null}
+            error={!!firstname && touched.firstname}
           />
         </Box>
-        <Box paddingLeft={isDesktop ? 10 : 0}>
-          <Typography>Email*:</Typography>
+        <Box>
+          <Typography>LastName*:</Typography>
           <TextInput
-            name='adminEmail'
+            name='lastname'
             variant='filled'
-            value={values.adminEmail}
+            value={values.lastname}
             onInput={handleChange}
             onBlur={handleBlur}
-            errortext={!!adminEmail && touched.adminEmail ? adminEmail : null}
             showClearIcon={false}
-            label='Enter email'
-            error={!!adminEmail && touched.adminEmail}
+            placeholder='Enter Lastname'
+            errortext={!!lastname && touched.lastname ? lastname : null}
+            error={!!lastname && touched.lastname}
           />
         </Box>
       </Box>
+      {/* Second row */}
       <Box
         display='flex'
         justifyContent='space-between'
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Phone no*:</Typography>
+        <Box>
+          <Typography>Email*:</Typography>
           <TextInput
-            name='phone'
+            name='email'
             variant='filled'
-            value={values.phone}
+            value={values.email}
             onInput={handleChange}
             onBlur={handleBlur}
-            label='Enter phone'
+            errortext={!!email && touched.email ? email : null}
             showClearIcon={false}
-            errortext={!!phone && touched.phone ? phone : null}
-            error={!!phone && touched.phone}
+            placeholder='Enter Email'
+            error={!!email && touched.email}
           />
         </Box>
         <Box>
-          <Typography>password*:</Typography>
+          <Typography>Password*:</Typography>
           <PasswordInput
             name='password'
             variant='filled'
@@ -340,12 +379,45 @@ function AdminForm(props) {
           />
         </Box>
       </Box>
+      {/* Third row */}
       <Box
         display='flex'
         justifyContent='space-between'
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
+        <Box paddingBottom={isDesktop ? 0 : 8}>
+          <Typography>UserName*:</Typography>
+          <TextInput
+            name='username'
+            variant='filled'
+            value={values.username}
+            onInput={handleChange}
+            onBlur={handleBlur}
+            showClearIcon={false}
+            placeholder='Enter Username'
+            errortext={!!username && touched.username ? username : null}
+            error={!!username && touched.username}
+          />
+        </Box>
+        <Box paddingBottom={isDesktop ? 0 : 8}>
+          <Typography>Phone_number*:</Typography>
+          <TextInput
+            name='phone_number'
+            variant='filled'
+            value={values.phone_number}
+            onInput={handleChange}
+            onBlur={handleBlur}
+            placeholder='Enter Phone Number'
+            showClearIcon={false}
+            errortext={
+              !!phone_number && touched.phone_number ? phone_number : null
+            }
+            error={!!phone_number && touched.phone_number}
+          />
+        </Box>
+      </Box>
+      <Box marginX={10}>
         <Box>
           <Typography>Role*:</Typography>
           <TextField
@@ -370,9 +442,8 @@ function AdminForm(props) {
 
 const stepsLabel = ['Hospital Details', 'Admin Details', 'Preference'];
 
-function FormStepIcons(props) {
+function FormStepIcons({ active, completed, icon }) {
   const styles = useStyles();
-  const { active, completed, icon } = props;
   const icons = {
     1: <FaHospital size={20} />,
     2: <FaUserShield size={20} />,
@@ -388,6 +459,12 @@ function FormStepIcons(props) {
     </Box>
   );
 }
+
+FormStepIcons.propTypes = {
+  active: PropTypes.bool,
+  completed: PropTypes.bool,
+  icon: PropTypes.number,
+};
 
 function GetStartedScreen(props) {
   const { toggleToFormScreen } = props;

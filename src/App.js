@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { Provider } from 'react-redux';
 
 // router import
 import { BrowserRouter } from 'react-router-dom';
 
 // material-ui import
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
 // local-files import
-import { lazyload } from './common/Loading';
-import { GlobalCss } from './theme';
+import { lazyload, Loading } from './common/Loading';
+import theme, { GlobalCss } from './theme';
+import store from './store';
 
 const AuthPage = lazyload(() => import('./auth'));
 const AppProtected = lazyload(() => import('./AppProtected'));
 
 function App(props) {
-  const Main = true ? AuthPage : AppProtected;
+  const isAuthenticated = true;
+  const Main = isAuthenticated ? AppProtected : AuthPage;
   return (
-    <BrowserRouter>
-      <CssBaseline />
-      <GlobalCss />
-      <Main />
-    </BrowserRouter>
+    <Provider store={store}>
+      <MuiThemeProvider theme={theme}>
+        <Suspense fallback={<Loading />}>
+          <BrowserRouter>
+            <CssBaseline />
+            <GlobalCss />
+            <Main />
+          </BrowserRouter>
+        </Suspense>
+      </MuiThemeProvider>
+    </Provider>
   );
 }
 

@@ -67,7 +67,7 @@ export function PasswordInput(props) {
     <TextField
       error={error}
       id='password'
-      label='Enter password'
+      placeholder='Enter password'
       type={isVisible ? 'text' : 'password'}
       value={value}
       helperText={errortext}

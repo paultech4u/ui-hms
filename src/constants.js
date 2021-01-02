@@ -14,4 +14,10 @@ export const PageRoute = {
   DASHBOARD: '/dashboard',
 };
 
+export const LoadingStatus = {
+  PROGRESS: 'progress',
+  IDLE: 'idle',
+  SUCCESS: 'success',
+};
+
 export const DrawerWidth = 240;
