@@ -9,7 +9,9 @@ import {
   InputAdornment,
   IconButton,
   makeStyles,
+  Snackbar,
 } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import clsx from 'clsx';
 import { MdVisibility, MdVisibilityOff, MdCancel } from 'react-icons/md';
 
@@ -95,10 +97,13 @@ PasswordInput.propTypes = {
 };
 
 export function AuthCard(props) {
-  const { children, cardContentClass, ...others } = props;
+  const { children, elevation, variant, cardContentClass, ...others } = props;
   return (
     <Box {...others}>
-      <Paper elevation={3} className={clsx(props.paperClassName)}>
+      <Paper
+        elevation={elevation}
+        variant={variant}
+        className={clsx(props.paperClassName)}>
         {children}
       </Paper>
     </Box>
@@ -107,6 +112,8 @@ export function AuthCard(props) {
 
 AuthCard.propTypes = {
   paperClassName: PropTypes.object,
+  elevation: PropTypes.number,
+  variant: PropTypes.oneOf(['outlined', 'elevation']),
 };
 
 export function ActionButton(props) {
@@ -141,6 +148,35 @@ NavRouteButton.propTypes = {
   active: PropTypes.bool,
   icon: PropTypes.element,
   title: PropTypes.string,
+};
+
+let vertical = 'bottom';
+let horizontal = 'left';
+
+export function AppAlert(props) {
+  const { open, toggleAlert, severity } = props;
+  return (
+    <Snackbar
+      open={open}
+      onClose={toggleAlert}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      key={vertical + horizontal}
+      autoHideDuration={2000}>
+      <Alert
+        onClose={toggleAlert}
+        elevation={6}
+        severity={severity}
+        variant='filled'>
+        {props.children}
+      </Alert>
+    </Snackbar>
+  );
+}
+
+AppAlert.propTypes = {
+  open: PropTypes.bool,
+  toggleAlert: PropTypes.func,
+  severity: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
 };
 
 const useStyles = makeStyles((theme) => ({

@@ -16,7 +16,7 @@ function LockScreen(props) {
     },
   });
   return (
-    <AuthCard>
+    <AuthCard variant='outlined'>
       <Box display='flex' justifyContent='center' paddingTop={8}>
         <Avatar alt='avatar' className={clsx(styles.avatar_small)}>
           A

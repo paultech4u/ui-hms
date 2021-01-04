@@ -1,33 +1,29 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
-import { AuthCard, ActionButton, PasswordInput, TextInput } from './AuthCommon';
-import { Progress } from '../common/Progress';
-import { useFormik } from 'formik';
+import React from 'react';
 import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { Progress } from '../common/Progress';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { LoginAction, handleAlertClose } from './AuthLoginStoreSlice';
+import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
+import {
+  AuthCard,
+  ActionButton,
+  PasswordInput,
+  TextInput,
+  AppAlert,
+} from './AuthCommon';
 
 function AuthLogin(props) {
-  const [query, setQuery] = useState('idle');
-
   const styles = useStyles();
 
   const location = useLocation();
 
-  const timerRef = React.useRef();
-
-  useEffect(
-    () => () => {
-      clearTimeout(timerRef.current);
-    },
-    []
-  );
+  const dispatch = useDispatch();
 
   const loginSchema = Yup.object().shape({
-    username: Yup.string()
-      .trim()
-      .min(4, 'Min of 4 character')
-      .max(20, 'Max of 20'),
+    email: Yup.string().email('Must be an email').trim(),
     password: Yup.string()
       .trim()
       .min(4, 'Min of 4 character')
@@ -36,27 +32,27 @@ function AuthLogin(props) {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const data = { ...values };
+      dispatch(LoginAction(data));
     },
     validationSchema: loginSchema,
   });
 
-  const handleClickQuery = () => {
-    clearTimeout(timerRef.current);
+  const { isLoading, open, error, success } = useSelector((state) => {
+    return {
+      error: state.auth.error,
+      open: state.auth.openAlert,
+      success: state.auth.success,
+      isLoading: state.auth.isLoading,
+    };
+  });
 
-    if (query !== 'idle') {
-      setQuery('idle');
-      return;
-    }
-
-    setQuery('progress');
-    timerRef.current = setTimeout(() => {
-      setQuery('idle');
-    }, 2000);
+  const toggleAlert = () => {
+    dispatch(handleAlertClose(false));
   };
 
   return (
@@ -67,7 +63,7 @@ function AuthLogin(props) {
       }}
       in={location.pathname === '/login'}>
       <Box>
-        <AuthCard marginTop={30} display='flex'>
+        <AuthCard marginTop={30} display='flex' elevation={6}>
           <Box
             marginTop='-20px'
             marginX={10}
@@ -82,18 +78,18 @@ function AuthLogin(props) {
           <Box padding={10} display='flex' flexDirection='column'>
             <Box>
               <TextInput
-                placeholder='Enter Username'
-                id='username'
-                value={formik.values.username}
+                placeholder='Enter email'
+                id='email'
+                value={formik.values.email}
                 onInput={formik.handleChange}
                 onBlur={formik.handleBlur}
                 showClearIcon={false}
                 errortext={
-                  !!formik.errors.username && formik.touched.username
-                    ? formik.errors.username
+                  !!formik.errors.email && formik.touched.email
+                    ? formik.errors.email
                     : null
                 }
-                error={!!formik.errors.username && formik.touched.username}
+                error={!!formik.errors.email && formik.touched.email}
               />
             </Box>
             <Box marginTop={10}>
@@ -113,23 +109,37 @@ function AuthLogin(props) {
           <Box
             display='flex'
             justifyContent='center'
+            alignItems='center'
             flexDirection='column'
             paddingTop={10}
             marginX={15}
             marginBottom={10}>
             <ActionButton
-              onClick={handleClickQuery}
-              disabled={formik.values.username.length <= 0 ? true : false}>
-              {query === 'progress' ? (
-                <Progress in={query === 'progress'} unmountOnExit />
+              onClick={formik.handleSubmit}
+              disabled={formik.values.email.length <= 0 ? true : false}>
+              {isLoading === 'pending' ? (
+                <Progress in={isLoading === 'pending'} unmountOnExit />
               ) : null}
-              <Typography style={{ marginRight: '10px' }}>Login</Typography>
+              <Typography
+                style={{ paddingLeft: isLoading === 'pending' ? '10px' : 0 }}>
+                Login
+              </Typography>
             </ActionButton>
             <Box textAlign='center' marginTop={6}>
               <Link style={{ cursor: 'pointer' }}>Forget Password?</Link>
             </Box>
           </Box>
         </AuthCard>
+        <AppAlert
+          open={open}
+          severity={success === 'Ok' ? 'success' : 'error'}
+          toggleAlert={toggleAlert}>
+          {success === 'Ok'
+            ? success
+            : error === 'undefined'
+            ? error
+            : 'No connection'}
+        </AppAlert>
       </Box>
     </Fade>
   );

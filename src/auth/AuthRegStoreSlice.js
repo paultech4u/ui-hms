@@ -12,17 +12,23 @@ export const RegisterAction = createAsyncThunk(
 const RegisterReducer = createSlice({
   name: 'hospital',
   initialState: {
-    status: null,
-    error: null,
-    loading: LoadingStatus.IDLE,
+    success: '',
+    error: '',
+    open: false,
+    isLoading: LoadingStatus.IDLE,
   },
   reducers: {
     register: {
       reducer: (state, action) => {
         if (action.error) {
-          state.error = action.payload;
+          state.error = action.payload.message;
         }
-        state.status = action.payload;
+        state.success = action.payload.message;
+      },
+    },
+    handleAlertClose: {
+      reducer: (state, action) => {
+        state.open = action.payload;
       },
     },
   },
@@ -33,35 +39,37 @@ const RegisterReducer = createSlice({
   },
 });
 
-const RegisterSuccess = (response, thunkAPI) => {
+const RegisterSuccess = (res, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  const { status } = response;
+  const { status } = res;
   if (status === 302 || status === 401 || status === 404) {
-    return rejectWithValue(response.data.error);
+    return rejectWithValue(res.data.error);
   } else if (status === 500) {
-    return rejectWithValue(response.data.error);
+    return rejectWithValue(res.data.error);
   } else if (status === 201) {
-    dispatch(register(response));
-    return response.data;
+    dispatch(register(res));
+    return res.data;
   }
 };
 
 function pending(state, action) {
-  state.loading = LoadingStatus.PROGRESS;
+  state.isLoading = LoadingStatus.PENDING;
 }
 function fullfilled(state, action) {
-  state.loading = LoadingStatus.IDLE;
-  state.status = action.payload;
-  state.error = null;
+  state.error = '';
+  state.open = true;
+  state.success = action.payload;
+  state.isLoading = LoadingStatus.IDLE;
 }
 function rejected(state, action) {
-  state.loading = LoadingStatus.IDLE;
+  state.open = true;
+  state.success = '';
   state.error = action.payload;
-  state.status = null;
+  state.isLoading = LoadingStatus.IDLE;
 }
 
 const { actions, reducer } = RegisterReducer;
 
-const { register } = actions;
+export const { register, handleAlertClose } = actions;
 
 export default reducer;

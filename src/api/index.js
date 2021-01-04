@@ -1,12 +1,26 @@
 import axios from 'axios';
-import { getToken } from '../utils/localstorage';
 
 export const Auth = axios.create({
-  baseURL: 'http://localhost:5000/users',
-  headers: {
-    Authorization: `Bearer ${getToken}`,
-  },
+  baseURL: 'http://localhost:5000/user',
 });
+
+Auth.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  (err) => {
+    return err.request;
+  }
+);
+
+Auth.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (err) => {
+    return err.response;
+  }
+);
 
 export const Hospital = axios.create({
   baseURL: 'http://localhost:5000/hospital',
@@ -14,7 +28,6 @@ export const Hospital = axios.create({
 
 Hospital.interceptors.request.use(
   (request) => {
-    console.log('From request interceptor: ', request);
     return request;
   },
   (err) => {
@@ -24,7 +37,6 @@ Hospital.interceptors.request.use(
 
 Hospital.interceptors.response.use(
   (response) => {
-    console.log('From response interceptor: ', response);
     return response;
   },
   (err) => {

@@ -10,7 +10,24 @@ import { Auth, Hospital } from '../api/index';
  */
 export async function LoginAPI(data) {
   try {
-    const response = await Auth.post('/signup', data);
+    const response = await Auth.post('/login', data, { timeout: 6000 });
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function LogoutAPI(id) {
+  try {
+    const response = await Auth.post(
+      '/logout',
+      {},
+      {
+        params: {
+          id: id,
+        },
+      }
+    );
     return response;
   } catch (error) {
     return error;

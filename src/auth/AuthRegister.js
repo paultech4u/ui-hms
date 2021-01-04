@@ -14,6 +14,7 @@ import {
   makeStyles,
   TextField,
   MenuItem,
+  Snackbar,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import * as Yup from 'yup';
@@ -21,11 +22,17 @@ import { useFormik } from 'formik';
 import { useIsDesktop } from '../hooks';
 import { HospitalRoles } from '../constants';
 import { useDispatch, useSelector } from 'react-redux';
+import { handleAlertClose } from './AuthRegStoreSlice';
 import AuthPreference from './AuthPreference';
 import { RegisterAction } from './AuthRegStoreSlice';
 import { Progress } from '../common/Progress';
+import { Alert } from '@material-ui/lab';
 import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
+// import { MdCancel } from 'react-icons/md';
 import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
+
+let vertical = 'bottom';
+let horizontal = 'left';
 
 function Register(props) {
   const [toggleForm, setToggleForm] = useState(false);
@@ -112,10 +119,21 @@ function Register(props) {
     validationSchema: regiterschema,
   });
 
-  const loading = useSelector((state) => state.hospitalDetails.loading);
+  const { isLoading, open, error, success } = useSelector((state) => {
+    return {
+      open: state.reg.open,
+      isLoading: state.reg.isLoading,
+      success: state.reg.status === null ? '' : state.reg.status,
+      error: state.reg.error === null ? '' : state.reg.error,
+    };
+  });
+
+  const toggleAlert = () => {
+    dispatch(handleAlertClose(false));
+  };
 
   return (
-    <AuthCard display='flex' marginX={isDesktop ? 0 : 8}>
+    <AuthCard display='flex' marginX={isDesktop ? 0 : 8} variant='outlined'>
       <Box paddingY={10} marginLeft={13}>
         <Typography>Logo</Typography>
       </Box>
@@ -169,10 +187,13 @@ function Register(props) {
               <Box paddingRight={10}>
                 {current === 2 ? (
                   <ActionButton onClick={formik.handleSubmit}>
-                    {loading === 'progress' ? (
-                      <Progress in={loading === 'progress'} unmountOnExit />
+                    {isLoading === 'pending' ? (
+                      <Progress in={isLoading === 'pending'} unmountOnExit />
                     ) : null}
-                    <Typography style={{ paddingLeft: false ? '10px' : 0 }}>
+                    <Typography
+                      style={{
+                        paddingLeft: isLoading === 'pending' ? '10px' : 0,
+                      }}>
                       Submit
                     </Typography>
                   </ActionButton>
@@ -186,6 +207,20 @@ function Register(props) {
       ) : (
         <GetStartedScreen toggleToFormScreen={toggleToFormScreen} />
       )}
+      <Snackbar
+        open={open}
+        onClose={toggleAlert}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        key={vertical + horizontal}
+        autoHideDuration={6000}>
+        <Alert
+          onClose={toggleAlert}
+          elevation={6}
+          severity={success === 'Created' ? 'success' : 'error'}
+          variant='filled'>
+          {success === 'Created' ? success : error}
+        </Alert>
+      </Snackbar>
     </AuthCard>
   );
 }
@@ -251,6 +286,7 @@ function HospitalForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
+            placeholder='Enter state'
             errortext={!!state && touched.state ? state : null}
             error={!!state && touched.state}
           />
@@ -264,6 +300,7 @@ function HospitalForm(props) {
             onBlur={handleBlur}
             value={values.address}
             showClearIcon={false}
+            placeholder='Enter hospital address'
             errortext={!!address && touched.address ? address : null}
             error={!!address && touched.address}
           />
@@ -284,6 +321,7 @@ function HospitalForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
+            placeholder='Enter hospital zip_code'
             errortext={!!zip_code && touched.zip_code ? zip_code : null}
             error={!!zip_code && touched.zip_code}
           />
@@ -317,7 +355,7 @@ function AdminForm(props) {
         <Box
           paddingBottom={isDesktop ? 0 : 8}
           paddingRight={isDesktop ? 10 : 0}>
-          <Typography>FirstName*:</Typography>
+          <Typography>Firstname*:</Typography>
           <TextInput
             name='firstname'
             variant='filled'
@@ -325,13 +363,13 @@ function AdminForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
-            placeholder='Enter Firstname'
+            placeholder='Enter firstname'
             errortext={!!firstname && touched.firstname ? firstname : null}
             error={!!firstname && touched.firstname}
           />
         </Box>
         <Box>
-          <Typography>LastName*:</Typography>
+          <Typography>Lastname*:</Typography>
           <TextInput
             name='lastname'
             variant='filled'
@@ -339,7 +377,7 @@ function AdminForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
-            placeholder='Enter Lastname'
+            placeholder='Enter lastname'
             errortext={!!lastname && touched.lastname ? lastname : null}
             error={!!lastname && touched.lastname}
           />
@@ -362,7 +400,7 @@ function AdminForm(props) {
             onBlur={handleBlur}
             errortext={!!email && touched.email ? email : null}
             showClearIcon={false}
-            placeholder='Enter Email'
+            placeholder='Enter email'
             error={!!email && touched.email}
           />
         </Box>
@@ -387,7 +425,7 @@ function AdminForm(props) {
         marginX={10}
         marginY={8}>
         <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>UserName*:</Typography>
+          <Typography>Username*:</Typography>
           <TextInput
             name='username'
             variant='filled'
@@ -395,7 +433,7 @@ function AdminForm(props) {
             onInput={handleChange}
             onBlur={handleBlur}
             showClearIcon={false}
-            placeholder='Enter Username'
+            placeholder='Enter username'
             errortext={!!username && touched.username ? username : null}
             error={!!username && touched.username}
           />
@@ -408,7 +446,7 @@ function AdminForm(props) {
             value={values.phone_number}
             onInput={handleChange}
             onBlur={handleBlur}
-            placeholder='Enter Phone Number'
+            placeholder='Enter phone number'
             showClearIcon={false}
             errortext={
               !!phone_number && touched.phone_number ? phone_number : null
@@ -427,7 +465,7 @@ function AdminForm(props) {
             disabled
             value={values.role}
             onChange={handleChange}
-            helperText='Choose Hopital Role'>
+            helperText='Choose hopital role'>
             {HospitalRoles.map((option, index) => (
               <MenuItem key={index} value={option.value}>
                 {option.value}
@@ -487,7 +525,9 @@ function GetStartedScreen(props) {
           <Typography>
             Your health is our piority, We care for your health!
           </Typography>
-          <Typography>To register click the get started button!</Typography>
+          <Typography>
+            To register click the button below to get started!
+          </Typography>
         </Box>
         <Box
           marginBottom={20}

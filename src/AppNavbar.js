@@ -26,6 +26,8 @@ import {
   MdMoreVert,
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { LogoutAction } from './auth/AuthLoginStoreSlice';
 
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;
@@ -38,6 +40,20 @@ function AppNavbar(props) {
   };
 
   const toggleProfileMenuClose = () => {
+    setOPenProfileMenu(false);
+    return;
+  };
+
+  const dispatch = useDispatch();
+
+  const { token } = useSelector((state) => {
+    return {
+      token: state.auth.token,
+    };
+  });
+
+  const handleLogout = () => {
+    dispatch(LogoutAction(token.user_id));
     setOPenProfileMenu(false);
     return;
   };
@@ -92,6 +108,7 @@ function AppNavbar(props) {
               <ProfileMenu
                 open={openProfileMenu}
                 anchorRef={ProfileMenuRef}
+                handleLogout={handleLogout}
                 handleMenuClose={toggleProfileMenuClose}
               />
             </Box>
@@ -124,7 +141,7 @@ AppNavbar.propTypes = {
 };
 
 function ProfileMenu(props) {
-  const { open, anchorRef, handleMenuClose } = props;
+  const { open, anchorRef, handleMenuClose, handleLogout } = props;
   return (
     <Box>
       <Popper
@@ -145,7 +162,7 @@ function ProfileMenu(props) {
               <ClickAwayListener onClickAway={handleMenuClose}>
                 <MenuList autoFocusItem={open} id='profile-menu-list'>
                   <MenuItem>Profile</MenuItem>
-                  <MenuItem>Log out</MenuItem>
+                  <MenuItem onClick={handleLogout}>Log out</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

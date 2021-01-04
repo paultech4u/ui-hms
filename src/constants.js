@@ -15,9 +15,14 @@ export const PageRoute = {
 };
 
 export const LoadingStatus = {
-  PROGRESS: 'progress',
   IDLE: 'idle',
+  PENDING: 'pending',
   SUCCESS: 'success',
+};
+
+export const AuthStatus = {
+  AUTHENTICATED: true,
+  UNAUTHENTICATED: false,
 };
 
 export const DrawerWidth = 240;
