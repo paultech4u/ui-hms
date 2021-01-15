@@ -32,41 +32,36 @@ const RegisterReducer = createSlice({
       },
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(RegisterAction.pending, pending);
-    builder.addCase(RegisterAction.fulfilled, fullfilled);
-    builder.addCase(RegisterAction.rejected, rejected);
+  extraReducers: {
+    [RegisterAction.pending]: (state, action) => {
+      state.isLoading = LoadingStatus.PENDING;
+    },
+    [RegisterAction.fulfilled]: (state, action) => {
+      state.error = '';
+      state.open = true;
+      state.success = action.payload;
+      state.isLoading = LoadingStatus.IDLE;
+    },
+    [RegisterAction.rejected]: (state, action) => {
+      state.open = true;
+      state.success = '';
+      state.error = action.payload;
+      state.isLoading = LoadingStatus.IDLE;
+    },
   },
 });
 
 const RegisterSuccess = (res, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  const { status } = res;
-  if (status === 302 || status === 401 || status === 404) {
+  if (res.status === 500) {
+    return rejectWithValue('Internal server error');
+  } else if (res.status >= 300) {
     return rejectWithValue(res.data.error);
-  } else if (status === 500) {
-    return rejectWithValue(res.data.error);
-  } else if (status === 201) {
+  } else {
     dispatch(register(res));
     return res.data;
   }
 };
-
-function pending(state, action) {
-  state.isLoading = LoadingStatus.PENDING;
-}
-function fullfilled(state, action) {
-  state.error = '';
-  state.open = true;
-  state.success = action.payload;
-  state.isLoading = LoadingStatus.IDLE;
-}
-function rejected(state, action) {
-  state.open = true;
-  state.success = '';
-  state.error = action.payload;
-  state.isLoading = LoadingStatus.IDLE;
-}
 
 const { actions, reducer } = RegisterReducer;
 

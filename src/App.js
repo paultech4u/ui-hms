@@ -16,18 +16,11 @@ const AuthPage = lazyload(() => import('./auth'));
 const AppProtected = lazyload(() => import('./AppProtected'));
 
 function App(props) {
-  const { isAuthenticated, token } = useSelector((state) => {
-    return {
-      token: state.auth.token,
-      isAuthenticated: state.auth.isAuthenticated,
-    };
-  });
+  const { isAuthenticated, token } = useSelector((state) => state.auth);
+  const { info } = useSelector((state) => state.userInfo);
 
   const dispatch = useDispatch();
 
-  // Todo check if user isAuthenticated
-  // Todo check if jwt token expires
-  // Todo check if no token in storage
 
   // AuthStateCheck
   useEffect(() => {
@@ -36,13 +29,13 @@ function App(props) {
       if (!isAuthenticated) {
         removeToken();
       } else if (!isAuthenticated && !accessToken) {
-        dispatch(LogoutAction(token.user_id));
+        // dispatch(LogoutAction(info.user._id));
         return;
       } else {
         const tokenExp = new Date(token.expires_in * 1000);
         const now = new Date();
         if (tokenExp < now) {
-          dispatch(LogoutAction(token.user_id));
+          // dispatch(LogoutAction(info.user._id));
           removeToken();
           return;
         } else {

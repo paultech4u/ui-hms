@@ -514,7 +514,7 @@ function GetStartedScreen(props) {
       justifyContent='center'
       alignItems='center'
       flexDirection='column'
-      padding={isDesktop ? 50 : 0}
+      padding={isDesktop ? 20 : 0}
       marginTop={18}>
       <Box paddingY={10}>
         <Typography>Logo</Typography>

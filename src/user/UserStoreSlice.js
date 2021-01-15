@@ -42,6 +42,10 @@ const UserReducer = createSlice({
       state.info = null;
       state.error = null;
     },
+    [LogoutAction.rejected]: (state, action) => {
+      state.info = null;
+      state.error = null;
+    },
   },
 });
 

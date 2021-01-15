@@ -11,17 +11,17 @@ export const LoginAction = createAsyncThunk(
 
 export const LogoutAction = createAsyncThunk(
   'auth/logout',
-  async (token, thunkAPI) => {
-    return Logout(await LogoutAPI(token), thunkAPI);
+  async (user_id, thunkAPI) => {
+    return Logout(await LogoutAPI(user_id), thunkAPI);
   }
 );
 
 const AuthReducer = createSlice({
   name: 'auth',
   initialState: {
-    error: '',
+    error: null,
     token: null,
-    success: '',
+    success: null,
     openAlert: false,
     isLoading: LoadingStatus.IDLE,
     isAuthenticated: false
@@ -52,20 +52,21 @@ const AuthReducer = createSlice({
     handleAlertClose: {
       reducer: (state, action) => {
         state.openAlert = action.payload;
+        state.error = null;
       },
     },
   },
   extraReducers: {
     [LoginAction.pending]: (state, action) => {
       state.token = null;
-      state.error = '';
-      state.success = '';
+      state.error = null;
+      state.success = null;
       state.openAlert = false;
       state.isLoading = LoadingStatus.PENDING;
       state.isAuthenticated = false;
     },
     [LoginAction.fulfilled]: (state, action) => {
-      state.error = '';
+      state.error = null;
       state.openAlert = false;
       state.token = action.payload;
       state.isAuthenticated = true;
@@ -74,28 +75,32 @@ const AuthReducer = createSlice({
     },
     [LoginAction.rejected]: (state, action) => {
       state.token = null;
-      state.success = '';
+      state.success = null;
       state.openAlert = true;
-      state.error = action.payload;
+      if (action.payload === 'undefined' || action.error.name === 'TypeError') {
+        state.error = action.payload;
+      } else {
+        state.error = action.payload.message;
+      }
       state.isAuthenticated = false;
       state.isLoading = LoadingStatus.IDLE;
     },
     [LogoutAction.pending]: (state, action) => {
       state.token = null;
-      state.error = '';
+      state.error = null;
       state.isAuthenticated = false;
       state.isLoading = LoadingStatus.PENDING;
     },
     [LogoutAction.fulfilled]: (state, action) => {
-      state.error = '';
+      state.error = null;
       state.token = null;
-      state.success = '';
+      state.success = null;
       state.isAuthenticated = false;
       state.isLoading = LoadingStatus.IDLE;
     },
     [LogoutAction.rejected]: (state, action) => {
       state.token = null;
-      state.success = '';
+      state.success = null;
       state.error = action.payload;
       state.isAuthenticated = false;
       state.isLoading = LoadingStatus.IDLE;
@@ -105,25 +110,23 @@ const AuthReducer = createSlice({
 
 const Login = (res, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  const { status, data } = res;
-  if (status === 500) {
+  if (res.status === 500) {
     return rejectWithValue('Internal server error');
-  } else if (status >= 300) {
-    return rejectWithValue(data.error);
+  } else if (res.status >= 300) {
+    return rejectWithValue(res.data.error);
   } else {
-    dispatch(login(data));
-    return data;
+    dispatch(login(res.data));
+    return res.data;
   }
 };
 
 const Logout = (res, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  const { status, data } = res;
-  if (status === 500) {
+  if (res.status === 500) {
     return rejectWithValue('Internal server error');
   } else {
-    dispatch(logout(data));
-    return data;
+    dispatch(logout(res.data));
+    return res.data;
   }
 };
 

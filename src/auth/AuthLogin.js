@@ -36,7 +36,9 @@ function AuthLogin(props) {
       password: '',
     },
     onSubmit: async (values) => {
-      const data = { ...values };
+      const data = {
+        ...values,
+      };
       dispatch(LoginAction(data));
     },
     validationSchema: loginSchema,
@@ -121,12 +123,19 @@ function AuthLogin(props) {
                 <Progress in={isLoading === 'pending'} unmountOnExit />
               ) : null}
               <Typography
-                style={{ paddingLeft: isLoading === 'pending' ? '10px' : 0 }}>
+                style={{
+                  paddingLeft: isLoading === 'pending' ? '10px' : 0,
+                }}>
                 Login
               </Typography>
             </ActionButton>
             <Box textAlign='center' marginTop={6}>
-              <Link style={{ cursor: 'pointer' }}>Forget Password?</Link>
+              <Link
+                style={{
+                  cursor: 'pointer',
+                }}>
+                Forget Password ?
+              </Link>
             </Box>
           </Box>
         </AuthCard>
@@ -136,9 +145,9 @@ function AuthLogin(props) {
           toggleAlert={toggleAlert}>
           {success === 'Ok'
             ? success
-            : error === 'undefined'
-            ? error
-            : 'No connection'}
+            : error === undefined
+            ? 'oops something went wrong'
+            : error}
         </AppAlert>
       </Box>
     </Fade>
