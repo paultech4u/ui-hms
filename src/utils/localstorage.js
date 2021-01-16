@@ -1,20 +1,24 @@
 export function getToken() {
-  const accessToken = localStorage.getItem('@accesstoken');
   const expire = localStorage.getItem('@expiresIn');
+  const accessToken = localStorage.getItem('@accesstoken');
+  const refreshToken = localStorage.getItem('@refreshtoken');
   return {
-    accessToken,
     expire,
+    accessToken,
+    refreshToken,
   };
 }
 
-export function setToken(accessToken, exp) {
-  localStorage.setItem('@accessToken', accessToken);
+export function setToken(accessToken, refreshToken, exp) {
   localStorage.setItem('@expiresIn', exp);
+  localStorage.setItem('@accessToken', accessToken);
+  localStorage.setItem('@refreshtoken', refreshToken);
   return;
 }
 
 export function removeToken() {
   localStorage.removeItem('@accessToken');
   localStorage.removeItem('@expiresIn');
+  localStorage.removeItem('@refreshtoken');
   return;
 }

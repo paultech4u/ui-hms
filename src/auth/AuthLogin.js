@@ -1,11 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { Progress } from '../common/Progress';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoginAction, handleAlertClose } from './AuthLoginStoreSlice';
+import { loginAction, handleAlertClose } from './AuthLoginStoreSlice';
 import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
 import {
   AuthCard,
@@ -22,14 +21,6 @@ function AuthLogin(props) {
 
   const dispatch = useDispatch();
 
-  const loginSchema = Yup.object().shape({
-    email: Yup.string().email('Must be an email').trim(),
-    password: Yup.string()
-      .trim()
-      .min(4, 'Min of 4 character')
-      .max(50, 'Max of 20'),
-  });
-
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -39,16 +30,14 @@ function AuthLogin(props) {
       const data = {
         ...values,
       };
-      dispatch(LoginAction(data));
+      dispatch(loginAction(data));
     },
-    validationSchema: loginSchema,
   });
 
-  const { isLoading, open, error, success } = useSelector((state) => {
+  const { isLoading, open, error } = useSelector((state) => {
     return {
       error: state.auth.error,
       open: state.auth.openAlert,
-      success: state.auth.success,
       isLoading: state.auth.isLoading,
     };
   });
@@ -86,23 +75,11 @@ function AuthLogin(props) {
                 onInput={formik.handleChange}
                 onBlur={formik.handleBlur}
                 showClearIcon={false}
-                errortext={
-                  !!formik.errors.email && formik.touched.email
-                    ? formik.errors.email
-                    : null
-                }
-                error={!!formik.errors.email && formik.touched.email}
               />
             </Box>
             <Box marginTop={10}>
               <PasswordInput
                 onBlur={formik.handleBlur}
-                errortext={
-                  !!formik.errors.password && formik.touched.password
-                    ? formik.errors.password
-                    : null
-                }
-                error={!!formik.errors.password && formik.touched.password}
                 value={formik.values.password}
                 onInput={formik.handleChange}
               />
@@ -139,15 +116,8 @@ function AuthLogin(props) {
             </Box>
           </Box>
         </AuthCard>
-        <AppAlert
-          open={open}
-          severity={success === 'Ok' ? 'success' : 'error'}
-          toggleAlert={toggleAlert}>
-          {success === 'Ok'
-            ? success
-            : error === undefined
-            ? 'oops something went wrong'
-            : error}
+        <AppAlert open={open} severity='error' toggleAlert={toggleAlert}>
+          {error === undefined ? 'oops something went wrong' : error}
         </AppAlert>
       </Box>
     </Fade>

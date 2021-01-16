@@ -26,35 +26,29 @@ import {
   MdMoreVert,
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
-import { useDispatch, useSelector } from 'react-redux';
-import { LogoutAction } from './auth/AuthLoginStoreSlice';
+import { useDispatch } from 'react-redux';
+import { logout } from './auth/AuthLoginStoreSlice';
 
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;
 
   const ProfileMenuRef = useRef(null);
-  const [openProfileMenu, setOPenProfileMenu] = useState(false);
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
 
   const toggleProfileMenu = () => {
-    setOPenProfileMenu((prevmenu) => !prevmenu);
+    setOpenProfileMenu((prevmenu) => !prevmenu);
   };
 
   const toggleProfileMenuClose = () => {
-    setOPenProfileMenu(false);
+    setOpenProfileMenu(false);
     return;
   };
 
   const dispatch = useDispatch();
 
-  const { token } = useSelector((state) => {
-    return {
-      token: state.auth.token,
-    };
-  });
-
   const handleLogout = () => {
-    dispatch(LogoutAction(token.user_id));
-    setOPenProfileMenu(false);
+    dispatch(logout(false));
+    setOpenProfileMenu(false);
     return;
   };
 

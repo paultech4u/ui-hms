@@ -1,4 +1,5 @@
 import { Auth, Hospital } from '../api/index';
+import axios from 'axios';
 
 /**
  * A object rep of data
@@ -8,7 +9,7 @@ import { Auth, Hospital } from '../api/index';
 /**
  * @param {data} data - user credentials
  */
-export async function LoginAPI(data) {
+export async function loginAPI(data) {
   try {
     const response = await Auth.post('/login', data, { timeout: 6000 });
     return response;
@@ -17,21 +18,19 @@ export async function LoginAPI(data) {
   }
 }
 
-export async function LogoutAPI(id) {
+export async function refreshTokenAPI(token) {
   try {
-    const response = await Auth.post(
-      '/logout',
+    const response = await axios.post(
+      'http://localhost:5000/refresh',
       {},
       {
-        params: {
-          id: id,
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       }
     );
     return response;
-  } catch (error) {
-    return error;
-  }
+  } catch (error) {}
 }
 
 /**

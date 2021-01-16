@@ -18,7 +18,7 @@ const rootPersistReducer = persistReducer(
     key: 'root',
     storage: storage,
     version: 1,
-    whitelist: ['userInfo', 'auth'],
+    whitelist: ['auth'],
     blacklist: ['reg'],
   },
   rootReducer
