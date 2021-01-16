@@ -27,7 +27,7 @@ function AuthPage(props) {
   }, [isDesktop]);
 
   return (
-    <Box height={1} display='flex' flexDirection='column' overflow='hidden'>
+    <Box height={1} display='flex' flexDirection='column'>
       <Box display='flex' paddingY={8}>
         <NavBar toggleDrawer={toggleDrawer} />
         <DrawerBar open={isOpen} close={toggleDrawer} />

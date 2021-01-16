@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { Progress } from '../common/Progress';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAction, handleAlertClose } from './AuthLoginStoreSlice';
+import { loginAction, handleAlertClose } from './AuthLoginSlice';
 import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
 import {
   AuthCard,
@@ -117,7 +117,7 @@ function AuthLogin(props) {
           </Box>
         </AuthCard>
         <AppAlert open={open} severity='error' toggleAlert={toggleAlert}>
-          {error === undefined ? 'oops something went wrong' : error}
+          {error === undefined ? 'Network Error' : error}
         </AppAlert>
       </Box>
     </Fade>

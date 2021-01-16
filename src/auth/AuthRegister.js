@@ -20,15 +20,13 @@ import clsx from 'clsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useIsDesktop } from '../hooks';
-import { HospitalRoles } from '../constants';
-import { useDispatch, useSelector } from 'react-redux';
-import { handleAlertClose } from './AuthRegStoreSlice';
-import AuthPreference from './AuthPreference';
-import { RegisterAction } from './AuthRegStoreSlice';
-import { Progress } from '../common/Progress';
 import { Alert } from '@material-ui/lab';
+import { HospitalRoles } from '../constants';
+import AuthPreference from './AuthPreference';
+import { Progress } from '../common/Progress';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleAlertClose, registerAction } from './AuthRegSlice';
 import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
-// import { MdCancel } from 'react-icons/md';
 import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
 
 let vertical = 'bottom';
@@ -113,8 +111,27 @@ function Register(props) {
       role: 'ADMIN',
     },
     onSubmit: async (values) => {
-      const data = { ...values };
-      dispatch(RegisterAction(data));
+      const admin = {
+        role: values.role,
+        email: values.email,
+        lastname: values.lastname,
+        username: values.username,
+        password: values.password,
+        firstname: values.firstname,
+        phone_number: values.phone_number,
+        hospital_name: values.hospitalName,
+      };
+      const hospital = {
+        state: values.state,
+        address: values.address,
+        zip_code: values.zip_code,
+        hospital_email: values.hospitalEmail,
+        hospital_name: values.hospitalName,
+      };
+
+      const data = { admin, hospital };
+
+      dispatch(registerAction(data));
     },
     validationSchema: regiterschema,
   });
@@ -123,8 +140,8 @@ function Register(props) {
     return {
       open: state.reg.open,
       isLoading: state.reg.isLoading,
-      success: state.reg.status === null ? '' : state.reg.status,
       error: state.reg.error === null ? '' : state.reg.error,
+      success: state.reg.success === null ? '' : state.reg.success,
     };
   });
 
@@ -156,7 +173,7 @@ function Register(props) {
                 ))}
               </Stepper>
             </Box>
-            <Box overflow='auto'>
+            <Box>
               <HospitalForm
                 values={formik.values}
                 errors={formik.errors}
@@ -239,7 +256,7 @@ function HospitalForm(props) {
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}>
         <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Name*:</Typography>
+          <Typography>Name</Typography>
           <TextInput
             name='hospitalName'
             variant='filled'
@@ -255,7 +272,7 @@ function HospitalForm(props) {
           />
         </Box>
         <Box paddingLeft={isDesktop ? 10 : 0}>
-          <Typography>Email*:</Typography>
+          <Typography>Email</Typography>
           <TextInput
             name='hospitalEmail'
             variant='filled'
@@ -278,7 +295,7 @@ function HospitalForm(props) {
         marginX={10}
         marginY={8}>
         <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>State*:</Typography>
+          <Typography>State</Typography>
           <TextInput
             name='state'
             variant='filled'
@@ -292,7 +309,7 @@ function HospitalForm(props) {
           />
         </Box>
         <Box>
-          <Typography>Address*:</Typography>
+          <Typography>Address</Typography>
           <TextInput
             name='address'
             variant='filled'
@@ -313,7 +330,7 @@ function HospitalForm(props) {
         marginX={10}
         marginY={8}>
         <Box>
-          <Typography>Zip_Code:</Typography>
+          <Typography>Zip Code:</Typography>
           <TextInput
             name='zip_code'
             variant='filled'
@@ -355,7 +372,7 @@ function AdminForm(props) {
         <Box
           paddingBottom={isDesktop ? 0 : 8}
           paddingRight={isDesktop ? 10 : 0}>
-          <Typography>Firstname*:</Typography>
+          <Typography>Firstname</Typography>
           <TextInput
             name='firstname'
             variant='filled'
@@ -369,7 +386,7 @@ function AdminForm(props) {
           />
         </Box>
         <Box>
-          <Typography>Lastname*:</Typography>
+          <Typography>Lastname</Typography>
           <TextInput
             name='lastname'
             variant='filled'
@@ -391,7 +408,7 @@ function AdminForm(props) {
         marginX={10}
         marginY={8}>
         <Box>
-          <Typography>Email*:</Typography>
+          <Typography>Email Address</Typography>
           <TextInput
             name='email'
             variant='filled'
@@ -405,7 +422,7 @@ function AdminForm(props) {
           />
         </Box>
         <Box>
-          <Typography>Password*:</Typography>
+          <Typography>Password</Typography>
           <PasswordInput
             name='password'
             variant='filled'
@@ -425,7 +442,7 @@ function AdminForm(props) {
         marginX={10}
         marginY={8}>
         <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Username*:</Typography>
+          <Typography>Username</Typography>
           <TextInput
             name='username'
             variant='filled'
@@ -439,7 +456,7 @@ function AdminForm(props) {
           />
         </Box>
         <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Phone_number*:</Typography>
+          <Typography>Phone Number</Typography>
           <TextInput
             name='phone_number'
             variant='filled'
@@ -457,7 +474,7 @@ function AdminForm(props) {
       </Box>
       <Box marginX={10}>
         <Box>
-          <Typography>Role*:</Typography>
+          <Typography>Role</Typography>
           <TextField
             name='role'
             variant='filled'

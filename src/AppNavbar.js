@@ -27,7 +27,7 @@ import {
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
 import { useDispatch } from 'react-redux';
-import { logout } from './auth/AuthLoginStoreSlice';
+import { logout } from './auth/AuthLoginSlice';
 
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;

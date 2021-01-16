@@ -11,8 +11,8 @@ import axios from 'axios';
  */
 export async function loginAPI(data) {
   try {
-    const response = await Auth.post('/login', data, { timeout: 6000 });
-    return response;
+    const res = await Auth.post('/login', data, { timeout: 6000 });
+    return res;
   } catch (error) {
     return error;
   }
@@ -36,10 +36,19 @@ export async function refreshTokenAPI(token) {
 /**
  * @param {Object} data - user credentials
  */
-export async function RegisterHospitalAPI(data) {
+export async function registerNewHospital(data) {
   try {
-    const response = await Hospital.post('/register', data);
-    return response;
+    const res = await Hospital.post('/register', data);
+    return res;
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function registerHospitalAdmin(data) {
+  try {
+    const res = await Auth.post('/signup', data);
+    return res;
   } catch (error) {
     return error;
   }

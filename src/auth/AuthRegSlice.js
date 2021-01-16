@@ -1,19 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { RegisterHospitalAPI } from './AuthAPI';
+import { registerNewHospital, registerHospitalAdmin } from './AuthAPI';
 import { LoadingStatus } from '../constants';
 
-export const RegisterAction = createAsyncThunk(
+export const registerAction = createAsyncThunk(
   'hospital/register',
   async (data, thunkAPI) => {
-    return RegisterSuccess(await RegisterHospitalAPI(data), thunkAPI);
+    return registerHospital(
+      await Promise.all([
+        registerNewHospital(data.hospital),
+        registerHospitalAdmin(data.admin),
+      ]),
+      thunkAPI
+    );
   }
 );
 
 const RegisterReducer = createSlice({
   name: 'hospital',
   initialState: {
-    success: '',
-    error: '',
+    success: null,
+    error: null,
     open: false,
     isLoading: LoadingStatus.IDLE,
   },
@@ -23,7 +29,7 @@ const RegisterReducer = createSlice({
         if (action.error) {
           state.error = action.payload.message;
         }
-        state.success = action.payload.message;
+        state.success = action.payload;
       },
     },
     handleAlertClose: {
@@ -33,33 +39,34 @@ const RegisterReducer = createSlice({
     },
   },
   extraReducers: {
-    [RegisterAction.pending]: (state, action) => {
+    [registerAction.pending]: (state, action) => {
+      state.error = null;
       state.isLoading = LoadingStatus.PENDING;
     },
-    [RegisterAction.fulfilled]: (state, action) => {
-      state.error = '';
+    [registerAction.fulfilled]: (state, action) => {
+      state.error = null;
       state.open = true;
-      state.success = action.payload;
+      state.success = action.payload.message;
       state.isLoading = LoadingStatus.IDLE;
     },
-    [RegisterAction.rejected]: (state, action) => {
+    [registerAction.rejected]: (state, action) => {
       state.open = true;
-      state.success = '';
-      state.error = action.payload;
+      state.success = null;
+      state.error = action.payload.message;
       state.isLoading = LoadingStatus.IDLE;
     },
   },
 });
 
-const RegisterSuccess = (res, thunkAPI) => {
+const registerHospital = (res, thunkAPI) => {
   const { dispatch, rejectWithValue } = thunkAPI;
-  if (res.status === 500) {
-    return rejectWithValue('Internal server error');
-  } else if (res.status >= 300) {
-    return rejectWithValue(res.data.error);
+  if (res[0].status === 500) {
+    return rejectWithValue('Network Error');
+  } else if (res[0].status >= 300) {
+    return rejectWithValue(res[0].data.error);
   } else {
-    dispatch(register(res));
-    return res.data;
+    dispatch(register(res[0].data.message));
+    return res[0].data;
   }
 };
 

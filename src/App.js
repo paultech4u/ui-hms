@@ -8,7 +8,7 @@ import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import theme, { GlobalCss } from './theme';
 import { persistor } from './store';
 import { lazyload, Loading } from './common/Loading';
-import { login, logout } from './auth/AuthLoginStoreSlice';
+import { login, logout } from './auth/AuthLoginSlice';
 import { refreshTokenAPI } from './auth/AuthAPI';
 
 const AuthPage = lazyload(() => import('./auth'));
