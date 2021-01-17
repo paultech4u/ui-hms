@@ -2,7 +2,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { Progress } from '../common/Progress';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction, handleAlertClose } from './AuthLoginSlice';
 import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
@@ -19,6 +19,8 @@ function AuthLogin(props) {
 
   const location = useLocation();
 
+  const history = useHistory();
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -30,6 +32,7 @@ function AuthLogin(props) {
       const data = {
         ...values,
       };
+
       dispatch(loginAction(data));
     },
   });
@@ -44,6 +47,10 @@ function AuthLogin(props) {
 
   const toggleAlert = () => {
     dispatch(handleAlertClose(false));
+  };
+
+  const handleForgetPassword = () => {
+    history.push('/account/reset/password');
   };
 
   return (
@@ -108,6 +115,7 @@ function AuthLogin(props) {
             </ActionButton>
             <Box textAlign='center' marginTop={6}>
               <Link
+                onClick={handleForgetPassword}
                 style={{
                   cursor: 'pointer',
                 }}>

@@ -16,6 +16,7 @@ const AuthReducer = createSlice({
     token: null,
     success: null,
     openAlert: false,
+    openLogoutAlert: false,
     isLoading: LoadingStatus.IDLE,
     isAuthenticated: false
       ? AuthStatus.AUTHENTICATED
@@ -40,6 +41,7 @@ const AuthReducer = createSlice({
         state.error = null;
         state.token = null;
         state.success = null;
+        state.openLogoutAlert = true;
         state.isAuthenticated = action.payload;
         state.isLoading = LoadingStatus.IDLE;
       },
@@ -47,6 +49,13 @@ const AuthReducer = createSlice({
     handleAlertClose: {
       reducer: (state, action) => {
         state.openAlert = action.payload;
+        state.error = null;
+        state.token = null;
+      },
+    },
+    handleLogoutAlert: {
+      reducer: (state, action) => {
+        state.openLogoutAlert = action.payload;
         state.error = null;
         state.token = null;
       },
@@ -89,6 +98,6 @@ const Login = (res, thunkAPI) => {
 
 const { actions, reducer } = AuthReducer;
 
-export const { login, logout, handleAlertClose } = actions;
+export const { login, logout, handleAlertClose, handleLogoutAlert } = actions;
 
 export default reducer;

@@ -2,6 +2,7 @@ export const AuthRoute = {
   LOGIN: '/login',
   REGISTER: '/register',
   LOCK: '/lock',
+  FORGET_PASSWORD: '/account/reset/password',
 };
 
 export const HospitalRoles = [

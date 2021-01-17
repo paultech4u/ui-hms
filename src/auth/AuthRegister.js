@@ -150,7 +150,11 @@ function Register(props) {
   };
 
   return (
-    <AuthCard display='flex' marginX={isDesktop ? 0 : 8} variant='outlined'>
+    <AuthCard
+      display='flex'
+      marginX={isDesktop ? 0 : 8}
+      marginBottom={10}
+      variant='outlined'>
       <Box paddingY={10} marginLeft={13}>
         <Typography>Logo</Typography>
       </Box>

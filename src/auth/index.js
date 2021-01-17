@@ -1,20 +1,28 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { lazyload } from '../common/Loading';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Box } from '@material-ui/core';
+import { Box, Collapse, IconButton, Typography } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { NavBar } from './AuthNavBar';
 import { AuthRoute } from '../constants';
 import { DrawerBar } from './AuthDrawer';
-import { Footer } from '../common/Footer';
+// import { Footer } from '../common/Footer';
 import { useIsDesktop } from '../hooks';
+import { MdCancel } from 'react-icons/md';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleLogoutAlert } from './AuthLoginSlice';
 
 const LoginPage = lazyload(() => import('./AuthLogin'));
 const RegisterPage = lazyload(() => import('./AuthRegister'));
 const ScreenLock = lazyload(() => import('./AuthScreenLock'));
+const ForgetPasswordPage = lazyload(() => import('./AuthForgetPassword'));
 
 function AuthPage(props) {
   const [isOpen, setIsOpen] = useState(false);
   const isDesktop = useIsDesktop();
+
+  const location = useLocation();
 
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
@@ -26,22 +34,65 @@ function AuthPage(props) {
     }
   }, [isDesktop]);
 
+  const { openLogoutAlert } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const setOpen = (bool) => {
+    dispatch(handleLogoutAlert(bool));
+  };
+
+  React.useEffect(() => {
+    if (openLogoutAlert === true) {
+      setTimeout(() => {
+        setOpen(false);
+      }, 2000);
+    }
+
+    return () => clearTimeout(1000);
+  });
+
   return (
     <Box height={1} display='flex' flexDirection='column'>
-      <Box display='flex' paddingY={8}>
-        <NavBar toggleDrawer={toggleDrawer} />
-        <DrawerBar open={isOpen} close={toggleDrawer} />
+      <Box>
+        <Collapse in={openLogoutAlert} unmountOnExit={true}>
+          <Alert
+            action={
+              <IconButton
+                onClick={() => setOpen(false)}
+                aria-label='close'
+                color='inherit'
+                size='small'>
+                <MdCancel />
+              </IconButton>
+            }
+            severity='info'
+            variant='filled'>
+            Session expired
+          </Alert>
+        </Collapse>
       </Box>
+      {location.pathname === AuthRoute.FORGET_PASSWORD ? (
+        <Box>
+          <Typography>Logo</Typography>
+        </Box>
+      ) : (
+        <Box display='flex' paddingY={8}>
+          <NavBar toggleDrawer={toggleDrawer} />
+          <DrawerBar open={isOpen} close={toggleDrawer} />
+        </Box>
+      )}
       <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
         <Switch>
           <Route exact path={AuthRoute.LOGIN} component={LoginPage} />
           <Route path={AuthRoute.REGISTER} component={RegisterPage} />
           <Route path={AuthRoute.LOCK} component={ScreenLock} />
+          <Route
+            path={AuthRoute.FORGET_PASSWORD}
+            component={ForgetPasswordPage}
+          />
           <Redirect to={AuthRoute.LOGIN} />
         </Switch>
-      </Box>
-      <Box paddingY={8}>
-        <Footer />
       </Box>
     </Box>
   );

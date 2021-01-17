@@ -30,7 +30,21 @@ export async function refreshTokenAPI(token) {
       }
     );
     return response;
-  } catch (error) {}
+  } catch (error) {
+    return error.response;
+  }
+}
+
+export async function forgetPasswordAPI(data) {
+  try {
+    const response = await axios.post(
+      'http://localhost:5000/forget-password',
+      data
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
 }
 
 /**
