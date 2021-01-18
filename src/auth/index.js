@@ -1,14 +1,14 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { lazyload } from '../common/Loading';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Box, Collapse, IconButton, Typography } from '@material-ui/core';
+import { Box, Collapse, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { NavBar } from './AuthNavBar';
 import { AuthRoute } from '../constants';
 import { DrawerBar } from './AuthDrawer';
 // import { Footer } from '../common/Footer';
 import { useIsDesktop } from '../hooks';
-import { MdCancel } from 'react-icons/md';
+
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleLogoutAlert } from './AuthLoginSlice';
@@ -56,18 +56,7 @@ function AuthPage(props) {
     <Box height={1} display='flex' flexDirection='column'>
       <Box>
         <Collapse in={openLogoutAlert} unmountOnExit={true}>
-          <Alert
-            action={
-              <IconButton
-                onClick={() => setOpen(false)}
-                aria-label='close'
-                color='inherit'
-                size='small'>
-                <MdCancel />
-              </IconButton>
-            }
-            severity='info'
-            variant='filled'>
+          <Alert onClose={() => setOpen(false)} severity='info'>
             Session expired
           </Alert>
         </Collapse>

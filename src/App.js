@@ -31,10 +31,11 @@ function App(props) {
             const response = await refreshTokenAPI(token.id_token);
             return dispatch(login(response.data));
           } catch (error) {
-            console.log(error);
+            if (error.response) {
+              dispatch(logout(false));
+            }
           }
         } else if (now >= jwtExp) {
-          console.log(true);
           dispatch(logout(false));
           return;
         }

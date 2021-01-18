@@ -27,6 +27,7 @@ import {
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { logout } from './auth/AuthLoginSlice';
 
 function AppNavbar(props) {
@@ -136,6 +137,8 @@ AppNavbar.propTypes = {
 
 function ProfileMenu(props) {
   const { open, anchorRef, handleMenuClose, handleLogout } = props;
+  const history = useHistory();
+
   return (
     <Box>
       <Popper
@@ -155,7 +158,9 @@ function ProfileMenu(props) {
             <Paper>
               <ClickAwayListener onClickAway={handleMenuClose}>
                 <MenuList autoFocusItem={open} id='profile-menu-list'>
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem onClick={() => history.push('/profile')}>
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>Log out</MenuItem>
                 </MenuList>
               </ClickAwayListener>

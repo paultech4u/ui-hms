@@ -73,7 +73,9 @@ function AppDrawer(props) {
         <List>
           <ListItem button onClick={() => toggleDrawerCollapesItem(1)}>
             <ListItemIcon>
-              <Avatar className={styles.avatar}>A</Avatar>
+              <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
+                A
+              </Avatar>
             </ListItemIcon>
             <ListItemText primary='Admin' />
             {true ? <MdExpandMore /> : <MdExpandLess />}
@@ -153,5 +155,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
+  },
+  avatar_small: {
+    width: 25,
+    height: 25,
   },
 }));
