@@ -24,6 +24,17 @@ function Profile(props) {
 
   const { edit } = useSelector((state) => state.profile);
 
+  const FileSelector = React.useRef(null);
+
+  const handleUploadPicClick = (event) => {
+    FileSelector.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const uploadedPic = e.target.files[0];
+    console.log(uploadedPic);
+  };
+
   const formik = useFormik({
     initialValues: {
       edit: edit,
@@ -152,9 +163,15 @@ function Profile(props) {
                   justifyContent='center'
                   alignItems='center'
                   borderRadius='50%'>
-                  <IconButton>
+                  <IconButton onClick={handleUploadPicClick}>
                     <HiCamera />
                   </IconButton>
+                  <input
+                    type='file'
+                    style={{ display: 'none' }}
+                    onChange={handleFileChange}
+                    ref={FileSelector}
+                  />
                 </Box>
               </Box>
             )}

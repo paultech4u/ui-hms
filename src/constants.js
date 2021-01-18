@@ -13,7 +13,7 @@ export const HospitalRoles = [
 
 export const PageRoute = {
   DASHBOARD: '/dashboard',
-  PROFILE: '/profile',
+  PROFILE: '/account/profile',
 };
 
 export const ProfileRoute = {

@@ -27,12 +27,14 @@ import {
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { logout } from './auth/AuthLoginSlice';
 
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;
-
+  const dispatch = useDispatch();
+  const isDesktop = useIsDesktop();
+  const styles = useStyles();
   const ProfileMenuRef = useRef(null);
   const [openProfileMenu, setOpenProfileMenu] = useState(false);
 
@@ -45,16 +47,11 @@ function AppNavbar(props) {
     return;
   };
 
-  const dispatch = useDispatch();
-
   const handleLogout = () => {
     dispatch(logout(false));
     setOpenProfileMenu(false);
     return;
   };
-
-  const isDesktop = useIsDesktop();
-  const styles = useStyles();
 
   return (
     <AppBar
@@ -69,9 +66,6 @@ function AppNavbar(props) {
               <Fab size='small' onClick={handleDrawerOpen}>
                 {drawer ? <MdSort size={20} /> : <MdMoreVert size={20} />}
               </Fab>
-              <Box marginLeft={8}>
-                <Button variant='text'>Dashboard</Button>
-              </Box>
             </Box>
             <Box display='flex' alignItems='center'>
               <Box display='flex' alignItems='center'>
@@ -158,7 +152,7 @@ function ProfileMenu(props) {
             <Paper>
               <ClickAwayListener onClickAway={handleMenuClose}>
                 <MenuList autoFocusItem={open} id='profile-menu-list'>
-                  <MenuItem onClick={() => history.push('/profile')}>
+                  <MenuItem onClick={() => history.push('/account/profile')}>
                     Profile
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>Log out</MenuItem>

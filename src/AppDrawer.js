@@ -22,19 +22,38 @@ import {
   MdExpandMore,
   MdPerson,
   MdSettings,
+  MdDashboard,
+  MdPeople,
 } from 'react-icons/md';
+import { BiHotel, BiRadioCircle } from 'react-icons/bi';
+import { ImLab } from 'react-icons/im';
+import { FaUserMd, FaWheelchair, FaFirstAid } from 'react-icons/fa';
 
 import Logo from './logo.svg';
 
 function AppDrawer(props) {
   const { drawer, handleDrawerClose } = props;
 
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState({
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
 
   const toggleDrawerCollapesItem = (index) => {
     switch (index) {
       case 1:
-        setIsOpen((prev) => !prev);
+        setIsOpen({ 1: !isOpen[1] });
+        break;
+      case 2:
+        setIsOpen({ 2: !isOpen[2] });
+        break;
+      case 3:
+        setIsOpen({ 3: !isOpen[3] });
+        break;
+      case 4:
+        setIsOpen({ 4: !isOpen[4] });
         break;
       default:
         break;
@@ -70,17 +89,21 @@ function AppDrawer(props) {
       </Box>
       <Divider />
       <Box>
+        {/* collapes item 1 */}
         <List>
-          <ListItem button onClick={() => toggleDrawerCollapesItem(1)}>
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(1)}>
             <ListItemIcon>
               <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
                 A
               </Avatar>
             </ListItemIcon>
             <ListItemText primary='Admin' />
-            {true ? <MdExpandMore /> : <MdExpandLess />}
+            {isOpen[1] ? <MdExpandMore /> : <MdExpandLess />}
           </ListItem>
-          <DrawerRouteItemCollapes open={isOpen}>
+          <DrawerRouteItemCollapes open={isOpen[1]}>
             <DrawerRouteItem icon={<MdPerson size={20} />} label='Profile' />
             <DrawerRouteItem icon={<MdSettings size={20} />} label='Setting' />
           </DrawerRouteItemCollapes>
@@ -88,7 +111,71 @@ function AppDrawer(props) {
       </Box>
       <Divider />
       <Box>
-        <List></List>
+        <List>
+          <DrawerRouteItem icon={<MdDashboard size={20} />} label='Dashboard' />
+          <DrawerRouteItem icon={<FaUserMd size={20} />} label='Doctors' />
+          <DrawerRouteItem icon={<FaWheelchair size={20} />} label='Patients' />
+          <DrawerRouteItem icon={<MdPeople size={20} />} label='Users' />
+          {/* collapes item 2 */}
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(2)}>
+            <ListItemIcon>
+              <FaFirstAid size={20} />
+            </ListItemIcon>
+            <ListItemText primary='Medicine' />
+            {isOpen[2] ? <MdExpandMore /> : <MdExpandLess />}
+          </ListItem>
+          <DrawerRouteItemCollapes open={isOpen[2]}>
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Medicines'
+            />
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Categories'
+            />
+          </DrawerRouteItemCollapes>
+          {/*  collapes item 3 */}
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(3)}>
+            <ListItemIcon>
+              <ImLab size={20} />
+            </ListItemIcon>
+            <ListItemText primary='Labs' />
+            {isOpen[3] ? <MdExpandMore /> : <MdExpandLess />}
+          </ListItem>
+          <DrawerRouteItemCollapes open={isOpen[3]}>
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Patients test'
+            />
+          </DrawerRouteItemCollapes>
+          {/* collapes item 4 */}
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(4)}>
+            <ListItemIcon>
+              <BiHotel size={20} />
+            </ListItemIcon>
+            <ListItemText primary='Beds' />
+            {isOpen[4] ? <MdExpandMore /> : <MdExpandLess />}
+          </ListItem>
+          <DrawerRouteItemCollapes open={isOpen[4]}>
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Beds Allocation'
+            />
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Beds Categories'
+            />
+          </DrawerRouteItemCollapes>
+        </List>
       </Box>
     </Drawer>
   );
