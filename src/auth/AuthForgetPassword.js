@@ -20,6 +20,10 @@ import { useSelector } from 'react-redux';
 
 function ForgetPassword(props) {
   const styles = useStyles();
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = React.useState(false);
+  const { isLoading, error } = useSelector((state) => state.password);
 
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email().required('Field is required'),
@@ -31,8 +35,6 @@ function ForgetPassword(props) {
       .required('Field is required'),
   });
 
-  const [open, setOpen] = React.useState(false);
-
   React.useEffect(() => {
     if (open === true) {
       setTimeout(() => {
@@ -42,8 +44,6 @@ function ForgetPassword(props) {
 
     return () => clearTimeout(1000);
   });
-
-  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -65,8 +65,6 @@ function ForgetPassword(props) {
       dispatch(forgetPasswordAction(data));
     },
   });
-
-  const { isLoading, error } = useSelector((state) => state.password);
 
   const handleAlertClose = () => {
     dispatch(handleAlert(null));

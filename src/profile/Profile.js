@@ -8,14 +8,35 @@ import {
   FormControlLabel,
   Switch,
   Button,
+  IconButton,
 } from '@material-ui/core';
 // import { Alert } from '@material-ui/lab';
 import clsx from 'clsx';
 import { CustomCard } from '../common/Card';
 import { MdPersonOutline } from 'react-icons/md';
+import { HiCamera } from 'react-icons/hi';
+import { toggleEditMode } from './ProfileSlice';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 
 function Profile(props) {
   const styles = useStyles();
+
+  const { edit } = useSelector((state) => state.profile);
+
+  const formik = useFormik({
+    initialValues: {
+      edit: edit,
+      email: '',
+      username: '',
+      firstname: '',
+      lastname: '',
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
     <Box display='flex' padding={10}>
       <CustomCard
@@ -42,22 +63,52 @@ function Profile(props) {
             justifyContent='space-between'
             alignItems='center'>
             <Typography>Profile</Typography>
-            <FormControlLabel control={<Switch />} label='Edit mode' />
+            <FormControlLabel
+              control={
+                <Switch
+                  name='edit'
+                  onChange={formik.handleChange}
+                  checked={formik.values.edit}
+                  value={formik.values.edit}
+                />
+              }
+              label='Edit mode'
+            />
           </Box>
         </Box>
         <Box display='flex'>
           <TextInput disabled placeholder='Hospital (disabled)' />
-          <TextInput placeholder='Email address' />
-          <TextInput placeholder='Username' />
+          <TextInput
+            name='email'
+            placeholder='Email address'
+            onChange={formik.handleChange}
+            value={formik.values.email}
+            disabled={!formik.values.edit}
+          />
+          <TextInput
+            name='username'
+            placeholder='Username'
+            onChange={formik.handleChange}
+            value={formik.values.username}
+            disabled={!formik.values.edit}
+          />
         </Box>
         <Box display='flex' justifyContent='space-between'>
           <TextInput
-            className={clsx(styles.text_field)}
+            name='firstname'
             placeholder='Firstname'
+            disabled={!formik.values.edit}
+            onChange={formik.handleChange}
+            value={formik.values.firstname}
+            className={clsx(styles.text_field)}
           />
           <TextInput
-            className={clsx(styles.text_field)}
+            name='lastname'
             placeholder='Lastname'
+            value={formik.values.lastname}
+            onChange={formik.handleChange}
+            disabled={!formik.values.edit}
+            className={clsx(styles.text_field)}
           />
         </Box>
         <Box
@@ -65,7 +116,11 @@ function Profile(props) {
           justifyContent='flex-end'
           paddingBottom={8}
           marginRight={8}>
-          <Button disabled variant='contained' color='primary'>
+          <Button
+            disabled={!formik.values.edit}
+            onClick={formik.handleSubmit}
+            variant='contained'
+            color='primary'>
             Update profile
           </Button>
         </Box>
@@ -83,18 +138,38 @@ function Profile(props) {
             marginX={10}
             marginTop='-50px'>
             <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
+            {!!formik.values.edit && (
+              <Box
+                position='absolute'
+                display='flex'
+                borderRadius='50%'
+                bgcolor='text.disabled'
+                className={clsx(styles.avatar, styles.avatar_large)}>
+                <Box
+                  display='flex'
+                  flex={1}
+                  flexDirection='column'
+                  justifyContent='center'
+                  alignItems='center'
+                  borderRadius='50%'>
+                  <IconButton>
+                    <HiCamera />
+                  </IconButton>
+                </Box>
+              </Box>
+            )}
           </Box>
-          <Box marginTop={10} padding={8}>
-            <Typography align='center' style={{ margin: '10px 0' }}>
-              Admin
+          <Box
+            marginTop={2}
+            padding={8}
+            display='flex'
+            flexDirection='column'
+            alignItems='center'>
+            <Typography variant='caption' style={{ margin: '9px 0' }}>
+              Role
             </Typography>
-            <Typography align='center' style={{ marginBottom: '3px' }}>
+            <Typography variant='caption' style={{ marginBottom: '3px' }}>
               Admin Name
-            </Typography>
-            <Typography variant='caption'>
-              Don't be scared of the truth because we need to restart the human
-              foundation in truth And I love you like Kanye loves Kanye I love
-              Rick Owens’ bed design but the back is...
             </Typography>
           </Box>
         </Box>

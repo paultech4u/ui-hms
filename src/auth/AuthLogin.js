@@ -2,10 +2,17 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import { Progress } from '../common/Progress';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction, handleAlertClose } from './AuthLoginSlice';
-import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
+import {
+  Box,
+  Typography,
+  makeStyles,
+  Fade,
+  Link,
+  Tooltip,
+} from '@material-ui/core';
 import {
   AuthCard,
   ActionButton,
@@ -13,14 +20,12 @@ import {
   TextInput,
   AppAlert,
 } from './AuthCommon';
+import { MdInfo } from 'react-icons/md';
 
 function AuthLogin(props) {
   const styles = useStyles();
-
   const location = useLocation();
-
   const history = useHistory();
-
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -50,7 +55,16 @@ function AuthLogin(props) {
   };
 
   const handleForgetPassword = () => {
-    history.push('/account/reset/password');
+    if (formik.values.email !== '') {
+      const path = generatePath(
+        '/account/:mode(reset|edit)/:type(password|profile)',
+        {
+          type: 'password',
+          mode: 'reset',
+        }
+      );
+      history.push({ pathname: path, search: `?email=${formik.values.email}` });
+    }
   };
 
   return (
@@ -96,13 +110,15 @@ function AuthLogin(props) {
             display='flex'
             justifyContent='center'
             alignItems='center'
-            flexDirection='column'
             paddingTop={10}
-            marginX={15}
             marginBottom={10}>
             <ActionButton
               onClick={formik.handleSubmit}
-              disabled={formik.values.email.length <= 0 ? true : false}>
+              disabled={
+                formik.values.email.length <= 0 || isLoading === 'pending'
+                  ? true
+                  : false
+              }>
               {isLoading === 'pending' ? (
                 <Progress in={isLoading === 'pending'} unmountOnExit />
               ) : null}
@@ -113,7 +129,9 @@ function AuthLogin(props) {
                 Login
               </Typography>
             </ActionButton>
-            <Box textAlign='center' marginTop={6}>
+          </Box>
+          <Box marginTop={6} display='flex' justifyContent='center'>
+            <Box flex={1} textAlign='center'>
               <Link
                 onClick={handleForgetPassword}
                 style={{
@@ -122,6 +140,11 @@ function AuthLogin(props) {
                 Forget Password ?
               </Link>
             </Box>
+            <Tooltip title={tooltip} arrow interactive>
+              <Box paddingRight={10}>
+                <MdInfo size={30} />
+              </Box>
+            </Tooltip>
           </Box>
         </AuthCard>
         <AppAlert open={open} severity='error' toggleAlert={toggleAlert}>
@@ -131,6 +154,11 @@ function AuthLogin(props) {
     </Fade>
   );
 }
+
+const tooltip = `Use the email
+address you used when 
+you registered to this app, email field should
+be not empty if you want to reset password.`;
 
 const useStyles = makeStyles((theme) => ({
   AuthCard_header: {
