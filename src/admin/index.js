@@ -6,7 +6,7 @@ import { PageRoute } from '../constants';
 
 const AddUser = lazyload(() => import('./AdminRegisterUser'));
 
-function ProfilePage(params) {
+function AdminPage(params) {
   return (
     <Box>
       <Switch>
@@ -17,4 +17,4 @@ function ProfilePage(params) {
   );
 }
 
-export default ProfilePage;
+export default AdminPage;
