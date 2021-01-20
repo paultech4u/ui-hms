@@ -27,7 +27,7 @@ import {
 } from 'react-icons/md';
 import { useIsDesktop } from './hooks';
 import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { logout } from './auth/AuthLoginSlice';
 
 function AppNavbar(props) {

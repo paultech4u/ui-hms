@@ -1,4 +1,4 @@
-import { Auth, Hospital } from '../api/index';
+import { Auth, Admin, Hospital } from '../api/index';
 import axios from 'axios';
 
 /**
@@ -61,7 +61,7 @@ export async function registerNewHospital(data) {
 
 export async function registerHospitalAdmin(data) {
   try {
-    const res = await Auth.post('/signup', data);
+    const res = await Admin.post('/signup', data);
     return res;
   } catch (error) {
     return error;

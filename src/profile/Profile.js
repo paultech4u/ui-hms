@@ -15,24 +15,27 @@ import clsx from 'clsx';
 import { CustomCard } from '../common/Card';
 import { MdPersonOutline } from 'react-icons/md';
 import { HiCamera } from 'react-icons/hi';
-import { toggleEditMode } from './ProfileSlice';
+// import { toggleEditMode } from './ProfileSlice';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
+import ProfilePictureUploadMenu from './ProfileUploadMenu';
 
 function Profile(props) {
   const styles = useStyles();
 
   const { edit } = useSelector((state) => state.profile);
 
-  const FileSelector = React.useRef(null);
+  const UploadMenuRef = React.useRef(null);
+  const [openUploadMenu, setOpenUploadMenu] = React.useState(false);
 
-  const handleUploadPicClick = (event) => {
-    FileSelector.current.click();
+  const onOpenUploadMenu = () => {
+    setOpenUploadMenu(true);
+    return;
   };
 
-  const handleFileChange = (e) => {
-    const uploadedPic = e.target.files[0];
-    console.log(uploadedPic);
+  const onCloseUploadMenu = () => {
+    setOpenUploadMenu(false);
+    return;
   };
 
   const formik = useFormik({
@@ -149,32 +152,38 @@ function Profile(props) {
             marginX={10}
             marginTop='-50px'>
             <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
-            {!!formik.values.edit && (
+            <Box
+              className={clsx(
+                styles.avatar,
+                styles.avatar_large,
+                styles.avatar_content
+              )}>
               <Box
-                position='absolute'
                 display='flex'
-                borderRadius='50%'
-                bgcolor='text.disabled'
-                className={clsx(styles.avatar, styles.avatar_large)}>
-                <Box
-                  display='flex'
-                  flex={1}
-                  flexDirection='column'
-                  justifyContent='center'
-                  alignItems='center'
-                  borderRadius='50%'>
-                  <IconButton onClick={handleUploadPicClick}>
-                    <HiCamera />
-                  </IconButton>
-                  <input
-                    type='file'
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
-                    ref={FileSelector}
-                  />
+                flex={1}
+                flexDirection='column'
+                justifyContent='center'
+                alignItems='center'
+                borderRadius='50%'>
+                <IconButton
+                  ref={UploadMenuRef}
+                  aria-controls={openUploadMenu ? 'upload-menu' : undefined}
+                  aria-haspopup='true'
+                  onClick={onOpenUploadMenu}>
+                  <HiCamera color='#fff' />
+                </IconButton>
+                <Box fontSize={2}>
+                  <Typography align='center' variant='caption'>
+                    CHANGE <br /> PROFILE <br /> PICTURE
+                  </Typography>
                 </Box>
               </Box>
-            )}
+            </Box>
+            <ProfilePictureUploadMenu
+              open={openUploadMenu}
+              anchorRef={UploadMenuRef}
+              handleMenuClose={onCloseUploadMenu}
+            />
           </Box>
           <Box
             marginTop={2}
@@ -216,11 +225,22 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
+    color: 'white',
     boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.20)',
   },
+  avatar_content: {
+    position: 'absolute',
+    display: 'flex',
+    borderRadius: '50%',
+    opacity: 0,
+    backgroundColor: theme.palette.text.disabled,
+    '&:hover': {
+      opacity: 1,
+    },
+  },
   avatar_large: {
-    width: 150,
-    height: 150,
+    width: 200,
+    height: 200,
   },
 }));
 

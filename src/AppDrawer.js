@@ -24,15 +24,18 @@ import {
   MdSettings,
   MdDashboard,
   MdPeople,
+  MdPersonAdd,
 } from 'react-icons/md';
-import { BiHotel, BiRadioCircle } from 'react-icons/bi';
 import { ImLab } from 'react-icons/im';
+import { useHistory } from 'react-router-dom';
+import { BiHotel, BiRadioCircle } from 'react-icons/bi';
 import { FaUserMd, FaWheelchair, FaFirstAid } from 'react-icons/fa';
 
 import Logo from './logo.svg';
 
 function AppDrawer(props) {
   const { drawer, handleDrawerClose } = props;
+  const history = useHistory();
 
   const [isOpen, setIsOpen] = React.useState({
     1: false,
@@ -104,7 +107,11 @@ function AppDrawer(props) {
             {isOpen[1] ? <MdExpandMore /> : <MdExpandLess />}
           </ListItem>
           <DrawerRouteItemCollapes open={isOpen[1]}>
-            <DrawerRouteItem icon={<MdPerson size={20} />} label='Profile' />
+            <DrawerRouteItem
+              icon={<MdPerson size={20} />}
+              onClick={() => history.push('/account/profile')}
+              label='Profile'
+            />
             <DrawerRouteItem icon={<MdSettings size={20} />} label='Setting' />
           </DrawerRouteItemCollapes>
         </List>
@@ -116,6 +123,7 @@ function AppDrawer(props) {
           <DrawerRouteItem icon={<FaUserMd size={20} />} label='Doctors' />
           <DrawerRouteItem icon={<FaWheelchair size={20} />} label='Patients' />
           <DrawerRouteItem icon={<MdPeople size={20} />} label='Users' />
+          <DrawerRouteItem icon={<MdPersonAdd size={20} />} label='Add' />
           {/* collapes item 2 */}
           <ListItem
             button
