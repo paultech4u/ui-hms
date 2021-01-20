@@ -1,7 +1,7 @@
 export const AuthRoute = {
+  LOCK: '/lock',
   LOGIN: '/login',
   REGISTER: '/register',
-  LOCK: '/lock',
   FORGET_PASSWORD: '/account/reset/password',
 };
 
@@ -13,6 +13,7 @@ export const HospitalRoles = [
 
 export const PageRoute = {
   DASHBOARD: '/dashboard',
+  REGISTER: '/register/user',
   PROFILE: '/account/profile',
 };
 

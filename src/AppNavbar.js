@@ -33,6 +33,7 @@ import { logout } from './auth/AuthLoginSlice';
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;
   const dispatch = useDispatch();
+  const history = useHistory();
   const isDesktop = useIsDesktop();
   const styles = useStyles();
   const ProfileMenuRef = useRef(null);
@@ -50,7 +51,7 @@ function AppNavbar(props) {
   const handleLogout = () => {
     dispatch(logout(false));
     setOpenProfileMenu(false);
-    return;
+    return history.push('/login');
   };
 
   return (
@@ -110,7 +111,6 @@ function AppNavbar(props) {
                   <MdSearch size={20} />
                 </IconButton>
               </Box>
-              <Button variant='text'>Dashboard</Button>
             </Box>
             <Box marginRight={8}>
               <IconButton aria-haspopup onClick={handleDrawerOpen}>

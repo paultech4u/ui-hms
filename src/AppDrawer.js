@@ -123,7 +123,11 @@ function AppDrawer(props) {
           <DrawerRouteItem icon={<FaUserMd size={20} />} label='Doctors' />
           <DrawerRouteItem icon={<FaWheelchair size={20} />} label='Patients' />
           <DrawerRouteItem icon={<MdPeople size={20} />} label='Users' />
-          <DrawerRouteItem icon={<MdPersonAdd size={20} />} label='Add' />
+          <DrawerRouteItem
+            icon={<MdPersonAdd size={20} />}
+            onClick={() => history.push('/register/user')}
+            label='Add'
+          />
           {/* collapes item 2 */}
           <ListItem
             button

@@ -9,6 +9,7 @@ import {
   Switch,
   Button,
   IconButton,
+  Divider,
 } from '@material-ui/core';
 // import { Alert } from '@material-ui/lab';
 import clsx from 'clsx';
@@ -19,9 +20,11 @@ import { HiCamera } from 'react-icons/hi';
 import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
 import ProfilePictureUploadMenu from './ProfileUploadMenu';
+import { useIsDesktop } from '../hooks';
 
 function Profile(props) {
   const styles = useStyles();
+  const isDesktop = useIsDesktop();
 
   const { edit } = useSelector((state) => state.profile);
 
@@ -52,12 +55,16 @@ function Profile(props) {
   });
 
   return (
-    <Box display='flex' padding={10}>
+    <Box
+      display='flex'
+      flexDirection={isDesktop ? 'row' : 'column'}
+      padding={isDesktop ? 10 : 0}>
       <CustomCard
         flex={2}
         paddingX={15}
         marginTop={30}
         elevation={2}
+        order={isDesktop ? 1 : 2}
         variant='elevation'>
         <Box display='flex'>
           <Box
@@ -90,7 +97,7 @@ function Profile(props) {
             />
           </Box>
         </Box>
-        <Box display='flex'>
+        <Box display='flex' flexDirection={isDesktop ? 'row' : 'column'}>
           <TextInput disabled placeholder='Hospital (disabled)' />
           <TextInput
             name='email'
@@ -107,7 +114,10 @@ function Profile(props) {
             disabled={!formik.values.edit}
           />
         </Box>
-        <Box display='flex' justifyContent='space-between'>
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          flexDirection={isDesktop ? 'row' : 'column'}>
           <TextInput
             name='firstname'
             placeholder='Firstname'
@@ -124,6 +134,9 @@ function Profile(props) {
             disabled={!formik.values.edit}
             className={clsx(styles.text_field)}
           />
+        </Box>
+        <Box className={styles.divider}>
+          <Divider />
         </Box>
         <Box
           display='flex'
@@ -144,6 +157,7 @@ function Profile(props) {
         marginTop={30}
         paddingX={15}
         elevation={2}
+        order={isDesktop ? 2 : 1}
         variant='elevation'>
         <Box display='flex' flexDirection='column'>
           <Box
@@ -241,6 +255,9 @@ const useStyles = makeStyles((theme) => ({
   avatar_large: {
     width: 200,
     height: 200,
+  },
+  divider: {
+    padding: '0px 15px 15px 15px',
   },
 }));
 
