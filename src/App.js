@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
@@ -18,6 +18,7 @@ function App(props) {
   const { isAuthenticated, token } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // AuthStateCheck
   useEffect(() => {
@@ -33,10 +34,12 @@ function App(props) {
           } catch (error) {
             if (error.response) {
               dispatch(logout(false));
+              history.push('/login');
             }
           }
         } else if (now >= jwtExp) {
           dispatch(logout(false));
+          history.push('/login');
           return;
         }
       }

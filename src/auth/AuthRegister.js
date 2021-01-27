@@ -259,8 +259,11 @@ function HospitalForm(props) {
         justifyContent='space-between'
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Name</Typography>
+        <Box
+          display='flex'
+          flexDirection='column'
+          paddingBottom={isDesktop ? 0 : 8}>
+          <Typography variant='caption'>Name</Typography>
           <TextInput
             name='hospitalName'
             variant='filled'
@@ -275,8 +278,11 @@ function HospitalForm(props) {
             error={!!hospitalName && touched.hospitalName}
           />
         </Box>
-        <Box paddingLeft={isDesktop ? 10 : 0}>
-          <Typography>Email</Typography>
+        <Box
+          display='flex'
+          flexDirection='column'
+          paddingLeft={isDesktop ? 10 : 0}>
+          <Typography variant='caption'>Email</Typography>
           <TextInput
             name='hospitalEmail'
             variant='filled'
@@ -298,8 +304,11 @@ function HospitalForm(props) {
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>State</Typography>
+        <Box
+          display='flex'
+          flexDirection='column'
+          paddingBottom={isDesktop ? 0 : 8}>
+          <Typography variant='caption'>State</Typography>
           <TextInput
             name='state'
             variant='filled'
@@ -312,8 +321,8 @@ function HospitalForm(props) {
             error={!!state && touched.state}
           />
         </Box>
-        <Box>
-          <Typography>Address</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Address</Typography>
           <TextInput
             name='address'
             variant='filled'
@@ -333,8 +342,8 @@ function HospitalForm(props) {
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
-        <Box>
-          <Typography>Zip Code:</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Zip Code:</Typography>
           <TextInput
             name='zip_code'
             variant='filled'
@@ -374,9 +383,11 @@ function AdminForm(props) {
         marginX={10}>
         {/* First row */}
         <Box
+          display='flex'
+          flexDirection='column'
           paddingBottom={isDesktop ? 0 : 8}
           paddingRight={isDesktop ? 10 : 0}>
-          <Typography>Firstname</Typography>
+          <Typography variant='caption'>Firstname</Typography>
           <TextInput
             name='firstname'
             variant='filled'
@@ -389,8 +400,8 @@ function AdminForm(props) {
             error={!!firstname && touched.firstname}
           />
         </Box>
-        <Box>
-          <Typography>Lastname</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Lastname</Typography>
           <TextInput
             name='lastname'
             variant='filled'
@@ -411,8 +422,8 @@ function AdminForm(props) {
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
-        <Box>
-          <Typography>Email Address</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Email Address</Typography>
           <TextInput
             name='email'
             variant='filled'
@@ -425,8 +436,8 @@ function AdminForm(props) {
             error={!!email && touched.email}
           />
         </Box>
-        <Box>
-          <Typography>Password</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Password</Typography>
           <PasswordInput
             name='password'
             variant='filled'
@@ -445,8 +456,11 @@ function AdminForm(props) {
         flexDirection={isDesktop ? 'row' : 'column'}
         marginX={10}
         marginY={8}>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Username</Typography>
+        <Box
+          display='flex'
+          flexDirection='column'
+          paddingBottom={isDesktop ? 0 : 8}>
+          <Typography variant='caption'>Username</Typography>
           <TextInput
             name='username'
             variant='filled'
@@ -459,8 +473,11 @@ function AdminForm(props) {
             error={!!username && touched.username}
           />
         </Box>
-        <Box paddingBottom={isDesktop ? 0 : 8}>
-          <Typography>Phone Number</Typography>
+        <Box
+          display='flex'
+          flexDirection='column'
+          paddingBottom={isDesktop ? 0 : 8}>
+          <Typography variant='caption'>Phone Number</Typography>
           <TextInput
             name='phone_number'
             variant='filled'
@@ -477,8 +494,8 @@ function AdminForm(props) {
         </Box>
       </Box>
       <Box marginX={10}>
-        <Box>
-          <Typography>Role</Typography>
+        <Box display='flex' flexDirection='column'>
+          <Typography variant='caption'>Role</Typography>
           <TextField
             name='role'
             variant='filled'

@@ -8,11 +8,13 @@ const AddUser = lazyload(() => import('./AdminRegisterUser'));
 
 function AdminPage(params) {
   return (
-    <Box>
-      <Switch>
-        <Route exact path={PageRoute.REGISTER} component={AddUser} />
-        <Redirect to={PageRoute.REGISTER} />
-      </Switch>
+    <Box padding={20}>
+      <Box display='flex' justifyContent='center'>
+        <Switch>
+          <Route exact path={PageRoute.REGISTER} component={AddUser} />
+          <Redirect to={PageRoute.REGISTER} />
+        </Switch>
+      </Box>
     </Box>
   );
 }
