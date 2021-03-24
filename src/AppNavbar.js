@@ -131,7 +131,7 @@ AppNavbar.propTypes = {
 
 function ProfileMenu(props) {
   const { open, anchorRef, handleMenuClose, handleLogout } = props;
-  const history = useHistory();
+  // const history = useHistory();
 
   return (
     <Box>
@@ -152,9 +152,9 @@ function ProfileMenu(props) {
             <Paper>
               <ClickAwayListener onClickAway={handleMenuClose}>
                 <MenuList autoFocusItem={open} id='profile-menu-list'>
-                  <MenuItem onClick={() => history.push('/account/profile')}>
+                  {/* <MenuItem onClick={() => history.push('/account/profile')}>
                     Profile
-                  </MenuItem>
+                  </MenuItem> */}
                   <MenuItem onClick={handleLogout}>Log out</MenuItem>
                 </MenuList>
               </ClickAwayListener>

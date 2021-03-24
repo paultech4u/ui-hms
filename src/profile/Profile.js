@@ -93,6 +93,7 @@ function Profile(props) {
                   value={formik.values.edit}
                 />
               }
+              labelPlacement={isDesktop ? "end" : "bottom" }
               label='Edit mode'
             />
           </Box>
@@ -219,12 +220,13 @@ function Profile(props) {
 }
 
 function TextInput(props) {
+  const style = useStyles()
   return (
-    <Box paddingX={10}>
-      <Box paddingTop={20} marginBottom={15}>
+    <div className={style.text_field_item}>
+      <div className={style.text_field_item_child} >
         <TextField {...props} />
-      </Box>
-    </Box>
+      </div >
+    </div>
   );
 }
 
@@ -237,6 +239,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       width: '30ch',
     },
+  },
+  text_field_item: {
+    display: "flex",
+    justifyContent: "center",
+    paddingLeft: "10px",
+    paddingRight: "10px"
+  },
+  text_field_item_child: {
+    paddingTop: "20px",
+    marginBottom: "15px"
   },
   avatar: {
     color: 'white',

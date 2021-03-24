@@ -73,14 +73,14 @@ function AuthPage(props) {
       )}
       <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
         <Switch>
-          <Route exact path={AuthRoute.LOGIN} component={LoginPage} />
+          <Route path={AuthRoute.LOGIN} component={LoginPage} />
           <Route path={AuthRoute.REGISTER} component={RegisterPage} />
           <Route path={AuthRoute.LOCK} component={ScreenLock} />
           <Route
             path={AuthRoute.FORGET_PASSWORD}
             component={ForgetPasswordPage}
           />
-          <Redirect to={AuthRoute.LOGIN} />
+          <Redirect exact to={AuthRoute.LOGIN} />
         </Switch>
       </Box>
     </Box>

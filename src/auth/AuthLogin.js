@@ -11,7 +11,6 @@ import {
   makeStyles,
   Fade,
   Link,
-  Tooltip,
 } from '@material-ui/core';
 import {
   AuthCard,
@@ -20,7 +19,6 @@ import {
   TextInput,
   AppAlert,
 } from './AuthCommon';
-import { MdInfo } from 'react-icons/md';
 
 function AuthLogin(props) {
   const styles = useStyles();
@@ -74,7 +72,7 @@ function AuthLogin(props) {
         transitionTimingFunction: 'ease-in-out',
       }}
       in={location.pathname === '/login'}>
-      <Box>
+      <div>
         <AuthCard marginTop={30} display='flex' elevation={6}>
           <Box
             marginTop='-20px'
@@ -130,9 +128,10 @@ function AuthLogin(props) {
               </Typography>
             </ActionButton>
           </Box>
-          <Box marginTop={6} display='flex' justifyContent='center'>
+          <Box marginY={6}>
             <Box flex={1} textAlign='center'>
               <Link
+                title={tooltip}
                 onClick={handleForgetPassword}
                 style={{
                   cursor: 'pointer',
@@ -140,17 +139,12 @@ function AuthLogin(props) {
                 Forget Password ?
               </Link>
             </Box>
-            <Tooltip title={tooltip} arrow interactive>
-              <Box paddingRight={10}>
-                <MdInfo size={30} />
-              </Box>
-            </Tooltip>
           </Box>
         </AuthCard>
         <AppAlert open={open} severity='error' toggleAlert={toggleAlert}>
           {error === undefined ? 'Network Error' : error}
         </AppAlert>
-      </Box>
+      </div>
     </Fade>
   );
 }

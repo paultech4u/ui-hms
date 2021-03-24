@@ -59,7 +59,8 @@ function ForgetPassword(props) {
       }
       const data = {
         email,
-        password,
+        password1: password,
+        password2: comfirm_password
       };
 
       dispatch(forgetPasswordAction(data));

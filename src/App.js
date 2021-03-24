@@ -20,7 +20,7 @@ function App(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // AuthStateCheck
+  // Authentication State Check
   useEffect(() => {
     (async () => {
       if (isAuthenticated === true) {
@@ -44,7 +44,7 @@ function App(props) {
         }
       }
     })();
-  }, [isAuthenticated, token, dispatch]);
+  }, [isAuthenticated, token, history, dispatch]);
 
   const Main = isAuthenticated ? AppProtected : AuthPage;
   return (

@@ -126,7 +126,7 @@ function AppDrawer(props) {
           <DrawerRouteItem
             icon={<MdPersonAdd size={20} />}
             onClick={() => history.push('/register/user')}
-            label='Add'
+            label='Add users'
           />
           {/* collapes item 2 */}
           <ListItem
