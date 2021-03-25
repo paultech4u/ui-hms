@@ -4,7 +4,7 @@ import { Redirect, Switch, Route } from 'react-router-dom';
 import { Box } from '@material-ui/core';
 import { PageRoute } from '../constants';
 
-const AddUser = lazyload(() => import('./AdminRegisterUser'));
+const AddUser = lazyload(() => import('./AdminAddUser'));
 
 function AdminPage(params) {
   return (

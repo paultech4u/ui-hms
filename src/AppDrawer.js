@@ -24,7 +24,7 @@ import {
   MdSettings,
   MdDashboard,
   MdPeople,
-  MdPersonAdd,
+  // MdPersonAdd,
 } from 'react-icons/md';
 import { ImLab } from 'react-icons/im';
 import { useHistory } from 'react-router-dom';
@@ -42,6 +42,7 @@ function AppDrawer(props) {
     2: false,
     3: false,
     4: false,
+    5: false,
   });
 
   const toggleDrawerCollapesItem = (index) => {
@@ -58,10 +59,28 @@ function AppDrawer(props) {
       case 4:
         setIsOpen({ 4: !isOpen[4] });
         break;
+      case 5:
+        setIsOpen({ 5: !isOpen[5] });
+        break;
       default:
         break;
     }
   };
+
+  console.log(drawer);
+
+  React.useLayoutEffect(() => {
+    if (drawer === false) {
+      setIsOpen((p) => ({
+        ...p,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+      }));
+    }
+  }, [drawer]);
 
   const styles = useStyles();
   const isDesktop = useIsDesktop();
@@ -103,7 +122,7 @@ function AppDrawer(props) {
                 A
               </Avatar>
             </ListItemIcon>
-            <ListItemText primary='Admin' />
+            <ListItemText primary='John Doe' />
             {isOpen[1] ? <MdExpandMore /> : <MdExpandLess />}
           </ListItem>
           <DrawerRouteItemCollapes open={isOpen[1]}>
@@ -122,24 +141,34 @@ function AppDrawer(props) {
           <DrawerRouteItem icon={<MdDashboard size={20} />} label='Dashboard' />
           <DrawerRouteItem icon={<FaUserMd size={20} />} label='Doctors' />
           <DrawerRouteItem icon={<FaWheelchair size={20} />} label='Patients' />
-          <DrawerRouteItem icon={<MdPeople size={20} />} label='Users' />
-          <DrawerRouteItem
-            icon={<MdPersonAdd size={20} />}
-            onClick={() => history.push('/register/user')}
-            label='Add users'
-          />
-          {/* collapes item 2 */}
+          {/* collapes item list 2 */}
           <ListItem
             button
             component='li'
             onClick={() => toggleDrawerCollapesItem(2)}>
             <ListItemIcon>
-              <FaFirstAid size={20} />
+              <MdPeople size={20} />
             </ListItemIcon>
-            <ListItemText primary='Medicine' />
+            <ListItemText primary='Users' />
             {isOpen[2] ? <MdExpandMore /> : <MdExpandLess />}
           </ListItem>
           <DrawerRouteItemCollapes open={isOpen[2]}>
+            <DrawerRouteItem icon={<MdPerson size={20} />} label='Nurses' />
+            <DrawerRouteItem icon={<MdPerson size={20} />} label='Pharmacist' />
+            <DrawerRouteItem icon={<MdPerson size={20} />} label='Laboraties' />
+          </DrawerRouteItemCollapes>
+          {/* collapes item 3 */}
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(3)}>
+            <ListItemIcon>
+              <FaFirstAid size={20} />
+            </ListItemIcon>
+            <ListItemText primary='Medicine' />
+            {isOpen[3] ? <MdExpandMore /> : <MdExpandLess />}
+          </ListItem>
+          <DrawerRouteItemCollapes open={isOpen[3]}>
             <DrawerRouteItem
               icon={<BiRadioCircle size={20} />}
               label='Medicines'
@@ -149,35 +178,35 @@ function AppDrawer(props) {
               label='Categories'
             />
           </DrawerRouteItemCollapes>
-          {/*  collapes item 3 */}
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(3)}>
-            <ListItemIcon>
-              <ImLab size={20} />
-            </ListItemIcon>
-            <ListItemText primary='Labs' />
-            {isOpen[3] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[3]}>
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Patients test'
-            />
-          </DrawerRouteItemCollapes>
-          {/* collapes item 4 */}
+          {/*  collapes item 4 */}
           <ListItem
             button
             component='li'
             onClick={() => toggleDrawerCollapesItem(4)}>
             <ListItemIcon>
-              <BiHotel size={20} />
+              <ImLab size={20} />
             </ListItemIcon>
-            <ListItemText primary='Beds' />
+            <ListItemText primary='Labs' />
             {isOpen[4] ? <MdExpandMore /> : <MdExpandLess />}
           </ListItem>
           <DrawerRouteItemCollapes open={isOpen[4]}>
+            <DrawerRouteItem
+              icon={<BiRadioCircle size={20} />}
+              label='Patients test'
+            />
+          </DrawerRouteItemCollapes>
+          {/* collapes item 5 */}
+          <ListItem
+            button
+            component='li'
+            onClick={() => toggleDrawerCollapesItem(5)}>
+            <ListItemIcon>
+              <BiHotel size={20} />
+            </ListItemIcon>
+            <ListItemText primary='Beds' />
+            {isOpen[5] ? <MdExpandMore /> : <MdExpandLess />}
+          </ListItem>
+          <DrawerRouteItemCollapes open={isOpen[5]}>
             <DrawerRouteItem
               icon={<BiRadioCircle size={20} />}
               label='Beds Allocation'
@@ -205,7 +234,7 @@ function DrawerRouteItem(props) {
   return (
     <ListItem component='li' button {...others}>
       <ListItemIcon>{icon}</ListItemIcon>
-      <ListItemText primary={label} />
+      <ListItemText primary={label} disableTypography />
     </ListItem>
   );
 }

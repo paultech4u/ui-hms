@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { registerNewHospital, registerHospitalAdmin } from './AuthAPI';
+import { addHospital, addHospitalAdmin } from './AuthAPI';
 import { LoadingStatus } from '../constants';
 
 export const registerAction = createAsyncThunk(
@@ -7,8 +7,8 @@ export const registerAction = createAsyncThunk(
   async (data, thunkAPI) => {
     return registerHospital(
       await Promise.all([
-        registerNewHospital(data.hospital),
-        registerHospitalAdmin(data.admin),
+        addHospital(data.hospital),
+        addHospitalAdmin(data.admin),
       ]),
       thunkAPI
     );

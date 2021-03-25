@@ -9,7 +9,7 @@ import axios from 'axios';
 /**
  * @param {data} data - user credentials
  */
-export async function loginAPI(data) {
+export async function loginUserAPI(data) {
   try {
     const res = await Auth.post('/login', data, { timeout: 6000 });
     return res;
@@ -50,7 +50,7 @@ export async function forgetPasswordAPI(data) {
 /**
  * @param {Object} data - user credentials
  */
-export async function registerNewHospital(data) {
+export async function addHospital(data) {
   try {
     const res = await Hospital.post('/register', data);
     return res;
@@ -59,7 +59,7 @@ export async function registerNewHospital(data) {
   }
 }
 
-export async function registerHospitalAdmin(data) {
+export async function addHospitalAdmin(data) {
   try {
     const res = await Admin.post('/signup', data);
     return res;

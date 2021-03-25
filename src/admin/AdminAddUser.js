@@ -61,9 +61,9 @@ function AddUser(props) {
             <Tab label="Address" {...a11yProps(2)}/>
           </Tabs>
         </AppBar>
-        <TabPanel value={value} index={0}>Item one</TabPanel>
-        <TabPanel value={value} index={1}>Item two</TabPanel>
-        <TabPanel value={value} index={2}>Item three</TabPanel>
+        <TabPanel value={value} index={0}>About</TabPanel>
+        <TabPanel value={value} index={1}>Account</TabPanel>
+        <TabPanel value={value} index={2}>Address</TabPanel>
       </div>
     </CustomCard>
   );

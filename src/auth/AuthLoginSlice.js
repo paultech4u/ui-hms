@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { loginAPI } from './AuthAPI';
+import { loginUserAPI } from './AuthAPI';
 import { AuthStatus, LoadingStatus } from '../constants';
 
 export const loginAction = createAsyncThunk(
   'auth/login',
   async (data, thunkAPI) => {
-    return Login(await loginAPI(data), thunkAPI);
+    return Login(await loginUserAPI(data), thunkAPI);
   }
 );
 
