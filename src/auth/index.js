@@ -4,19 +4,16 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { Box, Collapse, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { NavBar } from './AuthNavBar';
-import { AuthRoute } from '../constants';
+import { authRoute } from '../constants';
 import { DrawerBar } from './AuthDrawer';
 // import { Footer } from '../common/Footer';
 import { useIsDesktop } from '../hooks';
-
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleLogoutAlert } from './AuthLoginSlice';
 
-const LoginPage = lazyload(() => import('./AuthLogin'));
-const RegisterPage = lazyload(() => import('./AuthRegister'));
-const ScreenLock = lazyload(() => import('./AuthScreenLock'));
-const ForgetPasswordPage = lazyload(() => import('./AuthForgetPassword'));
+const LoginForm = lazyload(() => import('./AuthLoginForm'));
+const RegisterForm = lazyload(() => import('./AuthRegisterForm'));
+const ForgetPasswordForm = lazyload(() => import('./AuthForgetPasswordForm'));
 
 function AuthPage(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,34 +31,34 @@ function AuthPage(props) {
     }
   }, [isDesktop]);
 
-  const { openLogoutAlert } = useSelector((state) => state.auth);
+  // const { openLogoutAlert } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const setOpen = (bool) => {
-    dispatch(handleLogoutAlert(bool));
-  };
+  // const setOpen = (bool) => {
+  //   dispatch(handleLogoutAlert(bool));
+  // };
 
-  React.useEffect(() => {
-    if (openLogoutAlert === true) {
-      setTimeout(() => {
-        setOpen(false);
-      }, 2000);
-    }
+  // React.useEffect(() => {
+  //   if (openLogoutAlert === true) {
+  //     setTimeout(() => {
+  //       setOpen(false);
+  //     }, 2000);
+  //   }
 
-    return () => clearTimeout(1000);
-  });
+  //   return () => clearTimeout(1000);
+  // });
 
   return (
     <Box height={1} display='flex' flexDirection='column'>
-      <Box>
+      {/* <Box>
         <Collapse in={openLogoutAlert} unmountOnExit={true}>
           <Alert onClose={() => setOpen(false)} severity='info'>
             Session expired
           </Alert>
         </Collapse>
-      </Box>
-      {location.pathname === AuthRoute.FORGET_PASSWORD ? (
+      </Box> */}
+      {location.pathname === authRoute.FORGET_PASSWORD ? (
         <Box>
           <Typography>Logo</Typography>
         </Box>
@@ -73,14 +70,13 @@ function AuthPage(props) {
       )}
       <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
         <Switch>
-          <Route path={AuthRoute.LOGIN} component={LoginPage} />
-          <Route path={AuthRoute.REGISTER} component={RegisterPage} />
-          <Route path={AuthRoute.LOCK} component={ScreenLock} />
+          <Route path={authRoute.LOGIN} component={LoginForm} />
+          <Route path={authRoute.REGISTER} component={RegisterForm} />
           <Route
-            path={AuthRoute.FORGET_PASSWORD}
-            component={ForgetPasswordPage}
+            path={authRoute.FORGET_PASSWORD}
+            component={ForgetPasswordForm}
           />
-          <Redirect exact to={AuthRoute.LOGIN} />
+          <Redirect exact to={authRoute.LOGIN} />
         </Switch>
       </Box>
     </Box>

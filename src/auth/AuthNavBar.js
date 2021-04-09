@@ -5,7 +5,7 @@ import { useIsDesktop } from '../hooks';
 import { Box, makeStyles, IconButton } from '@material-ui/core';
 import { NavRouteButton } from './AuthCommon';
 import { useLocation, useHistory } from 'react-router-dom';
-import { MdFingerprint, MdPersonAdd, MdLockOpen, MdSort } from 'react-icons/md';
+import { MdFingerprint, MdPersonAdd, MdSort } from 'react-icons/md';
 
 export function NavBar(props) {
   const { toggleDrawer } = props;
@@ -40,12 +40,6 @@ export function NavBar(props) {
             onClick={() => history.push('/login')}
             icon={<MdFingerprint size={20} className={styles.icon} />}
             title='Login'
-          />
-          <NavRouteButton
-            active={location.pathname === '/lock'}
-            onClick={() => history.push('/lock')}
-            icon={<MdLockOpen size={20} className={styles.icon} />}
-            title='Lock'
           />
         </Box>
       ) : (

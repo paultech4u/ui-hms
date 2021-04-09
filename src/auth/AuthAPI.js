@@ -1,27 +1,48 @@
-import { Auth, Admin, Hospital } from '../api/index';
 import axios from 'axios';
 
+export const http = axios.create({
+  baseURL: 'http://localhost:5000',
+});
+
+http.interceptors.request.use(
+  (request) => {
+    return request;
+  },
+  (error) => {
+    return error.request;
+  }
+);
+
+http.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    return error.response;
+  }
+);
+
 /**
- * A object rep of data
- * @typedef {Object} data
+ * @typedef {{}} object
  */
 
 /**
- * @param {data} data - user credentials
+ * User information sent to server
+ * @param {object} payload credentials
  */
-export async function loginUserAPI(data) {
+export async function login(payload) {
   try {
-    const res = await Auth.post('/login', data, { timeout: 6000 });
-    return res;
+    const response = await http.post('/login', payload, { timeout: 6000 });
+    return response;
   } catch (error) {
     return error;
   }
 }
 
-export async function refreshTokenAPI(token) {
+export async function refreshToken(token) {
   try {
-    const response = await axios.post(
-      'http://localhost:5000/refresh',
+    const response = await http.post(
+      '/refresh',
       {},
       {
         headers: {
@@ -35,12 +56,16 @@ export async function refreshTokenAPI(token) {
   }
 }
 
-export async function forgetPasswordAPI(data) {
+/**
+ * @typedef {{}} object
+ */
+
+/**
+ * @param {object} payload credentials
+ */
+export async function forgetPassword(payload) {
   try {
-    const response = await axios.post(
-      'http://localhost:5000/forget-password',
-      data
-    );
+    const response = await http.post('/forget-password', payload);
     return response;
   } catch (error) {
     return error.response;
@@ -48,20 +73,31 @@ export async function forgetPasswordAPI(data) {
 }
 
 /**
- * @param {Object} data - user credentials
+ * @typedef {{}} object
  */
-export async function addHospital(data) {
+
+/**
+ * @param {object} payload credentials
+ */
+export async function addHospital(payload) {
   try {
-    const res = await Hospital.post('/register', data);
+    const res = await http.post('/register-hospital', payload);
     return res;
   } catch (error) {
     return error;
   }
 }
 
-export async function addHospitalAdmin(data) {
+/**
+ * @typedef {{}} object
+ */
+
+/**
+ * @param {object} payload credentials
+ */
+export async function addHospitalAdmin(payload) {
   try {
-    const res = await Admin.post('/signup', data);
+    const res = await http.post('/create-admin', payload);
     return res;
   } catch (error) {
     return error;

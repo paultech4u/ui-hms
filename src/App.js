@@ -8,14 +8,15 @@ import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import theme, { GlobalCss } from './theme';
 import { persistor } from './store';
 import { lazyload, Loading } from './common/Loading';
-import { login, logout } from './auth/AuthLoginSlice';
-import { refreshTokenAPI } from './auth/AuthAPI';
+import { loginAction, logoutAction } from './auth/AuthStoreSlice';
+import { refreshToken } from './auth/AuthAPI';
 
 const AuthPage = lazyload(() => import('./auth'));
 const AppProtected = lazyload(() => import('./AppProtected'));
 
 function App(props) {
-  const { isAuthenticated, token } = useSelector((state) => state.auth);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const accessToken = useSelector((state) => state.auth.accessToken);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -24,27 +25,25 @@ function App(props) {
   useEffect(() => {
     (async () => {
       if (isAuthenticated === true) {
-        const jwtExp = new Date(token.expires_in * 1000);
+        const jwtExp = new Date(accessToken.expires_in * 1000);
         const now = new Date();
         const reminder = jwtExp - 5 * 60 * 1000;
         if (now >= reminder && jwtExp > now) {
           try {
-            const response = await refreshTokenAPI(token.id_token);
-            return dispatch(login(response.data));
+            const response = await refreshToken(accessToken.id_token);
+            return dispatch(loginAction(response.data));
           } catch (error) {
             if (error.response) {
-              dispatch(logout(false));
               history.push('/login');
             }
           }
         } else if (now >= jwtExp) {
-          dispatch(logout(false));
+          dispatch(logoutAction());
           history.push('/login');
-          return;
         }
       }
     })();
-  }, [isAuthenticated, token, history, dispatch]);
+  }, [isAuthenticated, accessToken, history, dispatch]);
 
   const Main = isAuthenticated ? AppProtected : AuthPage;
   return (

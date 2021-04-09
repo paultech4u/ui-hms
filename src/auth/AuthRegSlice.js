@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { addHospital, addHospitalAdmin } from './AuthAPI';
-import { LoadingStatus } from '../constants';
+import { loadingStatus } from '../constants';
 
 export const registerAction = createAsyncThunk(
   'hospital/register',
@@ -21,7 +21,7 @@ const RegisterReducer = createSlice({
     success: null,
     error: null,
     open: false,
-    isLoading: LoadingStatus.IDLE,
+    isLoading: loadingStatus.IDLE,
   },
   reducers: {
     register: {
@@ -41,19 +41,19 @@ const RegisterReducer = createSlice({
   extraReducers: {
     [registerAction.pending]: (state, action) => {
       state.error = null;
-      state.isLoading = LoadingStatus.PENDING;
+      state.isLoading = loadingStatus.PENDING;
     },
     [registerAction.fulfilled]: (state, action) => {
       state.error = null;
       state.open = true;
       state.success = action.payload.message;
-      state.isLoading = LoadingStatus.IDLE;
+      state.isLoading = loadingStatus.IDLE;
     },
     [registerAction.rejected]: (state, action) => {
       state.open = true;
       state.success = null;
       state.error = action.payload.message;
-      state.isLoading = LoadingStatus.IDLE;
+      state.isLoading = loadingStatus.IDLE;
     },
   },
 });

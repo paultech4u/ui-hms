@@ -1,4 +1,4 @@
-export const AuthRoute = {
+export const authRoute = {
   LOCK: '/lock',
   LOGIN: '/login',
   REGISTER: '/register',
@@ -21,13 +21,13 @@ export const ProfileRoute = {
   EDIT: '/edit',
 };
 
-export const LoadingStatus = {
+export const loadingStatus = {
   IDLE: 'idle',
   PENDING: 'pending',
   SUCCESS: 'success',
 };
 
-export const AuthStatus = {
+export const authStatus = {
   AUTHENTICATED: true,
   UNAUTHENTICATED: false,
 };

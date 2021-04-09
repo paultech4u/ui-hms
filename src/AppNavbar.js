@@ -28,7 +28,7 @@ import {
 import { useIsDesktop } from './hooks';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { logout } from './auth/AuthLoginSlice';
+import { logoutAction } from './auth/AuthStoreSlice';
 
 function AppNavbar(props) {
   const { drawer, handleDrawerOpen } = props;
@@ -49,9 +49,10 @@ function AppNavbar(props) {
   };
 
   const handleLogout = () => {
-    dispatch(logout(false));
+    dispatch(logoutAction());
     setOpenProfileMenu(false);
-    return history.push('/login');
+    history.push('/login');
+    return;
   };
 
   return (

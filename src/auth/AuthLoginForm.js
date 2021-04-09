@@ -4,14 +4,8 @@ import { useFormik } from 'formik';
 import { Progress } from '../common/Progress';
 import { useLocation, useHistory, generatePath } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAction, handleAlertClose } from './AuthLoginSlice';
-import {
-  Box,
-  Typography,
-  makeStyles,
-  Fade,
-  Link,
-} from '@material-ui/core';
+import { loginAction, clearErrorAction } from './AuthStoreSlice';
+import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
 import {
   AuthCard,
   ActionButton,
@@ -19,6 +13,11 @@ import {
   TextInput,
   AppAlert,
 } from './AuthCommon';
+
+const FormKeys = {
+  EMAIL: 'email',
+  PASSWORD: 'password',
+};
 
 function AuthLogin(props) {
   const styles = useStyles();
@@ -28,28 +27,23 @@ function AuthLogin(props) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      password: '',
+      [FormKeys.EMAIL]: '',
+      [FormKeys.PASSWORD]: '',
     },
     onSubmit: async (values) => {
-      const data = {
+      const payload = {
         ...values,
       };
 
-      dispatch(loginAction(data));
+      dispatch(loginAction(payload));
     },
   });
 
-  const { isLoading, open, error } = useSelector((state) => {
-    return {
-      error: state.auth.error,
-      open: state.auth.openAlert,
-      isLoading: state.auth.isLoading,
-    };
-  });
+  const error = useSelector((state) => state.auth.error);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
-  const toggleAlert = () => {
-    dispatch(handleAlertClose(false));
+  const closeError = () => {
+    dispatch(clearErrorAction());
   };
 
   const handleForgetPassword = () => {
@@ -90,7 +84,7 @@ function AuthLogin(props) {
               <TextInput
                 placeholder='Enter email'
                 id='email'
-                value={formik.values.email}
+                value={formik.values[FormKeys.EMAIL]}
                 onInput={formik.handleChange}
                 onBlur={formik.handleBlur}
                 showClearIcon={false}
@@ -99,7 +93,7 @@ function AuthLogin(props) {
             <Box marginTop={10}>
               <PasswordInput
                 onBlur={formik.handleBlur}
-                value={formik.values.password}
+                value={formik.values[FormKeys.PASSWORD]}
                 onInput={formik.handleChange}
               />
             </Box>
@@ -141,7 +135,10 @@ function AuthLogin(props) {
             </Box>
           </Box>
         </AuthCard>
-        <AppAlert open={open} severity='error' toggleAlert={toggleAlert}>
+        <AppAlert
+          open={error === null ? false : true}
+          severity='error'
+          onClose={closeError}>
           {error === undefined ? 'Network Error' : error}
         </AppAlert>
       </div>

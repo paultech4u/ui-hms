@@ -9,7 +9,6 @@ import { useIsDesktop } from './hooks';
 
 const Dashboard = lazyload(() => import('./dashboard'));
 const Profile = lazyload(() => import('./profile'));
-const Admin = lazyload(() => import('./admin'));
 
 function AppProtected(props) {
   const [isOpen, setIsOpen] = useState(true);
@@ -38,7 +37,6 @@ function AppProtected(props) {
         <Switch>
           <Route exact path={PageRoute.DASHBOARD} component={Dashboard} />
           <Route exact path={PageRoute.PROFILE} component={Profile} />
-          <Route exact path={PageRoute.REGISTER} component={Admin} />
           <Redirect to={PageRoute.DASHBOARD} />
         </Switch>
       </Box>

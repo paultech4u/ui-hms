@@ -154,16 +154,16 @@ let vertical = 'bottom';
 let horizontal = 'left';
 
 export function AppAlert(props) {
-  const { open, toggleAlert, severity } = props;
+  const { open, onClose, severity } = props;
   return (
     <Snackbar
       open={open}
-      onClose={toggleAlert}
+      onClose={onClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       key={vertical + horizontal}
       autoHideDuration={2000}>
       <Alert
-        onClose={toggleAlert}
+        onClose={onClose}
         elevation={6}
         severity={severity}
         variant='filled'>
@@ -175,7 +175,7 @@ export function AppAlert(props) {
 
 AppAlert.propTypes = {
   open: PropTypes.bool,
-  toggleAlert: PropTypes.func,
+  onClose: PropTypes.func,
   severity: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
 };
 

@@ -25,12 +25,12 @@ import { HospitalRoles } from '../constants';
 import AuthPreference from './AuthPreference';
 import { Progress } from '../common/Progress';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleAlertClose, registerAction } from './AuthRegSlice';
+import {  registerAction } from './AuthRegSlice';
 import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
 import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
 
-let vertical = 'bottom';
-let horizontal = 'left';
+// let vertical = 'bottom';
+// let horizontal = 'left';
 
 function Register(props) {
   const [toggleForm, setToggleForm] = useState(false);
@@ -136,18 +136,18 @@ function Register(props) {
     validationSchema: regiterschema,
   });
 
-  const { isLoading, open, error, success } = useSelector((state) => {
+  const { isLoading } = useSelector((state) => {
     return {
-      open: state.reg.open,
+      // open: state.reg.open,
       isLoading: state.reg.isLoading,
-      error: state.reg.error === null ? '' : state.reg.error,
-      success: state.reg.success === null ? '' : state.reg.success,
+      // error: state.reg.error === null ? '' : state.reg.error,
+      // success: state.reg.success === null ? '' : state.reg.success,
     };
   });
 
-  const toggleAlert = () => {
-    dispatch(handleAlertClose(false));
-  };
+  // const toggleAlert = () => {
+  //   dispatch(handleAlertClose(false));
+  // };
 
   return (
     <AuthCard
@@ -228,7 +228,7 @@ function Register(props) {
       ) : (
         <GetStartedScreen toggleToFormScreen={toggleToFormScreen} />
       )}
-      <Snackbar
+      {/* <Snackbar
         open={open}
         onClose={toggleAlert}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -241,7 +241,7 @@ function Register(props) {
           variant='filled'>
           {success === 'Created' ? success : error}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </AuthCard>
   );
 }

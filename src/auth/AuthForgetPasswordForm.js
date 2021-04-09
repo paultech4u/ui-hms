@@ -14,16 +14,18 @@ import { Alert } from '@material-ui/lab';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { MdCancel } from 'react-icons/md';
-import { forgetPasswordAction, handleAlert } from './AuthPasswordMgmtSlice';
+import { forgetPasswordAction, clearErrorAction } from './AuthStoreSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { useQuery } from '../hooks';
 
 function ForgetPassword(props) {
   const styles = useStyles();
   const dispatch = useDispatch();
-
+  const query = useQuery();
   const [open, setOpen] = React.useState(false);
-  const { isLoading, error } = useSelector((state) => state.password);
+  const error = useSelector((state) => state.auth.error);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email().required('Field is required'),
@@ -47,7 +49,7 @@ function ForgetPassword(props) {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: query.get('email'),
       password: '',
       comfirm_password: '',
     },
@@ -57,18 +59,18 @@ function ForgetPassword(props) {
       if (comfirm_password !== password) {
         return setOpen((p) => !p);
       }
-      const data = {
+      const payload = {
         email,
         password1: password,
-        password2: comfirm_password
+        password2: comfirm_password,
       };
 
-      dispatch(forgetPasswordAction(data));
+      dispatch(forgetPasswordAction(payload));
     },
   });
 
-  const handleAlertClose = () => {
-    dispatch(handleAlert(null));
+  const clearError = () => {
+    dispatch(clearErrorAction());
   };
 
   return (
@@ -147,20 +149,18 @@ function ForgetPassword(props) {
           />
         </Box>
         <Box display='flex' justifyContent='center' marginY={10}>
-          <ActionButton onClick={formik.handleSubmit}>
-            Save Password
-          </ActionButton>
+          <ActionButton onClick={formik.handleSubmit}>Save</ActionButton>
         </Box>
       </Box>
       <Backdrop
         in={isLoading === 'pending' ? true : false}
-        className={styles.backdrop}>
+        className={styles.back_drop}>
         <CircularProgress color='inherit' />
       </Backdrop>
       <AppAlert
         severity='error'
-        open={error !== null ? true : false}
-        toggleAlert={handleAlertClose}>
+        open={error === null ? false : true}
+        onClose={clearError}>
         {error === undefined ? 'Network Error' : error}
       </AppAlert>
     </AuthCard>
@@ -174,7 +174,7 @@ const useStyles = makeStyles((theme) => ({
       width: '40ch',
     },
   },
-  backdrop: {
+  back_drop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
   },

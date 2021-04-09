@@ -67,8 +67,6 @@ function AppDrawer(props) {
     }
   };
 
-  console.log(drawer);
-
   React.useLayoutEffect(() => {
     if (drawer === false) {
       setIsOpen((p) => ({
