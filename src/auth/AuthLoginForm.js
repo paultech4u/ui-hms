@@ -48,14 +48,10 @@ function AuthLogin(props) {
 
   const handleForgetPassword = () => {
     if (formik.values.email !== '') {
-      const path = generatePath(
-        '/account/:mode(reset|edit)/:type(password|profile)',
-        {
-          type: 'password',
-          mode: 'reset',
-        }
-      );
-      history.push({ pathname: path, search: `?email=${formik.values.email}` });
+      history.push({
+        pathname: '/forget-password',
+        search: `?email=${formik.values.email}`,
+      });
     }
   };
 
@@ -75,8 +71,8 @@ function AuthLogin(props) {
               padding={15}
               bgcolor='primary.main'
               borderRadius={6}
-              className={styles.AuthCard_header}>
-              <Typography variant='h6' className={styles.AuthCard_header_title}>
+              className={styles.authCard_header}>
+              <Typography variant='h6' className={styles.authCard_header_title}>
                 Log in
               </Typography>
             </Box>
@@ -84,7 +80,7 @@ function AuthLogin(props) {
               <Box>
                 <AuthTextInput
                   variant='outlined'
-                  placeholder='Enter email address'
+                  placeholder='Enter your email address'
                   id='email'
                   value={formik.values[FormKeys.EMAIL]}
                   onInput={formik.handleChange}
@@ -132,7 +128,7 @@ function AuthLogin(props) {
                   style={{
                     cursor: 'pointer',
                   }}>
-                  Forget password?
+                  Reset your password?
                 </Link>
               </Box>
             </Box>
@@ -150,10 +146,10 @@ function AuthLogin(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  AuthCard_header: {
+  authCard_header: {
     boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.14)',
   },
-  AuthCard_header_title: {
+  authCard_header_title: {
     marginBottom: '3px',
     fontWeight: theme.typography.fontWeightLight.valueOf(500),
     color: theme.palette.common.white,

@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
   },
   text_field: {
-    width: '35ch',
+    width: '30ch',
     [theme.breakpoints.up('md')]: {
       width: '40ch',
     },

@@ -1,10 +1,10 @@
 import React from 'react';
 import { TextField } from '@material-ui/core';
 
-export function PasswordInputField(props) {
+export function PasswordInput(props) {
   return <TextField type='password' id='password' {...props} />;
 }
 
-export function TextInputField(props) {
+export function TextInput(props) {
   return <TextField type='text' InputLabelProps={{shrink: true}} {...props} />;
 }

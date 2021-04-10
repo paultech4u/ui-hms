@@ -98,6 +98,7 @@ function ForgetPassword(props) {
         <Box display='flex' flexDirection='column' paddingBottom={5}>
           <Typography variant='caption'>Email Address</Typography>
           <AuthTextInput
+            size='small'
             variant='outlined'
             name='email'
             errortext={
@@ -114,6 +115,8 @@ function ForgetPassword(props) {
         <Box display='flex' flexDirection='column' paddingBottom={5}>
           <Typography variant='caption'>New Password</Typography>
           <TextField
+            size='small'
+            placeholder='*****'
             name='password'
             variant='outlined'
             onBlur={formik.handleBlur}
@@ -131,6 +134,8 @@ function ForgetPassword(props) {
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Comfirm Password</Typography>
           <TextField
+            size='small'
+            placeholder='*****'
             variant='outlined'
             name='comfirm_password'
             onBlur={formik.handleBlur}
@@ -170,7 +175,10 @@ function ForgetPassword(props) {
 
 const useStyles = makeStyles((theme) => ({
   text_field: {
-    width: '35ch',
+    width: '30ch',
+    [theme.breakpoints.up('sm')]: {
+      width: '35ch',
+    },
     [theme.breakpoints.up('md')]: {
       width: '40ch',
     },

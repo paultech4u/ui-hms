@@ -2,10 +2,10 @@ export const authRoute = {
   LOCK: '/lock',
   LOGIN: '/login',
   REGISTER: '/register',
-  FORGET_PASSWORD: '/account/reset/password',
+  FORGOTPASSWORD: '/forget-password',
 };
 
-export const HospitalRoles = [
+export const hospitalRole = [
   { value: 'NURSE' },
   { value: 'ADMIN' },
   { value: 'DOCTOR' },

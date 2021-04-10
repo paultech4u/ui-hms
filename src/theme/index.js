@@ -31,6 +31,7 @@ export const GlobalCss = withStyles({
   '@global': {
     'html, body, #root': {
       height: '100%',
+      overflow: 'hidden',
     },
   },
 })(() => null);

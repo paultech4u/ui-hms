@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import { login, forgetPassword } from './AuthAPI';
+import {
+  login,
+  forgetPassword,
+  addHospital,
+  addHospitalAdmin,
+} from './AuthAPI';
 import { authStatus, loadingStatus } from '../constants';
 
 export const loginAction = createAsyncThunk(
@@ -10,9 +15,23 @@ export const loginAction = createAsyncThunk(
 );
 
 export const forgetPasswordAction = createAsyncThunk(
-  'auth/forget-password',
+  'auth/forget_password',
   async (payload, thunkAPI) => {
     return handleRequest(await forgetPassword(payload), thunkAPI);
+  }
+);
+
+export const registerHosptialAction = createAsyncThunk(
+  'auth/register_hospital',
+  async (payload, thunkAPI) => {
+    return handleRequest(await addHospital(payload.hospital), thunkAPI);
+  }
+);
+
+export const registerHospitalAdminAction = createAsyncThunk(
+  'auth/register_admin',
+  async (payload, thunkAPI) => {
+    return handleRequest(await addHospitalAdmin(payload.admin), thunkAPI);
   }
 );
 

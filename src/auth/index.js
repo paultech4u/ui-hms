@@ -12,7 +12,9 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 const LoginForm = lazyload(() => import('./AuthLoginForm'));
-const RegisterForm = lazyload(() => import('./AuthRegisterForm'));
+const HospitalRegisterForm = lazyload(() =>
+  import('./AuthRegisterHospitalForm')
+);
 const ForgetPasswordForm = lazyload(() => import('./AuthForgetPasswordForm'));
 
 function AuthPage(props) {
@@ -31,33 +33,8 @@ function AuthPage(props) {
     }
   }, [isDesktop]);
 
-  // const { openLogoutAlert } = useSelector((state) => state.auth);
-
-  // const dispatch = useDispatch();
-
-  // const setOpen = (bool) => {
-  //   dispatch(handleLogoutAlert(bool));
-  // };
-
-  // React.useEffect(() => {
-  //   if (openLogoutAlert === true) {
-  //     setTimeout(() => {
-  //       setOpen(false);
-  //     }, 2000);
-  //   }
-
-  //   return () => clearTimeout(1000);
-  // });
-
   return (
-    <Box height={1} display='flex' flexDirection='column'>
-      {/* <Box>
-        <Collapse in={openLogoutAlert} unmountOnExit={true}>
-          <Alert onClose={() => setOpen(false)} severity='info'>
-            Session expired
-          </Alert>
-        </Collapse>
-      </Box> */}
+    <Box display='flex' flexDirection='column'>
       {location.pathname === authRoute.FORGET_PASSWORD ? (
         <Box>
           <Typography>Logo</Typography>
@@ -68,14 +45,14 @@ function AuthPage(props) {
           <DrawerBar open={isOpen} close={toggleDrawer} />
         </Box>
       )}
-      <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
+      <Box display='flex' justifyContent='center' alignItems='center'>
         <Switch>
           <Route path={authRoute.LOGIN} component={LoginForm} />
-          <Route path={authRoute.REGISTER} component={RegisterForm} />
           <Route
-            path={authRoute.FORGET_PASSWORD}
+            path={authRoute.FORGOTPASSWORD}
             component={ForgetPasswordForm}
           />
+          <Route path={authRoute.REGISTER} component={HospitalRegisterForm} />
           <Redirect exact to={authRoute.LOGIN} />
         </Switch>
       </Box>
