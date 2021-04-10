@@ -9,76 +9,56 @@ import {
   InputAdornment,
   IconButton,
   makeStyles,
-  Snackbar,
 } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
 import clsx from 'clsx';
-import { MdVisibility, MdVisibilityOff, MdCancel } from 'react-icons/md';
+import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
-export function TextInput(props) {
-  const {
-    value,
-    cleartext,
-    error,
-    errortext,
-    showClearIcon,
-    ...others
-  } = props;
-
+export function AuthTextInput(props) {
+  const { value, error, errortext, ...others } = props;
   const styles = useStyles();
+
   return (
     <TextField
       error={error}
       value={value}
-      className={styles.textfield}
+      className={styles.text_field}
       helperText={errortext}
       {...others}
-      InputProps={{
-        endAdornment: showClearIcon ? (
-          <InputAdornment>
-            <IconButton aria-label='clear-text' onClick={cleartext}>
-              {!!value && showClearIcon ? <MdCancel /> : null}
-            </IconButton>
-          </InputAdornment>
-        ) : null,
-      }}
     />
   );
 }
 
-TextInput.propTypes = {
+AuthTextInput.propTypes = {
   value: PropTypes.string,
-  cleartext: PropTypes.func,
-  showClearIcon: PropTypes.bool,
   error: PropTypes.bool,
   errortext: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
 };
 
-export function PasswordInput(props) {
-  const [isVisible, setIsVisible] = useState(false);
+export function AuthPasswordInput(props) {
+  const [showPassword, setShowPassword] = useState(false);
 
   const { value, errortext, error, ...others } = props;
 
   const styles = useStyles();
 
   const toggleVisibility = () => {
-    setIsVisible(!isVisible);
+    setShowPassword(!showPassword);
   };
 
   return (
     <TextField
       error={error}
       id='password'
-      placeholder='Enter password'
-      type={isVisible ? 'text' : 'password'}
+      placeholder='*******'
+      type={showPassword ? 'text' : 'password'}
       value={value}
       helperText={errortext}
-      className={styles.textfield}
+      className={styles.text_field}
       InputProps={{
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton aria-label='toggle-password' onClick={toggleVisibility}>
-              {isVisible ? <MdVisibility /> : <MdVisibilityOff />}
+              {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
             </IconButton>
           </InputAdornment>
         ),
@@ -88,9 +68,8 @@ export function PasswordInput(props) {
   );
 }
 
-PasswordInput.propTypes = {
+AuthPasswordInput.propTypes = {
   value: PropTypes.string,
-  isVisible: PropTypes.bool,
   error: PropTypes.bool,
   errortext: PropTypes.string,
   toggleVisibility: PropTypes.func,
@@ -116,7 +95,7 @@ AuthCard.propTypes = {
   variant: PropTypes.oneOf(['outlined', 'elevation']),
 };
 
-export function ActionButton(props) {
+export function AuthButton(props) {
   return (
     <Button variant='contained' color='primary' {...props}>
       {props.children}
@@ -150,35 +129,6 @@ NavRouteButton.propTypes = {
   title: PropTypes.string,
 };
 
-let vertical = 'bottom';
-let horizontal = 'left';
-
-export function AppAlert(props) {
-  const { open, onClose, severity } = props;
-  return (
-    <Snackbar
-      open={open}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      key={vertical + horizontal}
-      autoHideDuration={2000}>
-      <Alert
-        onClose={onClose}
-        elevation={6}
-        severity={severity}
-        variant='filled'>
-        {props.children}
-      </Alert>
-    </Snackbar>
-  );
-}
-
-AppAlert.propTypes = {
-  open: PropTypes.bool,
-  onClose: PropTypes.func,
-  severity: PropTypes.oneOf(['success', 'warning', 'error', 'info']),
-};
-
 const useStyles = makeStyles((theme) => ({
   navRoute_link: {
     padding: '15px',
@@ -193,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
       props.active ? theme.palette.common.white : theme.palette.common.black,
     textDecoration: 'none',
   },
-  textfield: {
+  text_field: {
     width: '35ch',
     [theme.breakpoints.up('md')]: {
       width: '40ch',

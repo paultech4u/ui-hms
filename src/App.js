@@ -3,8 +3,6 @@ import { BrowserRouter, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
-
-// Local-files import
 import theme, { GlobalCss } from './theme';
 import { persistor } from './store';
 import { lazyload, Loading } from './common/Loading';

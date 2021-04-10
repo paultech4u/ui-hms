@@ -25,9 +25,9 @@ import { HospitalRoles } from '../constants';
 import AuthPreference from './AuthPreference';
 import { Progress } from '../common/Progress';
 import { useDispatch, useSelector } from 'react-redux';
-import {  registerAction } from './AuthRegSlice';
+import { registerAction } from './AuthRegSlice';
 import { FaUserShield, FaHospital, FaUserCog } from 'react-icons/fa';
-import { AuthCard, TextInput, PasswordInput, ActionButton } from './AuthCommon';
+import { AuthCard, AuthTextInput, AuthPasswordInput, AuthButton } from './AuthCommon';
 
 // let vertical = 'bottom';
 // let horizontal = 'left';
@@ -136,14 +136,7 @@ function Register(props) {
     validationSchema: regiterschema,
   });
 
-  const { isLoading } = useSelector((state) => {
-    return {
-      // open: state.reg.open,
-      isLoading: state.reg.isLoading,
-      // error: state.reg.error === null ? '' : state.reg.error,
-      // success: state.reg.success === null ? '' : state.reg.success,
-    };
-  });
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   // const toggleAlert = () => {
   //   dispatch(handleAlertClose(false));
@@ -201,13 +194,13 @@ function Register(props) {
             <Divider />
             <Box display='flex' justifyContent='flex-end' paddingY={10}>
               <Box paddingRight={10}>
-                <ActionButton disabled={current === 0} onClick={handlePrev}>
+                <AuthButton disabled={current === 0} onClick={handlePrev}>
                   Previous
-                </ActionButton>
+                </AuthButton>
               </Box>
               <Box paddingRight={10}>
                 {current === 2 ? (
-                  <ActionButton onClick={formik.handleSubmit}>
+                  <AuthButton onClick={formik.handleSubmit}>
                     {isLoading === 'pending' ? (
                       <Progress in={isLoading === 'pending'} unmountOnExit />
                     ) : null}
@@ -217,9 +210,9 @@ function Register(props) {
                       }}>
                       Submit
                     </Typography>
-                  </ActionButton>
+                  </AuthButton>
                 ) : (
-                  <ActionButton onClick={handleNext}>Next</ActionButton>
+                  <AuthButton onClick={handleNext}>Next</AuthButton>
                 )}
               </Box>
             </Box>
@@ -264,7 +257,7 @@ function HospitalForm(props) {
           flexDirection='column'
           paddingBottom={isDesktop ? 0 : 8}>
           <Typography variant='caption'>Name</Typography>
-          <TextInput
+          <AuthTextInput
             name='hospitalName'
             variant='filled'
             value={values.hospitalName}
@@ -283,7 +276,7 @@ function HospitalForm(props) {
           flexDirection='column'
           paddingLeft={isDesktop ? 10 : 0}>
           <Typography variant='caption'>Email</Typography>
-          <TextInput
+          <AuthTextInput
             name='hospitalEmail'
             variant='filled'
             value={values.hospitalEmail}
@@ -309,7 +302,7 @@ function HospitalForm(props) {
           flexDirection='column'
           paddingBottom={isDesktop ? 0 : 8}>
           <Typography variant='caption'>State</Typography>
-          <TextInput
+          <AuthTextInput
             name='state'
             variant='filled'
             value={values.state}
@@ -323,7 +316,7 @@ function HospitalForm(props) {
         </Box>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Address</Typography>
-          <TextInput
+          <AuthTextInput
             name='address'
             variant='filled'
             onInput={handleChange}
@@ -344,7 +337,7 @@ function HospitalForm(props) {
         marginY={8}>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Zip Code:</Typography>
-          <TextInput
+          <AuthTextInput
             name='zip_code'
             variant='filled'
             value={values.zip_code}
@@ -388,7 +381,7 @@ function AdminForm(props) {
           paddingBottom={isDesktop ? 0 : 8}
           paddingRight={isDesktop ? 10 : 0}>
           <Typography variant='caption'>Firstname</Typography>
-          <TextInput
+          <AuthTextInput
             name='firstname'
             variant='filled'
             value={values.firstname}
@@ -402,7 +395,7 @@ function AdminForm(props) {
         </Box>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Lastname</Typography>
-          <TextInput
+          <AuthTextInput
             name='lastname'
             variant='filled'
             value={values.lastname}
@@ -424,7 +417,7 @@ function AdminForm(props) {
         marginY={8}>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Email Address</Typography>
-          <TextInput
+          <AuthTextInput
             name='email'
             variant='filled'
             value={values.email}
@@ -438,7 +431,7 @@ function AdminForm(props) {
         </Box>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Password</Typography>
-          <PasswordInput
+          <AuthPasswordInput
             name='password'
             variant='filled'
             onInput={handleChange}
@@ -461,7 +454,7 @@ function AdminForm(props) {
           flexDirection='column'
           paddingBottom={isDesktop ? 0 : 8}>
           <Typography variant='caption'>Username</Typography>
-          <TextInput
+          <AuthTextInput
             name='username'
             variant='filled'
             value={values.username}
@@ -478,7 +471,7 @@ function AdminForm(props) {
           flexDirection='column'
           paddingBottom={isDesktop ? 0 : 8}>
           <Typography variant='caption'>Phone Number</Typography>
-          <TextInput
+          <AuthTextInput
             name='phone_number'
             variant='filled'
             value={values.phone_number}

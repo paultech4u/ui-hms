@@ -9,7 +9,7 @@ import {
   Backdrop,
   CircularProgress,
 } from '@material-ui/core';
-import { AuthCard, TextInput, ActionButton, AppAlert } from './AuthCommon';
+import { AuthCard, AuthTextInput, AuthButton } from './AuthCommon';
 import { Alert } from '@material-ui/lab';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -18,6 +18,7 @@ import { forgetPasswordAction, clearErrorAction } from './AuthStoreSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useQuery } from '../hooks';
+import { NotifitionAlert } from '../common/Alert';
 
 function ForgetPassword(props) {
   const styles = useStyles();
@@ -96,7 +97,7 @@ function ForgetPassword(props) {
       <Box padding={10}>
         <Box display='flex' flexDirection='column' paddingBottom={5}>
           <Typography variant='caption'>Email Address</Typography>
-          <TextInput
+          <AuthTextInput
             variant='outlined'
             name='email'
             errortext={
@@ -149,7 +150,7 @@ function ForgetPassword(props) {
           />
         </Box>
         <Box display='flex' justifyContent='center' marginY={10}>
-          <ActionButton onClick={formik.handleSubmit}>Save</ActionButton>
+          <AuthButton onClick={formik.handleSubmit}>Save</AuthButton>
         </Box>
       </Box>
       <Backdrop
@@ -157,12 +158,12 @@ function ForgetPassword(props) {
         className={styles.back_drop}>
         <CircularProgress color='inherit' />
       </Backdrop>
-      <AppAlert
+      <NotifitionAlert
         severity='error'
         open={error === null ? false : true}
         onClose={clearError}>
         {error === undefined ? 'Network Error' : error}
-      </AppAlert>
+      </NotifitionAlert>
     </AuthCard>
   );
 }
