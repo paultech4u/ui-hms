@@ -2,7 +2,8 @@ export const authRoute = {
   LOCK: '/lock',
   LOGIN: '/login',
   REGISTER: '/register',
-  FORGOTPASSWORD: '/forget-password',
+  REQUESTEMAIL: '/reset',
+  FORGOTPASSWORD: '/forgot-password',
 };
 
 export const hospitalRole = [

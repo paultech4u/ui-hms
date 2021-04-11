@@ -1,71 +1,62 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-// import clsx from 'clsx';
-import { useIsDesktop } from '../hooks';
-import { Box, makeStyles, IconButton } from '@material-ui/core';
-import { NavRouteButton } from './AuthCommon';
+import { AuthNavBarLink } from './AuthCommon';
+import { Box, makeStyles } from '@material-ui/core';
+import { useIsDesktop, useIsMobile } from '../hooks';
 import { useLocation, useHistory } from 'react-router-dom';
-import { MdFingerprint, MdPersonAdd, MdSort } from 'react-icons/md';
+import { MdFingerprint, MdPersonAdd } from 'react-icons/md';
 
-export function NavBar(props) {
-  const { toggleDrawer } = props;
+function AuthNavBar(props) {
   const styles = useStyles();
   const isDesktop = useIsDesktop();
+  const isMobile = useIsMobile();
   const location = useLocation();
   const history = useHistory();
 
   return (
     <Box
-      display='flex'
       flex={1}
+      display='flex'
       justifyContent='space-between'
       marginX={isDesktop ? 150 : 10}>
       <Box flex={1}>
         <Box display='flex' fontSize={19}>
-          <a href='/login' className={styles.navRoute_link}>
-            Login Page
+          <a href='/login' className={styles.logo_icon}>
+            Logo
           </a>
         </Box>
       </Box>
-      {isDesktop ? (
-        <Box display='flex' flex={1} justifyContent='center'>
-          <NavRouteButton
-            active={location.pathname === '/register'}
-            onClick={() => history.push('/register')}
-            icon={<MdPersonAdd size={20} className={styles.icon} />}
-            title='Register'
-          />
-          <NavRouteButton
-            active={location.pathname === '/login'}
-            onClick={() => history.push('/login')}
-            icon={<MdFingerprint size={20} className={styles.icon} />}
-            title='Login'
-          />
-        </Box>
-      ) : (
-        <Box>
-          <IconButton onClick={toggleDrawer}>
-            <MdSort />
-          </IconButton>
-        </Box>
-      )}
+      <Box display='flex' flex={1} justifyContent='space-around'>
+        <AuthNavBarLink
+          label='Register'
+          onClick={() => history.push('/register')}
+          isActive={location.pathname === '/register'}
+        />
+        <AuthNavBarLink
+          label='Login'
+          onClick={() => history.push('/login')}
+          isActive={location.pathname === '/login'}
+        />
+      </Box>
     </Box>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  navRoute_link: {
+  logo_icon: {
     padding: '15px',
     margin: '0 5px',
-    lineHeight: '20px',
     display: 'flex',
-    alignItems: 'center',
     cursor: 'pointer',
-    fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.common.black,
+    lineHeight: '20px',
+    alignItems: 'center',
     textDecoration: 'none',
+    color: theme.palette.common.black,
+    fontWeight: theme.typography.fontWeightBold,
   },
   icon: {
     marginRight: '5px',
   },
 }));
+
+export default AuthNavBar;

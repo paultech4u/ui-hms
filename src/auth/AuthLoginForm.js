@@ -1,17 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useFormik } from 'formik';
-import { Progress } from '../common/Progress';
-import { useLocation, useHistory, generatePath } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAction, clearErrorAction } from './AuthStoreSlice';
-import { Box, Typography, makeStyles, Fade, Link } from '@material-ui/core';
+import {
+  Box,
+  Typography,
+  makeStyles,
+  Link,
+  Backdrop,
+  CircularProgress,
+} from '@material-ui/core';
 import {
   AuthCard,
   AuthButton,
   AuthPasswordInput,
   AuthTextInput,
 } from './AuthCommon';
+import { MdArrowForward } from 'react-icons/md';
 import { NotifitionAlert } from '../common/Alert';
 
 const FormKeys = {
@@ -21,7 +28,6 @@ const FormKeys = {
 
 function AuthLogin(props) {
   const styles = useStyles();
-  const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -30,7 +36,7 @@ function AuthLogin(props) {
       [FormKeys.EMAIL]: '',
       [FormKeys.PASSWORD]: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: (values) => {
       const payload = {
         ...values,
       };
@@ -47,101 +53,80 @@ function AuthLogin(props) {
   };
 
   const handleForgetPassword = () => {
-    if (formik.values.email !== '') {
-      history.push({
-        pathname: '/forget-password',
-        search: `?email=${formik.values.email}`,
-      });
-    }
+    history.push('/reset');
   };
 
   return (
-    <form>
-      <Fade
-        style={{
-          transitionDelay: '600ms',
-          transitionTimingFunction: 'ease-in-out',
-        }}
-        in={location.pathname === '/login'}>
-        <div>
-          <AuthCard marginTop={30} display='flex' elevation={6}>
-            <Box
-              marginTop='-20px'
-              marginX={10}
-              padding={15}
-              bgcolor='primary.main'
-              borderRadius={6}
-              className={styles.authCard_header}>
-              <Typography variant='h6' className={styles.authCard_header_title}>
-                Log in
-              </Typography>
-            </Box>
-            <Box padding={10} display='flex' flexDirection='column'>
-              <Box>
-                <AuthTextInput
-                  variant='outlined'
-                  placeholder='Enter your email address'
-                  id='email'
-                  value={formik.values[FormKeys.EMAIL]}
-                  onInput={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </Box>
-              <Box marginTop={10}>
-                <AuthPasswordInput
-                  variant='outlined'
-                  onBlur={formik.handleBlur}
-                  value={formik.values[FormKeys.PASSWORD]}
-                  onInput={formik.handleChange}
-                />
-              </Box>
-            </Box>
-            <Box
-              display='flex'
-              justifyContent='center'
-              alignItems='center'
-              paddingTop={10}
-              marginBottom={10}>
-              <AuthButton
-                onClick={formik.handleSubmit}
-                disabled={
-                  formik.values.email.length <= 0 || isLoading === 'pending'
-                    ? true
-                    : false
-                }>
-                {isLoading === 'pending' ? (
-                  <Progress in={isLoading === 'pending'} unmountOnExit />
-                ) : null}
-                <Typography
-                  style={{
-                    paddingLeft: isLoading === 'pending' ? '10px' : 0,
-                  }}>
-                  Login
-                </Typography>
-              </AuthButton>
-            </Box>
-            <Box marginY={6}>
-              <Box flex={1} textAlign='center'>
-                <Link
-                  title='click to change password'
-                  onClick={handleForgetPassword}
-                  style={{
-                    cursor: 'pointer',
-                  }}>
-                  Reset your password?
-                </Link>
-              </Box>
-            </Box>
-          </AuthCard>
-          <NotifitionAlert
-            open={error === null ? false : true}
-            severity='error'
-            onClose={closeError}>
-            {error === undefined ? 'Network Error' : error}
-          </NotifitionAlert>
-        </div>
-      </Fade>
-    </form>
+    <div>
+      <AuthCard marginTop={30} display='flex' elevation={6}>
+        <Box
+          marginX={10}
+          padding={15}
+          borderRadius={6}
+          marginTop='-20px'
+          bgcolor='primary.main'
+          className={styles.authCard_header}>
+          <Typography variant='h6' className={styles.authCard_header_title}>
+            LOGIN
+          </Typography>
+        </Box>
+        <Box padding={10} display='flex' flexDirection='column'>
+          <Box>
+            <AuthTextInput
+              name='email'
+              variant='outlined'
+              onBlur={formik.handleBlur}
+              onInput={formik.handleChange}
+              value={formik.values[FormKeys.EMAIL]}
+              placeholder='JohnDoe@gmail.com'
+            />
+          </Box>
+          <Box marginTop={10}>
+            <AuthPasswordInput
+              variant='outlined'
+              onBlur={formik.handleBlur}
+              onInput={formik.handleChange}
+              value={formik.values[FormKeys.PASSWORD]}
+            />
+          </Box>
+        </Box>
+        <Box
+          display='flex'
+          paddingTop={10}
+          marginBottom={10}
+          alignItems='center'
+          justifyContent='center'>
+          <AuthButton
+            variant='contained'
+            endIcon={<MdArrowForward />}
+            onClick={formik.handleSubmit}
+            disabled={!formik.values[FormKeys.EMAIL] >= 1}>
+            Login
+          </AuthButton>
+        </Box>
+        <Box marginY={6}>
+          <Box flex={1} textAlign='center'>
+            <Link
+              style={{
+                cursor: 'pointer',
+              }}
+              title='click to change password'
+              onClick={handleForgetPassword}>
+              Reset your password?
+            </Link>
+          </Box>
+        </Box>
+      </AuthCard>
+      <Backdrop in={isLoading === 'pending'} className={styles.back_drop}>
+        <CircularProgress color='inherit' />
+      </Backdrop>
+      <NotifitionAlert
+        severity='error'
+        onClose={closeError}
+        open={error === null ? false : true}>
+        {error === undefined ? 'Network Error' : error}
+      </NotifitionAlert>
+    </div>
   );
 }
 
@@ -151,9 +136,13 @@ const useStyles = makeStyles((theme) => ({
   },
   authCard_header_title: {
     marginBottom: '3px',
-    fontWeight: theme.typography.fontWeightLight.valueOf(500),
-    color: theme.palette.common.white,
     textAlign: 'center',
+    color: theme.palette.common.white,
+    fontWeight: theme.typography.fontWeightLight.valueOf(500),
+  },
+  back_drop: {
+    color: '#fff',
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 

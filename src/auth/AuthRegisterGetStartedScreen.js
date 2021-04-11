@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIsDesktop } from '../hooks';
-import { Box, Typography, Button, makeStyles } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
 
 function GetStartedScreen(props) {
   const { toggleToFormScreen } = props;
@@ -12,6 +12,7 @@ function GetStartedScreen(props) {
       justifyContent='center'
       alignItems='center'
       flexDirection='column'
+      width='400px'
       padding={isDesktop ? 20 : 0}
       marginTop={18}>
       <Box paddingY={10}>
@@ -20,12 +21,6 @@ function GetStartedScreen(props) {
       <Box marginY={10}>
         <Box textAlign='center'>
           <Typography variant='h5'>Welcome to HMS!</Typography>
-          <Typography>
-            Your health is our piority, We care for your health!
-          </Typography>
-          <Typography>
-            To register click the button below to get started!
-          </Typography>
         </Box>
         <Box
           marginBottom={20}
@@ -43,7 +38,5 @@ function GetStartedScreen(props) {
     </Box>
   );
 }
-
-// const useStyles = makeStyles((theme) => ({}));
 
 export default GetStartedScreen;

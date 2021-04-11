@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import {
   Box,
   Paper,
@@ -9,8 +9,9 @@ import {
   InputAdornment,
   IconButton,
   makeStyles,
+  Button,
+  Typography,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
 export function AuthTextInput(props) {
@@ -19,10 +20,11 @@ export function AuthTextInput(props) {
 
   return (
     <TextField
+      size='small'
       error={error}
       value={value}
-      className={styles.text_field}
       helperText={errortext}
+      className={styles.text_field}
       {...others}
     />
   );
@@ -47,18 +49,22 @@ export function AuthPasswordInput(props) {
 
   return (
     <TextField
+      size='small'
       error={error}
-      id='password'
-      placeholder='*******'
-      type={showPassword ? 'text' : 'password'}
       value={value}
+      name='password'
+      placeholder='*****'
       helperText={errortext}
       className={styles.text_field}
+      type={showPassword ? 'text' : 'password'}
       InputProps={{
+
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton aria-label='toggle-password' onClick={toggleVisibility}>
-              {showPassword ? <MdVisibility /> : <MdVisibilityOff />}
+              <Typography variant='caption' color='primary'>
+                {showPassword ? 'SHOW' : 'HIDE'}
+              </Typography>
             </IconButton>
           </InputAdornment>
         ),
@@ -80,8 +86,8 @@ export function AuthCard(props) {
   return (
     <Box {...others}>
       <Paper
-        elevation={elevation}
         variant={variant}
+        elevation={elevation}
         className={clsx(props.paperClassName)}>
         {children}
       </Paper>
@@ -96,53 +102,35 @@ AuthCard.propTypes = {
 };
 
 export function AuthButton(props) {
+  const { children, ...rest } = props;
   return (
-    <Button variant='contained' color='primary' {...props}>
-      {props.children}
+    <Button color='primary' {...rest}>
+      {children}
     </Button>
   );
 }
 
-export function NavRouteButton(props) {
-  const { active, icon, title, ...others } = props;
-  const styles = useStyles(props);
+export function AuthNavBarLink(props) {
+  const { isActive, icon, label, ...others } = props;
+
   return (
-    <Box
-      display='flex'
-      alignItems='center'
-      fontSize={16}
-      marginX={8}
-      bgcolor={active ? 'primary.main' : null}
-      borderRadius='borderRadius'
-      {...others}>
-      <a className={styles.navRoute_link}>
-        {icon}
-        <Box>{title}</Box>
-      </a>
-    </Box>
+    <Button
+      {...others}
+      size='small'
+      color={isActive ? 'primary' : 'default'}
+      variant={isActive ? 'contained' : 'text'}>
+      {label}
+    </Button>
   );
 }
 
-NavRouteButton.propTypes = {
+AuthNavBarLink.propTypes = {
   active: PropTypes.bool,
   icon: PropTypes.element,
-  title: PropTypes.string,
+  label: PropTypes.string,
 };
 
 const useStyles = makeStyles((theme) => ({
-  navRoute_link: {
-    padding: '15px',
-    margin: '0 5px',
-    lineHeight: '20px',
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    flex: 1,
-    fontWeight: theme.typography.fontWeightBold,
-    color: (props) =>
-      props.active ? theme.palette.common.white : theme.palette.common.black,
-    textDecoration: 'none',
-  },
   text_field: {
     width: '30ch',
     [theme.breakpoints.up('md')]: {
