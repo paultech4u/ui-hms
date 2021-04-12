@@ -1,69 +1,48 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
-  AppBar,
-  Button,
   Fab,
   Box,
+  Badge,
+  AppBar,
+  Avatar,
+  Button,
   Toolbar,
   TextField,
-  Badge,
   IconButton,
   makeStyles,
-  MenuList,
-  MenuItem,
-  Popper,
-  Paper,
-  Grow,
-  ClickAwayListener,
 } from '@material-ui/core';
-import {
-  MdSort,
-  MdSearch,
-  MdNotifications,
-  MdPerson,
-  MdMoreVert,
-} from 'react-icons/md';
-import { useIsDesktop } from './hooks';
+import { useIsMobile } from './hooks';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { logoutAction } from './auth/AuthStoreSlice';
+import { MdSort, MdSearch, MdMoreVert, MdNotifications } from 'react-icons/md';
 
 function AppNavbar(props) {
-  const { drawer, handleDrawerOpen } = props;
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const isDesktop = useIsDesktop();
   const styles = useStyles();
-  const ProfileMenuRef = useRef(null);
-  const [openProfileMenu, setOpenProfileMenu] = useState(false);
-
-  const toggleProfileMenu = () => {
-    setOpenProfileMenu((prevmenu) => !prevmenu);
-  };
-
-  const toggleProfileMenuClose = () => {
-    setOpenProfileMenu(false);
-    return;
-  };
+  const history = useHistory();
+  const isMobile = useIsMobile();
+  const dispatch = useDispatch();
+  const { drawer, handleDrawerOpen } = props;
 
   const handleLogout = () => {
     dispatch(logoutAction());
-    setOpenProfileMenu(false);
     history.push('/login');
     return;
   };
 
   return (
     <AppBar
-      color='transparent'
-      position='static'
       elevation={0}
-      className={clsx(styles.appBarNav, { [styles.appBarNav_shift]: drawer })}>
-      <Toolbar className={styles.appBarNav_toolbar}>
-        {isDesktop ? (
-          <>
+      position='static'
+      color='transparent'
+      className={clsx(styles.appBar_nav, {
+        [styles.appBar_nav_shift]: drawer,
+      })}>
+      <Toolbar className={styles.appBar_nav_toolbar}>
+        {isMobile ? (
+          <React.Fragment>
             <Box display='flex' alignItems='center' marginLeft={7}>
               <Fab size='small' onClick={handleDrawerOpen}>
                 {drawer ? <MdSort size={20} /> : <MdMoreVert size={20} />}
@@ -71,7 +50,7 @@ function AppNavbar(props) {
             </Box>
             <Box display='flex' alignItems='center'>
               <Box display='flex' alignItems='center'>
-                <TextField variant='standard' placeholder='Search' />
+                <TextField variant='standard' placeholder='Search...' />
                 <Box display='flex' alignItems='center'>
                   <Fab size='small'>
                     <MdSearch size={20} />
@@ -86,39 +65,34 @@ function AppNavbar(props) {
                 </IconButton>
               </Box>
               <Box marginX={7}>
-                <IconButton
-                  ref={ProfileMenuRef}
-                  aria-controls={
-                    openProfileMenu ? 'profile-menu-list' : undefined
-                  }
-                  aria-haspopup='true'
-                  onClick={toggleProfileMenu}>
-                  <MdPerson />
-                </IconButton>
+                <Button
+                  size='small'
+                  color='primary'
+                  variant='contained'
+                  onClick={handleLogout}>
+                  Logout
+                </Button>
               </Box>
-              <ProfileMenu
-                open={openProfileMenu}
-                anchorRef={ProfileMenuRef}
-                handleLogout={handleLogout}
-                handleMenuClose={toggleProfileMenuClose}
-              />
             </Box>
-          </>
+          </React.Fragment>
         ) : (
-          <>
-            <Box marginLeft={8} display='flex'>
-              <Box paddingRight={7}>
-                <IconButton color='inherit' size='medium'>
-                  <MdSearch size={20} />
-                </IconButton>
-              </Box>
-            </Box>
-            <Box marginRight={8}>
+          <React.Fragment>
+            <Box>
               <IconButton aria-haspopup onClick={handleDrawerOpen}>
                 <MdSort size={20} />
               </IconButton>
             </Box>
-          </>
+            <Box marginLeft={8} display='flex'>
+              <TextField
+                size='small'
+                variant='outlined'
+                placeholder='Search...'
+              />
+            </Box>
+            <Box marginX={5}>
+              <Avatar style={{ width: 30, height: 30 }}>A</Avatar>
+            </Box>
+          </React.Fragment>
         )}
       </Toolbar>
     </AppBar>
@@ -130,57 +104,23 @@ AppNavbar.propTypes = {
   handleDrawerOpen: PropTypes.func,
 };
 
-function ProfileMenu(props) {
-  const { open, anchorRef, handleMenuClose, handleLogout } = props;
-  // const history = useHistory();
-
-  return (
-    <Box>
-      <Popper
-        open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
-        transition
-        placement='bottom-end'
-        disablePortal>
-        {({ TransitionProps, placement }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin:
-                placement === 'bottom-end' ? 'left center' : 'right top',
-            }}>
-            <Paper>
-              <ClickAwayListener onClickAway={handleMenuClose}>
-                <MenuList autoFocusItem={open} id='profile-menu-list'>
-                  {/* <MenuItem onClick={() => history.push('/account/profile')}>
-                    Profile
-                  </MenuItem> */}
-                  <MenuItem onClick={handleLogout}>Log out</MenuItem>
-                </MenuList>
-              </ClickAwayListener>
-            </Paper>
-          </Grow>
-        )}
-      </Popper>
-    </Box>
-  );
-}
-
 const useStyles = makeStyles((theme) => ({
-  appBarNav: {
+  appBar_nav: {
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    '& .MuiBox-root-690': {
+      marginLeft: 0,
+    },
   },
-  appBarNav_shift: {
+  appBar_nav_shift: {
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  appBarNav_toolbar: {
+  appBar_nav_toolbar: {
     justifyContent: 'space-between',
   },
 }));

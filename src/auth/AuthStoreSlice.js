@@ -24,14 +24,14 @@ export const forgetPasswordAction = createAsyncThunk(
 export const registerHosptialAction = createAsyncThunk(
   'auth/register_hospital',
   async (payload, thunkAPI) => {
-    return handleRequest(await addHospital(payload.hospital), thunkAPI);
+    return handleRequest(await addHospital(payload), thunkAPI);
   }
 );
 
 export const registerHospitalAdminAction = createAsyncThunk(
   'auth/register_admin',
   async (payload, thunkAPI) => {
-    return handleRequest(await addHospitalAdmin(payload.admin), thunkAPI);
+    return handleRequest(await addHospitalAdmin(payload), thunkAPI);
   }
 );
 
@@ -48,6 +48,9 @@ const authReducer = createSlice({
       : authStatus.UNAUTHENTICATED,
   },
   reducers: {
+    onSuccessful(state, action) {
+      state.isLoading = loadingStatus.IDLE;
+    },
     clearError,
   },
   extraReducers: (builder) =>
@@ -63,7 +66,6 @@ const authReducer = createSlice({
 
 const handleRequest = (response, thunkAPI) => {
   const { rejectWithValue } = thunkAPI;
-
   if (response.status === 500) {
     return rejectWithValue('Server error');
   } else if (response.status >= 300) {
@@ -84,7 +86,7 @@ function fulfilled(state, action) {
 
   state.accessToken = access_token;
   state.isAuthenticated = true;
-  state.isLoading = loadingStatus.IDLE;
+  state.isLoading = loadingStatus.SUCCESS;
 }
 
 function rejected(state, action) {
@@ -105,6 +107,9 @@ function clearError(state) {
   state.isLoading = loadingStatus.IDLE;
 }
 
-export const { clearError: clearErrorAction } = authReducer.actions;
+export const {
+  clearError: clearErrorAction,
+  onSuccessful: SuccessfullAction,
+} = authReducer.actions;
 
 export default authReducer.reducer;

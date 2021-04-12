@@ -182,7 +182,9 @@ function RegisterHospitalForm(props) {
           </Box>
           <Divider />
           <Box display='flex' justifyContent='flex-end' paddingY={5} pr={10}>
-            <AuthButton variant='contained'>Submit</AuthButton>
+            <AuthButton variant='contained' onClick={formik.handleSubmit}>
+              Submit
+            </AuthButton>
           </Box>
         </React.Fragment>
       ) : (

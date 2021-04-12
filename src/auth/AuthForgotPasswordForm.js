@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import {
   Box,
   TextField,
@@ -9,21 +10,20 @@ import {
   Backdrop,
   CircularProgress,
 } from '@material-ui/core';
-import { AuthCard, AuthTextInput, AuthButton } from './AuthCommon';
-import { Alert } from '@material-ui/lab';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { useQuery } from '../hooks';
+import { Alert } from '@material-ui/lab';
 import { MdCancel } from 'react-icons/md';
-import { forgetPasswordAction, clearErrorAction } from './AuthStoreSlice';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useQuery } from '../hooks';
 import { NotifitionAlert } from '../common/Alert';
+import { forgetPasswordAction, clearErrorAction } from './AuthStoreSlice';
+import { AuthCard, AuthTextInput, AuthButton } from './AuthCommon';
 
 function ForgetPassword(props) {
+  const query = useQuery();
   const styles = useStyles();
   const dispatch = useDispatch();
-  const query = useQuery();
   const [open, setOpen] = React.useState(false);
   const error = useSelector((state) => state.auth.error);
   const isLoading = useSelector((state) => state.auth.isLoading);
@@ -99,27 +99,29 @@ function ForgetPassword(props) {
           <Typography variant='caption'>Email Address</Typography>
           <AuthTextInput
             size='small'
-            variant='outlined'
             name='email'
+            variant='outlined'
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             errortext={
               !!formik.errors.email && formik.touched.email
                 ? formik.errors.email
                 : null
             }
             error={!!formik.errors.email && formik.touched.email}
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            onBlur={formik.handleBlur}
           />
         </Box>
         <Box display='flex' flexDirection='column' paddingBottom={5}>
           <Typography variant='caption'>New Password</Typography>
           <TextField
             size='small'
-            placeholder='*****'
             name='password'
             variant='outlined'
+            placeholder='*****'
             onBlur={formik.handleBlur}
+            className={styles.text_field}
+            value={formik.values.password}
             onChange={formik.handleChange}
             helperText={
               !!formik.errors.password && formik.touched.password
@@ -127,18 +129,17 @@ function ForgetPassword(props) {
                 : null
             }
             error={!!formik.errors.password && formik.touched.password}
-            value={formik.values.password}
-            className={styles.text_field}
           />
         </Box>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Comfirm Password</Typography>
           <TextField
             size='small'
-            placeholder='*****'
             variant='outlined'
+            placeholder='*****'
             name='comfirm_password'
             onBlur={formik.handleBlur}
+            className={styles.text_field}
             onChange={formik.handleChange}
             helperText={
               !!formik.errors.comfirm_password &&
@@ -151,11 +152,12 @@ function ForgetPassword(props) {
               formik.touched.comfirm_password
             }
             value={formik.values.comfirm_password}
-            className={styles.text_field}
           />
         </Box>
         <Box display='flex' justifyContent='center' marginY={10}>
-          <AuthButton onClick={formik.handleSubmit}>Save</AuthButton>
+          <AuthButton variant='contained' onClick={formik.handleSubmit}>
+            Reset
+          </AuthButton>
         </Box>
       </Box>
       <Backdrop

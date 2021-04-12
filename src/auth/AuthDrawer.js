@@ -16,9 +16,9 @@ export function DrawerBar(props) {
 
   return (
     <Drawer
-      anchor='right'
-      className={clsx(styles.drawer, { [styles.drawer_open]: open })}
+      anchor='left'
       open={isDesktop === true ? false : open}
+      className={clsx(styles.drawer, { [styles.drawer_open]: open })}
       onClose={close}>
       <Box display='flex' flex={1} flexDirection='column' paddingTop={10}>
         <NavRouteButton

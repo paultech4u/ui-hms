@@ -24,7 +24,6 @@ import {
   MdSettings,
   MdDashboard,
   MdPeople,
-  // MdPersonAdd,
 } from 'react-icons/md';
 import { ImLab } from 'react-icons/im';
 import { useHistory } from 'react-router-dom';
@@ -42,10 +41,9 @@ function AppDrawer(props) {
     2: false,
     3: false,
     4: false,
-    5: false,
   });
 
-  const toggleDrawerCollapesItem = (index) => {
+  const handleRouteItemCollapes = (index) => {
     switch (index) {
       case 1:
         setIsOpen({ 1: !isOpen[1] });
@@ -58,9 +56,6 @@ function AppDrawer(props) {
         break;
       case 4:
         setIsOpen({ 4: !isOpen[4] });
-        break;
-      case 5:
-        setIsOpen({ 5: !isOpen[5] });
         break;
       default:
         break;
@@ -75,7 +70,6 @@ function AppDrawer(props) {
         2: false,
         3: false,
         4: false,
-        5: false,
       }));
     }
   }, [drawer]);
@@ -96,124 +90,64 @@ function AppDrawer(props) {
           [styles.drawer_close]: !drawer,
         }),
       }}
-      anchor={isDesktop ? 'left' : 'right'}
-      variant={isDesktop ? 'permanent' : 'temporary'}
-      hideBackdrop={isDesktop ? true : false}>
+      hideBackdrop={isDesktop ? true : false}
+      variant={isDesktop ? 'permanent' : 'temporary'}>
       <Box
+        paddingY={10}
         display='flex'
         alignItems='center'
-        justifyContent='center'
-        paddingY={10}>
+        justifyContent='center'>
         <img src={Logo} alt='Logo' width={35} height={35} />
         {drawer && <Typography variant='h5'>Creative</Typography>}
       </Box>
       <Divider />
       <Box>
-        {/* collapes item 1 */}
         <List>
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(1)}>
-            <ListItemIcon>
+          <DrawerItemCollapes
+            label='JohnDoe'
+            open={isOpen[1]}
+            showExpandIcon={drawer}
+            className={styles.routeList_item}
+            onClick={() => handleRouteItemCollapes(1)}
+            icon={
               <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
                 A
               </Avatar>
-            </ListItemIcon>
-            <ListItemText primary='John Doe' />
-            {isOpen[1] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[1]}>
-            <DrawerRouteItem
+            }>
+            <DrawerItem
               icon={<MdPerson size={20} />}
               onClick={() => history.push('/account/profile')}
               label='Profile'
             />
-            <DrawerRouteItem icon={<MdSettings size={20} />} label='Setting' />
-          </DrawerRouteItemCollapes>
-        </List>
-      </Box>
-      <Divider />
-      <Box>
-        <List>
-          <DrawerRouteItem icon={<MdDashboard size={20} />} label='Dashboard' />
-          <DrawerRouteItem icon={<FaUserMd size={20} />} label='Doctors' />
-          <DrawerRouteItem icon={<FaWheelchair size={20} />} label='Patients' />
-          {/* collapes item list 2 */}
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(2)}>
-            <ListItemIcon>
-              <MdPeople size={20} />
-            </ListItemIcon>
-            <ListItemText primary='Users' />
-            {isOpen[2] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[2]}>
-            <DrawerRouteItem icon={<MdPerson size={20} />} label='Nurses' />
-            <DrawerRouteItem icon={<MdPerson size={20} />} label='Pharmacist' />
-            <DrawerRouteItem icon={<MdPerson size={20} />} label='Laboraties' />
-          </DrawerRouteItemCollapes>
-          {/* collapes item 3 */}
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(3)}>
-            <ListItemIcon>
-              <FaFirstAid size={20} />
-            </ListItemIcon>
-            <ListItemText primary='Medicine' />
-            {isOpen[3] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[3]}>
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Medicines'
-            />
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Categories'
-            />
-          </DrawerRouteItemCollapes>
-          {/*  collapes item 4 */}
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(4)}>
-            <ListItemIcon>
-              <ImLab size={20} />
-            </ListItemIcon>
-            <ListItemText primary='Labs' />
-            {isOpen[4] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[4]}>
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Patients test'
-            />
-          </DrawerRouteItemCollapes>
-          {/* collapes item 5 */}
-          <ListItem
-            button
-            component='li'
-            onClick={() => toggleDrawerCollapesItem(5)}>
-            <ListItemIcon>
-              <BiHotel size={20} />
-            </ListItemIcon>
-            <ListItemText primary='Beds' />
-            {isOpen[5] ? <MdExpandMore /> : <MdExpandLess />}
-          </ListItem>
-          <DrawerRouteItemCollapes open={isOpen[5]}>
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Beds Allocation'
-            />
-            <DrawerRouteItem
-              icon={<BiRadioCircle size={20} />}
-              label='Beds Categories'
-            />
-          </DrawerRouteItemCollapes>
+            <DrawerItem icon={<MdSettings size={20} />} label='Setting' />
+          </DrawerItemCollapes>
+          <Divider />
+          <Box marginTop={5}>
+            <React.Fragment>
+              {routeItem.map(({ icon, label }, index) => (
+                <DrawerItem key={index} icon={icon} label={label} />
+              ))}
+            </React.Fragment>
+            <React.Fragment>
+              {routeItemCollapes.map(({ icon, label, item, index }) => (
+                <DrawerItemCollapes
+                  icon={icon}
+                  key={index}
+                  label={label}
+                  open={isOpen[index]}
+                  showExpandIcon={drawer}
+                  onClick={() => handleRouteItemCollapes(index)}>
+                  {item.map((item, index) => (
+                    <DrawerItem
+                      key={index}
+                      icon={item.icon}
+                      label={item.label}
+                    />
+                  ))}
+                </DrawerItemCollapes>
+              ))}
+            </React.Fragment>
+          </Box>
         </List>
       </Box>
     </Drawer>
@@ -227,8 +161,9 @@ AppDrawer.propTypes = {
 
 export default AppDrawer;
 
-function DrawerRouteItem(props) {
+function DrawerItem(props) {
   const { icon, label, ...others } = props;
+
   return (
     <ListItem component='li' button {...others}>
       <ListItemIcon>{icon}</ListItemIcon>
@@ -237,24 +172,66 @@ function DrawerRouteItem(props) {
   );
 }
 
-DrawerRouteItem.propTypes = {
+DrawerItem.propTypes = {
   icon: PropTypes.element,
   label: PropTypes.string.isRequired,
 };
 
-function DrawerRouteItemCollapes(props) {
-  const { children, open } = props;
+function DrawerItemCollapes(props) {
+  const { open, icon, label, children, showExpandIcon, ...others } = props;
+
   return (
-    <Collapse in={open} timeout='auto' unmountOnExit>
-      {children}
-    </Collapse>
+    <React.Fragment>
+      <ListItem button {...others}>
+        <ListItemIcon>{icon}</ListItemIcon>
+        <ListItemText primary={label} disableTypography />
+        <Box display={showExpandIcon === true ? 'flex' : 'none'}>
+          {open === true ? <MdExpandMore /> : <MdExpandLess />}
+        </Box>
+      </ListItem>
+      <Collapse in={open} timeout='auto' unmountOnExit>
+        {children}
+      </Collapse>
+    </React.Fragment>
   );
 }
 
-DrawerRouteItemCollapes.propTypes = {
+DrawerItemCollapes.propTypes = {
   open: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
+
+const routeItem = [
+  { icon: <MdDashboard size={20} />, label: 'Dashboard' },
+  { icon: <FaUserMd size={20} />, label: 'Doctor' },
+  { icon: <FaWheelchair size={20} />, label: 'Patients' },
+  { icon: <FaFirstAid size={20} />, label: 'Medicine' },
+];
+
+const routeItemCollapes = [
+  {
+    index: 2,
+    icon: <MdPeople size={20} />,
+    label: 'Users',
+    item: [
+      { icon: <MdPerson size={20} />, label: 'Nurses' },
+      { icon: <MdPerson size={20} />, label: 'Pharmacist' },
+      { icon: <MdPerson size={20} />, label: 'Laboraties' },
+    ],
+  },
+  {
+    index: 3,
+    icon: <ImLab size={20} />,
+    label: 'Labs',
+    item: [{ icon: <BiRadioCircle size={20} />, label: 'Patients Test' }],
+  },
+  {
+    index: 4,
+    icon: <BiHotel size={20} />,
+    label: 'Beds',
+    item: [{ icon: <BiRadioCircle size={20} />, label: 'Beds Categories' }],
+  },
+];
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -268,19 +245,28 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   drawer_close: {
+    width: 70,
+    overflowX: 'hidden',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: 'hidden',
-    width: 70,
-    // [theme.breakpoints.up('sm')]: {
-    //   width: theme.spacing(9) + 1,
-    // },
+    '& .MuiListItemText-root': {
+      display: 'none',
+    },
+    '& .MuiListItemIcon-root': {
+      minWidth: '16px',
+    },
+    '& .MuiListItem-root': {
+      justifyContent: 'center',
+    },
+  },
+  routeList_item: {
+    marginBottom: 10,
   },
   avatar: {
-    color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
+    color: theme.palette.getContrastText(deepPurple[500]),
   },
   avatar_small: {
     width: 25,

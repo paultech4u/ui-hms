@@ -1,17 +1,20 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
+import { SuccessfullAction } from '../auth/AuthStoreSlice';
 import { NotifitionAlert } from '../common/Alert';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Dashboard(props) {
+  const dispatch = useDispatch();
   const [openAlert, setOpenAlert] = React.useState(false);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isLoading = useSelector((state) => state.auth.isLoading);
 
   React.useEffect(() => {
-    if (isAuthenticated === true) {
-      setOpenAlert((p) => !p);
+    if (isLoading === 'success') {
+      setOpenAlert((previous) => !previous);
+      dispatch(SuccessfullAction());
     }
-  }, [isAuthenticated]);
+  }, [isLoading, dispatch]);
 
   const handleAlertClose = () => {
     setOpenAlert(false);
