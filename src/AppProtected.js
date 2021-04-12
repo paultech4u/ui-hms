@@ -36,12 +36,11 @@ function AppProtected(props) {
       <AppDrawer drawer={isOpen} handleDrawerClose={toggleDrawerClose} />
       <Box
         flex={1}
-        maxHeight={1}
         display='flex'
         flexDirection='column'
         className={styles.main_content}>
         <AppNavbar drawer={isOpen} handleDrawerOpen={toggleDrawerOpen} />
-        <Box>
+        <Box height={1}>
           <Switch>
             <Route exact path={PageRoute.PROFILE} component={Profile} />
             <Route exact path={PageRoute.DASHBOARD} component={Dashboard} />

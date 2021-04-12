@@ -25,16 +25,20 @@ import {
   MdDashboard,
   MdPeople,
 } from 'react-icons/md';
+import Logo from './logo.svg';
 import { ImLab } from 'react-icons/im';
 import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { BiHotel, BiRadioCircle } from 'react-icons/bi';
 import { FaUserMd, FaWheelchair, FaFirstAid } from 'react-icons/fa';
-
-import Logo from './logo.svg';
+import { getProfileDetailAction } from './profile/ProfileStoreSlice';
 
 function AppDrawer(props) {
-  const { drawer, handleDrawerClose } = props;
+  const styles = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const isDesktop = useIsDesktop();
+  const { drawer, handleDrawerClose } = props;
 
   const [isOpen, setIsOpen] = React.useState({
     1: false,
@@ -74,8 +78,13 @@ function AppDrawer(props) {
     }
   }, [drawer]);
 
-  const styles = useStyles();
-  const isDesktop = useIsDesktop();
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
+  const getProfile = ({ [accessToken]: token }) => {
+    history.push('/account/profile');
+    dispatch(getProfileDetailAction(token));
+  };
+
   return (
     <Drawer
       open={drawer}
@@ -116,7 +125,7 @@ function AppDrawer(props) {
             }>
             <DrawerItem
               icon={<MdPerson size={20} />}
-              onClick={() => history.push('/account/profile')}
+              onClick={getProfile}
               label='Profile'
             />
             <DrawerItem icon={<MdSettings size={20} />} label='Setting' />

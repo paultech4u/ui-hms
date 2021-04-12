@@ -56,9 +56,9 @@ function Profile(props) {
 
   return (
     <Box
+      height={1}
       display='flex'
       alignItems='center'
-      marginTop={20}
       padding={isMobile ? 0 : 10}
       justifyContent='space-around'
       flexDirection={isMobile ? 'row' : 'column'}>
@@ -121,7 +121,10 @@ function Profile(props) {
           </Box>
         </Box>
       </CustomCard>
-      <CustomCard elevation={2} variant='elevation'>
+      <CustomCard
+        elevation={2}
+        variant='elevation'
+        className={styles.details_card}>
         <Box display='flex'>
           <Box
             padding={8}
@@ -139,18 +142,20 @@ function Profile(props) {
             display='flex'
             alignItems='center'
             justifyContent='space-between'>
-            <Typography>Profile</Typography>
+            <Typography variant='caption'>Profile</Typography>
             <FormControlLabel
               label='Edit mode'
               control={
                 <Switch
                   name='edit'
+                  size='small'
                   value={formik.values.edit}
                   checked={formik.values.edit}
                   onChange={formik.handleChange}
                 />
               }
-              labelPlacement={isMobile ? 'bottom' : 'end'}
+              className={styles.switch_control}
+              labelPlacement={isMobile ? 'end' : 'bottom'}
             />
           </Box>
         </Box>
@@ -201,10 +206,11 @@ function Profile(props) {
           paddingBottom={8}
           marginRight={8}>
           <Button
-            disabled={!formik.values.edit}
-            onClick={formik.handleSubmit}
+            size='small'
+            color='primary'
             variant='contained'
-            color='primary'>
+            onClick={formik.handleSubmit}
+            disabled={!formik.values.edit}>
             Update profile
           </Button>
         </Box>
@@ -249,7 +255,25 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.20)',
   },
   avatar_card: {
+    width: 200,
     marginBottom: 50,
+    [theme.breakpoints.down('sm')]: {
+      width: 300,
+      marginBottom: 50,
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 'auto',
+      marginBottom: 0,
+    },
+  },
+  details_card: {
+    width: 200,
+    [theme.breakpoints.down('sm')]: {
+      width: 300,
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 'auto',
+    },
   },
   avatar_content: {
     position: 'absolute',
@@ -264,6 +288,11 @@ const useStyles = makeStyles((theme) => ({
   avatar_large: {
     width: 200,
     height: 200,
+  },
+  switch_control: {
+    '& .MuiFormControlLabel-label': {
+      fontSize: 12,
+    },
   },
   divider: {
     padding: '0px 15px 15px 15px',

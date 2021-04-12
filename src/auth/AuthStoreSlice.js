@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import {
   login,
-  forgetPassword,
   addHospital,
+  forgetPassword,
   addHospitalAdmin,
-} from './AuthAPI';
+} from '../api/AuthAPI';
 import { authStatus, loadingStatus } from '../constants';
 
 export const loginAction = createAsyncThunk(
