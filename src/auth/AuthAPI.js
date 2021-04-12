@@ -32,7 +32,7 @@ http.interceptors.response.use(
  */
 export async function login(payload) {
   try {
-    const response = await http.post('/login', payload, { timeout: 6000 });
+    const response = await http.post('/login', payload, { timeout: 2000 });
     return response;
   } catch (error) {
     return error;

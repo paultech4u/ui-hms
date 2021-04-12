@@ -6,20 +6,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginAction, clearErrorAction } from './AuthStoreSlice';
 import {
   Box,
-  Typography,
-  makeStyles,
   Link,
   Backdrop,
+  Typography,
+  makeStyles,
   CircularProgress,
 } from '@material-ui/core';
 import {
   AuthCard,
   AuthButton,
-  AuthPasswordInput,
   AuthTextInput,
+  AuthPasswordInput,
 } from './AuthCommon';
 import { MdArrowForward } from 'react-icons/md';
 import { NotifitionAlert } from '../common/Alert';
+import { useIsDesktop } from '../hooks';
 
 const FormKeys = {
   EMAIL: 'email',
@@ -30,6 +31,7 @@ function AuthLogin(props) {
   const styles = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const isDesktop = useIsDesktop();
 
   const formik = useFormik({
     initialValues: {
@@ -52,13 +54,16 @@ function AuthLogin(props) {
     dispatch(clearErrorAction());
   };
 
-  const handleForgetPassword = () => {
+  const handleEmailRequest = () => {
     history.push('/reset');
   };
 
   return (
-    <div>
-      <AuthCard marginTop={30} display='flex' elevation={6}>
+    <Box>
+      <AuthCard
+        elevation={6}
+        marginTop={30}
+        paperclassname={styles.authCard_paper}>
         <Box
           marginX={10}
           padding={15}
@@ -70,8 +75,13 @@ function AuthLogin(props) {
             LOGIN
           </Typography>
         </Box>
-        <Box padding={10} display='flex' flexDirection='column'>
-          <Box>
+        <Box
+          padding={10}
+          display='flex'
+          alignItems='center'
+          flexDirection='column'>
+          <Box className={styles.textField}>
+            <Typography variant='caption'>Email</Typography>
             <AuthTextInput
               name='email'
               variant='outlined'
@@ -81,7 +91,8 @@ function AuthLogin(props) {
               placeholder='JohnDoe@gmail.com'
             />
           </Box>
-          <Box marginTop={10}>
+          <Box marginTop={10} className={styles.textField}>
+            <Typography variant='caption'>Password</Typography>
             <AuthPasswordInput
               variant='outlined'
               onBlur={formik.handleBlur}
@@ -104,20 +115,20 @@ function AuthLogin(props) {
             Login
           </AuthButton>
         </Box>
-        <Box marginY={6}>
-          <Box flex={1} textAlign='center'>
-            <Link
-              style={{
-                cursor: 'pointer',
-              }}
-              title='click to change password'
-              onClick={handleForgetPassword}>
-              Reset your password?
-            </Link>
-          </Box>
+        <Box flex={1} textAlign='center' paddingY={6}>
+          <Link
+            style={{
+              cursor: 'pointer',
+            }}
+            title='click to change password'
+            onClick={handleEmailRequest}>
+            Reset your password?
+          </Link>
         </Box>
       </AuthCard>
-      <Backdrop in={isLoading === 'pending'} className={styles.back_drop}>
+      <Backdrop
+        in={isLoading === 'pending' ? true : false}
+        className={styles.back_drop}>
         <CircularProgress color='inherit' />
       </Backdrop>
       <NotifitionAlert
@@ -126,11 +137,20 @@ function AuthLogin(props) {
         open={error === null ? false : true}>
         {error === undefined ? 'Network Error' : error}
       </NotifitionAlert>
-    </div>
+    </Box>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
+  authCard_paper: {
+    width: '300px',
+    [theme.breakpoints.up('sm')]: {
+      width: '400px',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '400px',
+    },
+  },
   authCard_header: {
     boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.14)',
   },
@@ -143,6 +163,10 @@ const useStyles = makeStyles((theme) => ({
   back_drop: {
     color: '#fff',
     zIndex: theme.zIndex.drawer + 1,
+  },
+  textField: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
 

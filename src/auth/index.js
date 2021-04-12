@@ -27,7 +27,7 @@ function AuthPage(props) {
           <AuthNavBar />
         </Box>
       )}
-      <Box flex={1} display='flex' justifyContent='center' alignItems='center'>
+      <Box flex={1} display='flex' alignItems='center' justifyContent='center'>
         <Switch>
           <Route path={authRoute.LOGIN} component={LoginForm} />
           <Route path={authRoute.REGISTER} component={HospitalForm} />

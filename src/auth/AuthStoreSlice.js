@@ -89,10 +89,11 @@ function fulfilled(state, action) {
 
 function rejected(state, action) {
   if (action.payload === 'undefined' || action.error.name === 'TypeError') {
-    state.error = null;
+    state.error = undefined;
+    state.isLoading = loadingStatus.IDLE;
   } else {
-    state.error = action.payload.message;
     state.isAuthenticated = false;
+    state.error = action.payload.message;
     state.isLoading = loadingStatus.IDLE;
   }
 }

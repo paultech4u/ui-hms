@@ -6,5 +6,5 @@ export function PasswordInput(props) {
 }
 
 export function TextInput(props) {
-  return <TextField type='text' InputLabelProps={{shrink: true}} {...props} />;
+  return <TextField type='text' {...props} />;
 }

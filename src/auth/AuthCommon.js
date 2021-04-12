@@ -12,11 +12,10 @@ import {
   Button,
   Typography,
 } from '@material-ui/core';
-import { MdVisibility, MdVisibilityOff } from 'react-icons/md';
 
 export function AuthTextInput(props) {
-  const { value, error, errortext, ...others } = props;
   const styles = useStyles();
+  const { value, error, errortext, ...others } = props;
 
   return (
     <TextField
@@ -58,7 +57,6 @@ export function AuthPasswordInput(props) {
       className={styles.text_field}
       type={showPassword ? 'text' : 'password'}
       InputProps={{
-
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton aria-label='toggle-password' onClick={toggleVisibility}>
@@ -88,7 +86,7 @@ export function AuthCard(props) {
       <Paper
         variant={variant}
         elevation={elevation}
-        className={clsx(props.paperClassName)}>
+        className={clsx(props.paperclassname)}>
         {children}
       </Paper>
     </Box>

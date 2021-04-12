@@ -1,20 +1,16 @@
 import React from 'react';
-import { useIsDesktop } from '../hooks';
 import { Box, Typography, Button } from '@material-ui/core';
 
 function GetStartedScreen(props) {
   const { toggleToFormScreen } = props;
-  const isDesktop = useIsDesktop();
 
   return (
     <Box
       display='flex'
-      justifyContent='center'
+      marginTop={18}
       alignItems='center'
       flexDirection='column'
-      width='400px'
-      padding={isDesktop ? 20 : 0}
-      marginTop={18}>
+      justifyContent='center'>
       <Box paddingY={10}>
         <Typography>Logo</Typography>
       </Box>
@@ -23,9 +19,9 @@ function GetStartedScreen(props) {
           <Typography variant='h5'>Welcome to HMS!</Typography>
         </Box>
         <Box
-          marginBottom={20}
-          marginTop={10}
           display='flex'
+          marginTop={10}
+          marginBottom={20}
           justifyContent='center'>
           <Button
             color='primary'

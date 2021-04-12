@@ -2,14 +2,12 @@
 import React from 'react';
 import { AuthNavBarLink } from './AuthCommon';
 import { Box, makeStyles } from '@material-ui/core';
-import { useIsDesktop, useIsMobile } from '../hooks';
+import { useIsDesktop } from '../hooks';
 import { useLocation, useHistory } from 'react-router-dom';
-import { MdFingerprint, MdPersonAdd } from 'react-icons/md';
 
 function AuthNavBar(props) {
   const styles = useStyles();
   const isDesktop = useIsDesktop();
-  const isMobile = useIsMobile();
   const location = useLocation();
   const history = useHistory();
 
