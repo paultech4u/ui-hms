@@ -2,18 +2,19 @@ import React, { useLayoutEffect, useState } from 'react';
 import AppNavbar from './AppNavbar';
 import AppDrawer from './AppDrawer';
 import {
-  successfulAction,
+  successAction,
   getProfileDetailAction,
 } from './profile/ProfileStoreSlice';
 import { useIsMobile } from './hooks';
 import { pageRoute } from './constants';
 import { lazyload } from './common/Loading';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
-const Dashboard = lazyload(() => import('./dashboard'));
 const Profile = lazyload(() => import('./profile'));
+const Dashboard = lazyload(() => import('./dashboard'));
+const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
 
 function AppProtected(props) {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function AppProtected(props) {
       if (profile === null) {
         dispatch(getProfileDetailAction(accessToken));
         var timer = setTimeout(() => {
-          dispatch(successfulAction());
+          dispatch(successAction());
         }, 2000);
         return;
       }
@@ -54,17 +55,22 @@ function AppProtected(props) {
     return () => clearTimeout(timer);
   }, [profile, location.pathname, accessToken, dispatch]);
 
+  const showBackground = location.state && location.state.background;
+
   return (
     <Box display='flex' height={1}>
       <AppDrawer drawer={isOpen} handleDrawerClose={toggleDrawerClose} />
       <Box flex={1} display='flex' flexDirection='column'>
         <AppNavbar drawer={isOpen} handleDrawerOpen={toggleDrawerOpen} />
         <main style={{ flex: 1, overflowY: 'auto' }}>
-          <Switch>
+          <Switch location={showBackground || location}>
             <Route exact path={pageRoute.PROFILE} component={Profile} />
             <Route exact path={pageRoute.DASHBOARD} component={Dashboard} />
             <Redirect to={pageRoute.DASHBOARD} />
           </Switch>
+          {showBackground && (
+            <Route path={pageRoute.EDITPROFILE} component={EditProfile} />
+          )}
         </main>
       </Box>
     </Box>

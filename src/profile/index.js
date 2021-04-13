@@ -18,11 +18,14 @@ import { CustomCard } from '../common/Card';
 import { StyledButton } from '../common/Button';
 import { MdPersonOutline } from 'react-icons/md';
 import ProfilePictureUploadMenu from './ProfileUploadMenu';
+import { useHistory, useLocation } from 'react-router';
 // import { Alert } from '@material-ui/lab';
 // import { toggleEditMode } from './ProfileSlice';
 
 function Profile(props) {
   const styles = useStyles();
+  const history = useHistory();
+  const location = useLocation();
   const isMobile = useIsMobile();
   const uploadMenuRef = React.useRef(null);
   const [openUploadMenu, setOpenUploadMenu] = React.useState(false);
@@ -130,7 +133,15 @@ function Profile(props) {
               alignItems='center'
               justifyContent='space-between'>
               <Typography variant='caption'>Profile</Typography>
-              <StyledButton variant='outlined' color='primary'>
+              <StyledButton
+                color='primary'
+                variant='outlined'
+                onClick={() =>
+                  history.push({
+                    pathname: '/profile/edit',
+                    state: { background: location },
+                  })
+                }>
                 Edit profile
               </StyledButton>
             </Box>
@@ -156,7 +167,7 @@ function Profile(props) {
                 <Box display='flex' flexDirection={isMobile ? 'row' : 'column'}>
                   <ProfileListDetails
                     type='Hospital'
-                    payload='National Hospital,Abuja'
+                    payload='National Hospital, Abuja'
                   />
                   <ProfileListDetails
                     type='Username'
@@ -203,7 +214,11 @@ function ProfileListDetails(props) {
       <Box>
         <Typography>{type}</Typography>
       </Box>
-      <Box padding={3} width={isMobile ? 200 : 250} border='solid 2px #8256DE'>
+      <Box
+        padding={3}
+        overflow='auto'
+        border='solid 2px #8256DE'
+        width={isMobile ? 200 : 280}>
         <Typography>{payload}</Typography>
       </Box>
     </Box>
@@ -213,22 +228,6 @@ function ProfileListDetails(props) {
 const useStyles = makeStyles((theme) => ({
   profile_header_icon: {
     boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.20)',
-  },
-  text_field: {
-    width: '25ch',
-    [theme.breakpoints.up('md')]: {
-      width: '30ch',
-    },
-  },
-  text_field_item: {
-    display: 'flex',
-    justifyContent: 'center',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-  },
-  text_field_item_child: {
-    paddingTop: '20px',
-    marginBottom: '15px',
   },
   avatar: {
     color: 'white',
@@ -271,11 +270,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('md')]: {
       width: 200,
       height: 200,
-    },
-  },
-  switch_control: {
-    '& .MuiFormControlLabel-label': {
-      fontSize: 12,
     },
   },
   divider: {

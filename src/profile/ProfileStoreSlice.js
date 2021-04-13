@@ -18,7 +18,7 @@ const ProfileReducer = createSlice({
     isLoading: loadingStatus.IDLE,
   },
   reducers: {
-    onSuccessful(state, action) {
+    success(state, action) {
       state.isLoading = loadingStatus.IDLE;
     },
     clearError,
@@ -72,7 +72,7 @@ function clearError(state) {
 
 export const {
   clearError: clearErrorAction,
-  successful: successfulAction,
+  success: successAction,
 } = ProfileReducer.actions;
 
 export default ProfileReducer.reducer;

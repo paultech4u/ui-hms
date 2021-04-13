@@ -4,19 +4,22 @@ import {
   Box,
   Button,
   Dialog,
+  Typography,
   makeStyles,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Typography,
 } from '@material-ui/core';
 import { useFormik } from 'formik';
 // import { useIsMobile } from '../hooks';
 import { useSelector } from 'react-redux';
 import { TextInput } from '../common/TextInput';
+import { useHistory, useLocation } from 'react-router';
 
 function EditProfile(props) {
   const styles = useStyles();
+  const history = useHistory();
+  const location = useLocation();
 
   const profile = useSelector((state) => state.profile.user);
 
@@ -33,17 +36,25 @@ function EditProfile(props) {
     },
   });
 
+  const cancle = (e) => {
+    e.stopPropagation();
+    history.goBack();
+  };
+
   return (
-    <Dialog open={false}>
+    <Dialog
+      fullWidth
+      onClose={cancle}
+      open={location.pathname === '/profile/edit'}>
       <DialogTitle>Edit Profile</DialogTitle>
-      <DialogContent>
+      <DialogContent dividers>
         <Box display='flex' flexDirection='column'>
-          <Box marginBottom={5}>
+          <Box marginBottom={5} display='flex' flexDirection='column'>
             <Typography variant='caption'>Hospital</Typography>
-            <TextInput disabled placeholder='Hospital (disabled)' />
+            <TextInput disabled value='National Hospital, Abuja' />
           </Box>
 
-          <Box marginBottom={5}>
+          <Box marginBottom={5} display='flex' flexDirection='column'>
             <Typography variant='caption'>Firstname</Typography>
             <TextInput
               name='firstname'
@@ -52,7 +63,7 @@ function EditProfile(props) {
               className={clsx(styles.text_field)}
             />
           </Box>
-          <Box>
+          <Box marginBottom={5} display='flex' flexDirection='column'>
             <Typography variant='caption'>Lastname</Typography>
             <TextInput
               name='lastname'
@@ -61,7 +72,7 @@ function EditProfile(props) {
               className={clsx(styles.text_field)}
             />
           </Box>
-          <Box marginBottom={5}>
+          <Box marginBottom={5} display='flex' flexDirection='column'>
             <Typography variant='caption'>Username</Typography>
             <TextInput
               name='username'
@@ -69,7 +80,7 @@ function EditProfile(props) {
               value={formik.values.username}
             />
           </Box>
-          <Box marginBottom={5}>
+          <Box display='flex' flexDirection='column'>
             <Typography variant='caption'>Email</Typography>
             <TextInput
               name='email'
@@ -80,7 +91,9 @@ function EditProfile(props) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button color='primary'>Cancle</Button>
+        <Button color='primary' onClick={cancle}>
+          Cancle
+        </Button>
         <Button color='primary'>Save</Button>
       </DialogActions>
     </Dialog>

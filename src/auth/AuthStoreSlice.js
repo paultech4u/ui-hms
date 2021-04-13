@@ -49,7 +49,7 @@ const authReducer = createSlice({
       : authStatus.UNAUTHENTICATED,
   },
   reducers: {
-    onSuccessful(state, action) {
+    success(state, action) {
       state.isLoading = loadingStatus.IDLE;
     },
     clearError,
@@ -114,7 +114,7 @@ function clearError(state) {
 
 export const {
   clearError: clearErrorAction,
-  successful: successfulAction,
+  success: successAction,
 } = authReducer.actions;
 
 export default authReducer.reducer;

@@ -13,9 +13,10 @@ export const hospitalRole = [
 ];
 
 export const pageRoute = {
-  DASHBOARD: '/dashboard',
-  REGISTER: '/register',
   PROFILE: '/profile',
+  REGISTER: '/register',
+  DASHBOARD: '/dashboard',
+  EDITPROFILE: '/profile/edit',
 };
 
 export const ProfileRoute = {

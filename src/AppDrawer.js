@@ -137,8 +137,13 @@ function AppDrawer(props) {
           <Divider />
           <Box marginTop={5}>
             <React.Fragment>
-              {routeItem.map(({ icon, label }, index) => (
-                <DrawerItem key={index} icon={icon} label={label} />
+              {routeItem.map(({ icon, label, link }, index) => (
+                <DrawerItem
+                  key={index}
+                  icon={icon}
+                  label={label}
+                  onClick={() => history.push(link)}
+                />
               ))}
             </React.Fragment>
             <React.Fragment>
@@ -224,7 +229,7 @@ DrawerItemCollapes.propTypes = {
 };
 
 const routeItem = [
-  { icon: <MdDashboard size={20} />, label: 'Dashboard' },
+  { icon: <MdDashboard size={20} />, label: 'Dashboard', link: '/dashboard' },
   { icon: <FaUserMd size={20} />, label: 'Doctor' },
   { icon: <FaWheelchair size={20} />, label: 'Patients' },
   { icon: <FaFirstAid size={20} />, label: 'Medicine' },
