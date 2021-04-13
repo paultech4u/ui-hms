@@ -1,22 +1,21 @@
 import React from 'react';
 import clsx from 'clsx';
 import {
-  Avatar,
   Box,
-  makeStyles,
-  TextField,
-  Typography,
-  FormControlLabel,
-  Switch,
-  Button,
-  IconButton,
+  Avatar,
   Divider,
+  Backdrop,
+  Typography,
+  makeStyles,
+  IconButton,
+  CircularProgress,
 } from '@material-ui/core';
-import { useFormik } from 'formik';
-import { useIsDesktop, useIsMobile } from '../hooks';
+import { useIsMobile } from '../hooks';
+import EditProfile from './ProfileEdit';
 import { HiCamera } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import { CustomCard } from '../common/Card';
+import { StyledButton } from '../common/Button';
 import { MdPersonOutline } from 'react-icons/md';
 import ProfilePictureUploadMenu from './ProfileUploadMenu';
 // import { Alert } from '@material-ui/lab';
@@ -25,11 +24,11 @@ import ProfilePictureUploadMenu from './ProfileUploadMenu';
 function Profile(props) {
   const styles = useStyles();
   const isMobile = useIsMobile();
-
-  const { edit } = useSelector((state) => state.profile);
-
   const uploadMenuRef = React.useRef(null);
   const [openUploadMenu, setOpenUploadMenu] = React.useState(false);
+
+  const profile = useSelector((state) => state.profile.user);
+  const isLoading = useSelector((state) => state.profile.isLoading);
 
   const onOpenUploadMenu = () => {
     setOpenUploadMenu(true);
@@ -41,190 +40,171 @@ function Profile(props) {
     return;
   };
 
-  const formik = useFormik({
-    initialValues: {
-      edit: edit,
-      email: '',
-      username: '',
-      firstname: '',
-      lastname: '',
-    },
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
-
   return (
-    <Box
-      height={1}
-      display='flex'
-      alignItems='center'
-      padding={isMobile ? 0 : 10}
-      justifyContent='space-around'
-      flexDirection={isMobile ? 'row' : 'column'}>
-      <CustomCard
-        className={styles.avatar_card}
-        elevation={2}
-        variant='elevation'>
-        <Box display='flex' flexDirection='column'>
-          <Box
-            marginX={10}
-            display='flex'
-            marginTop='-50px'
-            justifyContent='center'>
-            <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
+    <Box paddingTop={30}>
+      <Box
+        height={1}
+        display='flex'
+        flexDirection={isMobile ? 'row' : 'column'}
+        alignItems={isMobile ? 'flex-start' : 'center'}
+        justifyContent={isMobile ? 'space-around' : 'normal'}>
+        <CustomCard
+          elevation={2}
+          variant='elevation'
+          className={styles.avatar_card}>
+          <Box display='flex' flexDirection='column'>
             <Box
-              className={clsx(
-                styles.avatar,
-                styles.avatar_large,
-                styles.avatar_content
-              )}>
+              marginX={10}
+              display='flex'
+              marginTop='-50px'
+              justifyContent='center'>
+              <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
               <Box
-                flex={1}
-                display='flex'
-                borderRadius='50%'
-                alignItems='center'
-                flexDirection='column'
-                justifyContent='center'>
-                <IconButton
-                  ref={uploadMenuRef}
-                  aria-haspopup='true'
-                  onClick={onOpenUploadMenu}
-                  aria-controls={openUploadMenu ? 'upload-menu' : undefined}>
-                  <HiCamera color='#fff' />
-                </IconButton>
-                <Box fontSize={2}>
-                  <Typography align='center' variant='caption'>
-                    CHANGE <br /> PROFILE <br /> PICTURE
-                  </Typography>
+                className={clsx(
+                  styles.avatar,
+                  styles.avatar_large,
+                  styles.avatar_content
+                )}>
+                <Box
+                  flex={1}
+                  display='flex'
+                  borderRadius='50%'
+                  alignItems='center'
+                  flexDirection='column'
+                  justifyContent='center'>
+                  <IconButton
+                    ref={uploadMenuRef}
+                    aria-haspopup='true'
+                    onClick={onOpenUploadMenu}
+                    aria-controls={openUploadMenu ? 'upload-menu' : undefined}>
+                    <HiCamera color='#fff' />
+                  </IconButton>
+                  <Box fontSize={2}>
+                    <Typography align='center' variant='caption'>
+                      CHANGE <br /> PROFILE <br /> PICTURE
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
+              <ProfilePictureUploadMenu
+                open={openUploadMenu}
+                anchorRef={uploadMenuRef}
+                handleMenuClose={onCloseUploadMenu}
+              />
             </Box>
-            <ProfilePictureUploadMenu
-              open={openUploadMenu}
-              anchorRef={uploadMenuRef}
-              handleMenuClose={onCloseUploadMenu}
-            />
+            <Box
+              padding={8}
+              marginTop={2}
+              display='flex'
+              alignItems='center'
+              flexDirection='column'>
+              <Typography variant='caption' style={{ margin: '9px 0' }}>
+                {profile === null ? 'admin' : profile.role.toUpperCase()}
+              </Typography>
+              <Typography variant='caption' style={{ marginBottom: '3px' }}>
+                {profile === null ? 'JohnDoe' : profile.username}
+              </Typography>
+            </Box>
           </Box>
-          <Box
-            padding={8}
-            marginTop={2}
-            display='flex'
-            alignItems='center'
-            flexDirection='column'>
-            <Typography variant='caption' style={{ margin: '9px 0' }}>
-              Role
-            </Typography>
-            <Typography variant='caption' style={{ marginBottom: '3px' }}>
-              Admin Name
-            </Typography>
+        </CustomCard>
+        <CustomCard
+          elevation={2}
+          variant='elevation'
+          className={styles.details_card}>
+          <Box display='flex' paddingBottom={4}>
+            <Box
+              padding={8}
+              marginX={10}
+              display='flex'
+              borderRadius={3}
+              marginTop='-20px'
+              bgcolor='primary.main'
+              className={clsx(styles.profile_header_icon)}>
+              <MdPersonOutline size={30} />
+            </Box>
+            <Box
+              pr={5}
+              flex={1}
+              marginTop={7}
+              display='flex'
+              alignItems='center'
+              justifyContent='space-between'>
+              <Typography variant='caption'>Profile</Typography>
+              <StyledButton variant='outlined' color='primary'>
+                Edit profile
+              </StyledButton>
+            </Box>
           </Box>
-        </Box>
-      </CustomCard>
-      <CustomCard
-        elevation={2}
-        variant='elevation'
-        className={styles.details_card}>
-        <Box display='flex'>
-          <Box
-            padding={8}
-            marginX={10}
-            display='flex'
-            borderRadius={3}
-            marginTop='-20px'
-            bgcolor='primary.main'
-            className={clsx(styles.profile_header_icon)}>
-            <MdPersonOutline size={30} />
-          </Box>
-          <Box
-            flex={1}
-            marginTop={7}
-            display='flex'
-            alignItems='center'
-            justifyContent='space-between'>
-            <Typography variant='caption'>Profile</Typography>
-            <FormControlLabel
-              label='Edit mode'
-              control={
-                <Switch
-                  name='edit'
-                  size='small'
-                  value={formik.values.edit}
-                  checked={formik.values.edit}
-                  onChange={formik.handleChange}
-                />
-              }
-              className={styles.switch_control}
-              labelPlacement={isMobile ? 'end' : 'bottom'}
-            />
-          </Box>
-        </Box>
-        <Box display='flex' flexDirection={isMobile ? 'row' : 'column'}>
-          <TextInput disabled placeholder='Hospital (disabled)' />
-          <TextInput
-            name='email'
-            placeholder='Email address'
-            onChange={formik.handleChange}
-            value={formik.values.email}
-            disabled={!formik.values.edit}
-          />
-          <TextInput
-            name='username'
-            placeholder='Username'
-            onChange={formik.handleChange}
-            value={formik.values.username}
-            disabled={!formik.values.edit}
-          />
-        </Box>
-        <Box
-          display='flex'
-          justifyContent='space-between'
-          flexDirection={isMobile ? 'row' : 'column'}>
-          <TextInput
-            name='firstname'
-            placeholder='Firstname'
-            disabled={!formik.values.edit}
-            onChange={formik.handleChange}
-            value={formik.values.firstname}
-            className={clsx(styles.text_field)}
-          />
-          <TextInput
-            name='lastname'
-            placeholder='Lastname'
-            value={formik.values.lastname}
-            onChange={formik.handleChange}
-            disabled={!formik.values.edit}
-            className={clsx(styles.text_field)}
-          />
-        </Box>
-        <Box className={styles.divider}>
           <Divider />
-        </Box>
-        <Box
-          display='flex'
-          justifyContent='flex-end'
-          paddingBottom={8}
-          marginRight={8}>
-          <Button
-            size='small'
-            color='primary'
-            variant='contained'
-            onClick={formik.handleSubmit}
-            disabled={!formik.values.edit}>
-            Update profile
-          </Button>
-        </Box>
-      </CustomCard>
+          <Box display='flex' flexDirection='column' marginTop={4}>
+            {[profile].map((profile, index) => (
+              <React.Fragment key={index}>
+                <Box
+                  display='flex'
+                  flexWrap='wrap'
+                  justifyContent='space-between'
+                  flexDirection={isMobile ? 'row' : 'column'}>
+                  <ProfileListDetails
+                    type='Firstname'
+                    payload={profile === null ? 'John' : profile.firstname}
+                  />
+                  <ProfileListDetails
+                    type='Lastname'
+                    payload={profile === null ? 'Doe' : profile.lastname}
+                  />
+                </Box>
+                <Box display='flex' flexDirection={isMobile ? 'row' : 'column'}>
+                  <ProfileListDetails
+                    type='Hospital'
+                    payload='National Hospital,Abuja'
+                  />
+                  <ProfileListDetails
+                    type='Username'
+                    payload={profile === null ? 'JohnDoe' : profile.username}
+                  />
+                </Box>
+                <Box display='flex' flexDirection={isMobile ? 'row' : 'column'}>
+                  <ProfileListDetails
+                    type='Role'
+                    payload={profile === null ? 'Admin' : profile.role}
+                  />
+                  <ProfileListDetails
+                    type='Email'
+                    payload={
+                      profile === null ? 'JohnDoe@email.com' : profile.email
+                    }
+                  />
+                </Box>
+              </React.Fragment>
+            ))}
+          </Box>
+        </CustomCard>
+        <EditProfile />
+        <Backdrop
+          in={isLoading === 'pending' ? true : false}
+          className={styles.back_drop}>
+          <CircularProgress color='inherit' />
+        </Backdrop>
+      </Box>
     </Box>
   );
 }
 
-function TextInput(props) {
-  const style = useStyles();
+function ProfileListDetails(props) {
+  const isMobile = useIsMobile();
+  const { type, payload, ...others } = props;
+
   return (
-    <Box className={style.text_field_item}>
-      <Box className={style.text_field_item_child}>
-        <TextField {...props} />
+    <Box
+      {...others}
+      display='flex'
+      flexDirection='column'
+      margin={isMobile ? 10 : 5}>
+      <Box>
+        <Typography>{type}</Typography>
+      </Box>
+      <Box padding={3} width={isMobile ? 200 : 250} border='solid 2px #8256DE'>
+        <Typography>{payload}</Typography>
       </Box>
     </Box>
   );
@@ -262,7 +242,7 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 50,
     },
     [theme.breakpoints.up('md')]: {
-      width: 'auto',
+      width: 350,
       marginBottom: 0,
     },
   },
@@ -286,8 +266,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar_large: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
+    [theme.breakpoints.up('md')]: {
+      width: 200,
+      height: 200,
+    },
   },
   switch_control: {
     '& .MuiFormControlLabel-label': {
@@ -296,6 +280,10 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     padding: '0px 15px 15px 15px',
+  },
+  back_drop: {
+    color: '#fff',
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 

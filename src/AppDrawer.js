@@ -1,9 +1,17 @@
 import React from 'react';
 import clsx from 'clsx';
-import PropTypes from 'prop-types';
+import {
+  MdExpandLess,
+  MdExpandMore,
+  MdPerson,
+  MdSettings,
+  MdDashboard,
+  MdPeople,
+} from 'react-icons/md';
 import {
   Box,
   Drawer,
+  Button,
   makeStyles,
   List,
   ListItem,
@@ -14,31 +22,27 @@ import {
   Avatar,
   Collapse,
 } from '@material-ui/core';
-import { DrawerWidth } from './constants';
-import { useIsDesktop } from './hooks';
-import { deepPurple } from '@material-ui/core/colors';
-import {
-  MdExpandLess,
-  MdExpandMore,
-  MdPerson,
-  MdSettings,
-  MdDashboard,
-  MdPeople,
-} from 'react-icons/md';
 import Logo from './logo.svg';
+import PropTypes from 'prop-types';
 import { ImLab } from 'react-icons/im';
+import { DrawerWidth } from './constants';
 import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useIsDesktop, useIsMobile } from './hooks';
+import { logoutAction } from './auth/AuthStoreSlice';
+import { deepPurple } from '@material-ui/core/colors';
+import { useSelector, useDispatch } from 'react-redux';
 import { BiHotel, BiRadioCircle } from 'react-icons/bi';
 import { FaUserMd, FaWheelchair, FaFirstAid } from 'react-icons/fa';
-import { getProfileDetailAction } from './profile/ProfileStoreSlice';
 
 function AppDrawer(props) {
   const styles = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
+  const isMobile = useIsMobile();
   const isDesktop = useIsDesktop();
   const { drawer, handleDrawerClose } = props;
+
+  const username = useSelector((state) => state.auth.username);
 
   const [isOpen, setIsOpen] = React.useState({
     1: false,
@@ -66,6 +70,12 @@ function AppDrawer(props) {
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    history.push('/login');
+    return;
+  };
+
   React.useLayoutEffect(() => {
     if (drawer === false) {
       setIsOpen((p) => ({
@@ -77,13 +87,6 @@ function AppDrawer(props) {
       }));
     }
   }, [drawer]);
-
-  const accessToken = useSelector((state) => state.auth.accessToken);
-
-  const getProfile = ({ [accessToken]: token }) => {
-    history.push('/account/profile');
-    dispatch(getProfileDetailAction(token));
-  };
 
   return (
     <Drawer
@@ -113,11 +116,11 @@ function AppDrawer(props) {
       <Box>
         <List>
           <DrawerItemCollapes
-            label='JohnDoe'
             open={isOpen[1]}
             showExpandIcon={drawer}
             className={styles.routeList_item}
             onClick={() => handleRouteItemCollapes(1)}
+            label={username === null ? 'cksse88' : username}
             icon={
               <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
                 A
@@ -125,11 +128,12 @@ function AppDrawer(props) {
             }>
             <DrawerItem
               icon={<MdPerson size={20} />}
-              onClick={getProfile}
+              onClick={() => history.push('/profile')}
               label='Profile'
             />
             <DrawerItem icon={<MdSettings size={20} />} label='Setting' />
           </DrawerItemCollapes>
+
           <Divider />
           <Box marginTop={5}>
             <React.Fragment>
@@ -158,6 +162,15 @@ function AppDrawer(props) {
             </React.Fragment>
           </Box>
         </List>
+        <Box justifyContent='center' display={isMobile ? 'none' : 'flex'}>
+          <Button
+            size='small'
+            color='primary'
+            variant='contained'
+            onClick={handleLogout}>
+            Logout
+          </Button>
+        </Box>
       </Box>
     </Drawer>
   );

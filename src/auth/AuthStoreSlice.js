@@ -41,6 +41,7 @@ const authReducer = createSlice({
   name: 'auth',
   initialState: {
     error: null,
+    username: null,
     accessToken: null,
     isLoading: loadingStatus.IDLE,
     isAuthenticated: false
@@ -77,15 +78,17 @@ const handleRequest = (response, thunkAPI) => {
 
 function pending(state, action) {
   state.error = null;
+  state.username = null;
   state.accessToken = null;
   state.isLoading = loadingStatus.PENDING;
 }
 
 function fulfilled(state, action) {
-  const { access_token } = action.payload;
+  const { access_token, username } = action.payload;
 
-  state.accessToken = access_token;
+  state.username = username;
   state.isAuthenticated = true;
+  state.accessToken = access_token;
   state.isLoading = loadingStatus.SUCCESS;
 }
 
@@ -94,6 +97,7 @@ function rejected(state, action) {
     state.error = undefined;
     state.isLoading = loadingStatus.IDLE;
   } else {
+    state.username = null;
     state.isAuthenticated = false;
     state.error = action.payload.message;
     state.isLoading = loadingStatus.IDLE;
@@ -102,6 +106,7 @@ function rejected(state, action) {
 
 function clearError(state) {
   state.error = null;
+  state.username = null;
   state.accessToken = null;
   state.isAuthenticated = false;
   state.isLoading = loadingStatus.IDLE;
@@ -109,7 +114,7 @@ function clearError(state) {
 
 export const {
   clearError: clearErrorAction,
-  onSuccessful: SuccessfullAction,
+  successful: successfulAction,
 } = authReducer.actions;
 
 export default authReducer.reducer;

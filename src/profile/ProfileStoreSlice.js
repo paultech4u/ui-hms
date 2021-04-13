@@ -1,9 +1,10 @@
 import { getProfileDetails } from '../api';
 import { loadingStatus } from '../constants';
+import { logoutAction } from '../auth/AuthStoreSlice';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getProfileDetailAction = createAsyncThunk(
-  'auth/register_admin',
+  'auth/get-profile',
   async (payload, thunkAPI) => {
     return handleRequest(await getProfileDetails(payload), thunkAPI);
   }
@@ -17,13 +18,17 @@ const ProfileReducer = createSlice({
     isLoading: loadingStatus.IDLE,
   },
   reducers: {
+    onSuccessful(state, action) {
+      state.isLoading = loadingStatus.IDLE;
+    },
     clearError,
   },
   extraReducers: (builder) =>
     builder
       .addCase(getProfileDetailAction.pending, pending)
       .addCase(getProfileDetailAction.fulfilled, fulfilled)
-      .addCase(getProfileDetailAction.rejected, rejected),
+      .addCase(getProfileDetailAction.rejected, rejected)
+      .addCase(logoutAction, clearError),
 });
 
 const handleRequest = (response, thunkAPI) => {
@@ -43,7 +48,8 @@ function pending(state, action) {
 }
 
 function fulfilled(state, action) {
-  state.user = action.payload;
+  const { profile } = action.payload;
+  state.user = profile;
   state.isLoading = loadingStatus.SUCCESS;
 }
 
@@ -59,10 +65,14 @@ function rejected(state, action) {
 }
 
 function clearError(state) {
+  state.user = null;
   state.error = null;
   state.isLoading = loadingStatus.IDLE;
 }
 
-export const { clearError: clearErrorAction } = ProfileReducer.actions;
+export const {
+  clearError: clearErrorAction,
+  successful: successfulAction,
+} = ProfileReducer.actions;
 
 export default ProfileReducer.reducer;

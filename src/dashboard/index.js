@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import { SuccessfullAction } from '../auth/AuthStoreSlice';
 import { NotifitionAlert } from '../common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
+import { successfulAction } from '../auth/AuthStoreSlice';
 
 function Dashboard(props) {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ function Dashboard(props) {
   React.useEffect(() => {
     if (isLoading === 'success') {
       setOpenAlert((previous) => !previous);
-      dispatch(SuccessfullAction());
+      dispatch(successfulAction());
     }
   }, [isLoading, dispatch]);
 

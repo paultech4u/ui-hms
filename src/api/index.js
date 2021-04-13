@@ -32,17 +32,12 @@ http.interceptors.response.use(
  * @param {object} payload credentials
  */
 export async function getProfileDetails(token) {
-  console.log(token)
   try {
-    const response = await http.get(
-      '/get-profile',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await http.get('/get-profile', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response;
   } catch (error) {
     return error;

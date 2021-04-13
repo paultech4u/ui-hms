@@ -12,10 +12,10 @@ export const hospitalRole = [
   { value: 'DOCTOR' },
 ];
 
-export const PageRoute = {
+export const pageRoute = {
   DASHBOARD: '/dashboard',
-  REGISTER: '/register/user',
-  PROFILE: '/account/profile',
+  REGISTER: '/register',
+  PROFILE: '/profile',
 };
 
 export const ProfileRoute = {

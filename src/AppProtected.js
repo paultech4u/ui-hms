@@ -1,18 +1,24 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Box, makeStyles } from '@material-ui/core';
 import AppNavbar from './AppNavbar';
 import AppDrawer from './AppDrawer';
+import {
+  successfulAction,
+  getProfileDetailAction,
+} from './profile/ProfileStoreSlice';
+import { useIsMobile } from './hooks';
+import { pageRoute } from './constants';
 import { lazyload } from './common/Loading';
-import { PageRoute } from './constants';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { useIsDesktop, useIsMobile } from './hooks';
+import { Box, makeStyles } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
 const Dashboard = lazyload(() => import('./dashboard'));
 const Profile = lazyload(() => import('./profile'));
 
 function AppProtected(props) {
-  const styles = useStyles();
+  const dispatch = useDispatch();
   const isMobile = useIsMobile();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleDrawerOpen = () => {
@@ -31,31 +37,38 @@ function AppProtected(props) {
     }
   }, [isMobile]);
 
+  const profile = useSelector((state) => state.profile.user);
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
+  // get user profile
+  React.useEffect(() => {
+    if (location.pathname === pageRoute.PROFILE) {
+      if (profile === null) {
+        dispatch(getProfileDetailAction(accessToken));
+        var timer = setTimeout(() => {
+          dispatch(successfulAction());
+        }, 2000);
+        return;
+      }
+    }
+    return () => clearTimeout(timer);
+  }, [profile, location.pathname, accessToken, dispatch]);
+
   return (
     <Box display='flex' height={1}>
       <AppDrawer drawer={isOpen} handleDrawerClose={toggleDrawerClose} />
-      <Box
-        flex={1}
-        display='flex'
-        flexDirection='column'
-        className={styles.main_content}>
+      <Box flex={1} display='flex' flexDirection='column'>
         <AppNavbar drawer={isOpen} handleDrawerOpen={toggleDrawerOpen} />
-        <Box height={1}>
+        <main style={{ flex: 1, overflowY: 'auto' }}>
           <Switch>
-            <Route exact path={PageRoute.PROFILE} component={Profile} />
-            <Route exact path={PageRoute.DASHBOARD} component={Dashboard} />
-            <Redirect to={PageRoute.DASHBOARD} />
+            <Route exact path={pageRoute.PROFILE} component={Profile} />
+            <Route exact path={pageRoute.DASHBOARD} component={Dashboard} />
+            <Redirect to={pageRoute.DASHBOARD} />
           </Switch>
-        </Box>
+        </main>
       </Box>
     </Box>
   );
 }
-
-const useStyles = makeStyles({
-  main_content: {
-    overflowX: 'scroll',
-  },
-});
 
 export default AppProtected;
