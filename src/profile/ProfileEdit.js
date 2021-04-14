@@ -25,7 +25,6 @@ function EditProfile(props) {
 
   const formik = useFormik({
     initialValues: {
-      edit: false,
       email: profile === null ? '' : profile.email,
       username: profile === null ? '' : profile.username,
       lastname: profile === null ? '' : profile.lastname,
@@ -94,7 +93,9 @@ function EditProfile(props) {
         <Button color='primary' onClick={cancle}>
           Cancle
         </Button>
-        <Button color='primary'>Save</Button>
+        <Button color='primary' onClick={formik.handleSubmit}>
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );

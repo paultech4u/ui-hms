@@ -3,12 +3,13 @@ import clsx from 'clsx';
 import {
   Box,
   Avatar,
+  Button,
   Divider,
   Backdrop,
   Typography,
   makeStyles,
-  IconButton,
   CircularProgress,
+  TextField,
 } from '@material-ui/core';
 import { useIsMobile } from '../hooks';
 import EditProfile from './ProfileEdit';
@@ -62,38 +63,6 @@ function Profile(props) {
               marginTop='-50px'
               justifyContent='center'>
               <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
-              <Box
-                className={clsx(
-                  styles.avatar,
-                  styles.avatar_large,
-                  styles.avatar_content
-                )}>
-                <Box
-                  flex={1}
-                  display='flex'
-                  borderRadius='50%'
-                  alignItems='center'
-                  flexDirection='column'
-                  justifyContent='center'>
-                  <IconButton
-                    ref={uploadMenuRef}
-                    aria-haspopup='true'
-                    onClick={onOpenUploadMenu}
-                    aria-controls={openUploadMenu ? 'upload-menu' : undefined}>
-                    <HiCamera color='#fff' />
-                  </IconButton>
-                  <Box fontSize={2}>
-                    <Typography align='center' variant='caption'>
-                      CHANGE <br /> PROFILE <br /> PICTURE
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-              <ProfilePictureUploadMenu
-                open={openUploadMenu}
-                anchorRef={uploadMenuRef}
-                handleMenuClose={onCloseUploadMenu}
-              />
             </Box>
             <Box
               padding={8}
@@ -107,6 +76,25 @@ function Profile(props) {
               <Typography variant='caption' style={{ marginBottom: '3px' }}>
                 {profile === null ? 'JohnDoe' : profile.username}
               </Typography>
+            </Box>
+            <Box display='flex' justifyContent='center' paddingBottom={10}>
+              <Button
+                size='small'
+                color='primary'
+                variant='outlined'
+                ref={uploadMenuRef}
+                aria-haspopup='true'
+                endIcon={<HiCamera />}
+                onClick={onOpenUploadMenu}
+                style={{ textTransform: 'revert' }}
+                aria-controls={openUploadMenu ? 'upload-menu' : undefined}>
+                Change picture
+              </Button>
+              <ProfilePictureUploadMenu
+                open={openUploadMenu}
+                anchorRef={uploadMenuRef}
+                handleMenuClose={onCloseUploadMenu}
+              />
             </Box>
           </Box>
         </CustomCard>
@@ -211,16 +199,7 @@ function ProfileListDetails(props) {
       display='flex'
       flexDirection='column'
       margin={isMobile ? 10 : 5}>
-      <Box>
-        <Typography>{type}</Typography>
-      </Box>
-      <Box
-        padding={3}
-        overflow='auto'
-        border='solid 2px #8256DE'
-        width={isMobile ? 200 : 280}>
-        <Typography>{payload}</Typography>
-      </Box>
+      <TextField label={type} value={payload} disabled />
     </Box>
   );
 }
@@ -247,6 +226,9 @@ const useStyles = makeStyles((theme) => ({
   },
   details_card: {
     width: 200,
+    '& .MuiInputBase-input': {
+      color: '#000',
+    },
     [theme.breakpoints.down('sm')]: {
       width: 300,
     },

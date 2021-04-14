@@ -1,9 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useFormik } from 'formik';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginAction, clearErrorAction } from './AuthStoreSlice';
 import {
   Box,
   Link,
@@ -20,7 +17,9 @@ import {
 } from './AuthCommon';
 import { MdArrowForward } from 'react-icons/md';
 import { NotifitionAlert } from '../common/Alert';
-import { useIsDesktop } from '../hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
+import { loginAction, clearErrorAction } from './AuthStoreSlice';
 
 const FormKeys = {
   EMAIL: 'email',
@@ -30,8 +29,8 @@ const FormKeys = {
 function AuthLogin(props) {
   const styles = useStyles();
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
-  const isDesktop = useIsDesktop();
 
   const formik = useFormik({
     initialValues: {
@@ -55,7 +54,7 @@ function AuthLogin(props) {
   };
 
   const handleEmailRequest = () => {
-    history.push('/reset');
+    history.push({ pathname: '/reset', state: { background: location } });
   };
 
   return (

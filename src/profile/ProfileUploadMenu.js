@@ -9,10 +9,12 @@ import {
   Grow,
   ClickAwayListener,
 } from '@material-ui/core';
+import { useIsMobile } from "../hooks"
 
 function ProfilePictureUploadMenu(props) {
-  const { open, anchorRef, handleMenuClose } = props;
+  const isMobile = useIsMobile()
   const FileSelector = React.useRef(null);
+  const { open, anchorRef, handleMenuClose } = props;
 
   const handleFileChange = (e) => {
     const uploadedPic = e.target.files[0];
@@ -27,12 +29,12 @@ function ProfilePictureUploadMenu(props) {
     <Box>
       <Popper
         open={open}
-        anchorEl={anchorRef.current}
-        role={undefined}
         transition
-        placement='bottom-start'
-        style={{ top: "20px"}}
-        disablePortal>
+        disablePortal
+        role={undefined}
+        style={{ top: '20px' }}
+        placement={isMobile ? 'right-start' : 'bottom-end'}
+        anchorEl={anchorRef.current}>
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
@@ -48,9 +50,9 @@ function ProfilePictureUploadMenu(props) {
                   </MenuItem>
                   <input
                     type='file'
-                    style={{ display: 'none' }}
-                    onChange={handleFileChange}
                     ref={FileSelector}
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
                   />
                   <MenuItem>Remove photo</MenuItem>
                 </MenuList>

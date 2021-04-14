@@ -25,8 +25,6 @@ function EmailRequest(props) {
   //   const error = useSelector((state) => state.auth.error);
   //   const isLoading = useSelector((state) => state.auth.isLoading);
 
-  const [open, setOpen] = React.useState(false);
-
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email().required('Field is required'),
   });
@@ -42,14 +40,8 @@ function EmailRequest(props) {
     },
   });
 
-  React.useEffect(() => {
-    if (location.pathname === authRoute.REQUESTEMAIL) {
-      setOpen((previous) => !previous);
-    }
-  }, [location.pathname]);
-
-  const handleCancle = () => {
-    setOpen((previous) => !previous);
+  const cancle = (e) => {
+    e.stopPropagation();
     history.push('/login');
   };
 
@@ -58,7 +50,7 @@ function EmailRequest(props) {
   //   };
 
   return (
-    <Dialog open={open} onBackdropClick={handleCancle} onClose={handleCancle}>
+    <Dialog fullWidth open={location.pathname === '/reset'} onClose={cancle}>
       <DialogTitle>Send Email Request</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -82,18 +74,11 @@ function EmailRequest(props) {
         />
       </DialogContent>
       <DialogActions>
-        <AuthButton onClick={handleCancle}>Cancle</AuthButton>
+        <AuthButton onClick={cancle}>Cancle</AuthButton>
         <AuthButton onClick={formik.handleSubmit}>Request</AuthButton>
       </DialogActions>
     </Dialog>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  back_drop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-}));
 
 export default EmailRequest;

@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
 import {
-  MdExpandLess,
-  MdExpandMore,
   MdPerson,
+  MdPeople,
   MdSettings,
   MdDashboard,
-  MdPeople,
+  MdExpandLess,
+  MdExpandMore,
 } from 'react-icons/md';
 import {
   Box,
@@ -92,7 +92,7 @@ function AppDrawer(props) {
     <Drawer
       open={drawer}
       onClose={handleDrawerClose}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, styles.root, {
         [styles.drawer_open]: drawer,
         [styles.drawer_close]: !drawer,
       })}
@@ -127,11 +127,16 @@ function AppDrawer(props) {
               </Avatar>
             }>
             <DrawerItem
+              label='Profile'
+              style={{ paddingLeft: 30 }}
               icon={<MdPerson size={20} />}
               onClick={() => history.push('/profile')}
-              label='Profile'
             />
-            <DrawerItem icon={<MdSettings size={20} />} label='Setting' />
+            <DrawerItem
+              label='Setting'
+              style={{ paddingLeft: 30 }}
+              icon={<MdSettings size={20} />}
+            />
           </DrawerItemCollapes>
 
           <Divider />
@@ -160,6 +165,7 @@ function AppDrawer(props) {
                       key={index}
                       icon={item.icon}
                       label={item.label}
+                      style={{ paddingLeft: 30 }}
                     />
                   ))}
                 </DrawerItemCollapes>
@@ -230,9 +236,9 @@ DrawerItemCollapes.propTypes = {
 
 const routeItem = [
   { icon: <MdDashboard size={20} />, label: 'Dashboard', link: '/dashboard' },
-  { icon: <FaUserMd size={20} />, label: 'Doctor' },
-  { icon: <FaWheelchair size={20} />, label: 'Patients' },
-  { icon: <FaFirstAid size={20} />, label: 'Medicine' },
+  { icon: <FaUserMd size={20} />, label: 'Doctor', link: '/doctors' },
+  { icon: <FaWheelchair size={20} />, label: 'Patients', link: '/patients' },
+  { icon: <FaFirstAid size={20} />, label: 'Medicine', link: '/medicine' },
 ];
 
 const routeItemCollapes = [
@@ -261,6 +267,14 @@ const routeItemCollapes = [
 ];
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiListItemIcon-root': {
+      minWidth: 40,
+    },
+    '& .MuiListItem-root': {
+      justifyContent: 'center',
+    },
+  },
   drawer: {
     width: DrawerWidth,
   },
@@ -280,12 +294,6 @@ const useStyles = makeStyles((theme) => ({
     }),
     '& .MuiListItemText-root': {
       display: 'none',
-    },
-    '& .MuiListItemIcon-root': {
-      minWidth: '16px',
-    },
-    '& .MuiListItem-root': {
-      justifyContent: 'center',
     },
   },
   routeList_item: {
