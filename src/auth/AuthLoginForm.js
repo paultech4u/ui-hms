@@ -8,6 +8,7 @@ import {
   Typography,
   makeStyles,
   CircularProgress,
+  Divider,
 } from '@material-ui/core';
 import {
   AuthCard,
@@ -63,20 +64,16 @@ function AuthLogin(props) {
         elevation={6}
         marginTop={30}
         paperclassname={styles.authCard_paper}>
-        <Box
-          marginX={10}
-          padding={15}
-          borderRadius={6}
-          marginTop='-20px'
-          bgcolor='primary.main'
-          className={styles.authCard_header}>
+        <Box padding={15}>
           <Typography variant='h6' className={styles.authCard_header_title}>
             LOGIN
           </Typography>
         </Box>
+        <Divider />
         <Box
           padding={10}
           display='flex'
+          marginTop={10}
           alignItems='center'
           flexDirection='column'>
           <Box className={styles.textField}>
@@ -119,9 +116,9 @@ function AuthLogin(props) {
             style={{
               cursor: 'pointer',
             }}
-            title='click to change password'
+            title='click to reset password'
             onClick={handleEmailRequest}>
-            Reset your password?
+            forgot password?
           </Link>
         </Box>
       </AuthCard>
@@ -150,13 +147,10 @@ const useStyles = makeStyles((theme) => ({
       width: '400px',
     },
   },
-  authCard_header: {
-    boxShadow: '0 5px 10px 0 rgba(0, 0, 0, 0.14)',
-  },
   authCard_header_title: {
     marginBottom: '3px',
     textAlign: 'center',
-    color: theme.palette.common.white,
+    color: theme.palette.common.black,
     fontWeight: theme.typography.fontWeightLight.valueOf(500),
   },
   back_drop: {

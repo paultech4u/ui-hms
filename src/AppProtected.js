@@ -1,19 +1,21 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useEffect } from 'react';
 import AppNavbar from './AppNavbar';
 import AppDrawer from './AppDrawer';
 import {
-  successAction,
   getProfileDetailAction,
+  successAction as profileSuccessAction,
 } from './profile/ProfileStoreSlice';
+import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 import { useIsMobile } from './hooks';
 import { pageRoute } from './constants';
-import { lazyload } from './common/Loading';
 import { Box } from '@material-ui/core';
+import { lazyload } from './common/Loading';
+import { NotifitionAlert } from './common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 
-const Profile = lazyload(() => import('./profile'));
-const Dashboard = lazyload(() => import('./dashboard'));
+const Profile = lazyload(() => import('./profile/Profile'));
+const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
 
 function AppProtected(props) {
@@ -21,6 +23,21 @@ function AppProtected(props) {
   const isMobile = useIsMobile();
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(true);
+  const [openAlert, setOpenAlert] = useState(false);
+
+  const isLoading = useSelector((state) => state.auth.isLoading);
+
+  useEffect(() => {
+    if (isLoading === 'success') {
+      setOpenAlert(true);
+      dispatch(authSuccessAction());
+      return;
+    }
+  }, [isLoading, dispatch]);
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+  };
 
   const toggleDrawerOpen = () => {
     setIsOpen((prevOpen) => !prevOpen);
@@ -47,7 +64,7 @@ function AppProtected(props) {
       if (profile === null) {
         dispatch(getProfileDetailAction(accessToken));
         var timer = setTimeout(() => {
-          dispatch(successAction());
+          dispatch(profileSuccessAction());
         }, 2000);
         return;
       }
@@ -73,6 +90,12 @@ function AppProtected(props) {
           )}
         </main>
       </Box>
+      <NotifitionAlert
+        open={openAlert}
+        severity='success'
+        onClose={handleAlertClose}>
+        Login Successful
+      </NotifitionAlert>
     </Box>
   );
 }

@@ -173,7 +173,10 @@ function AppDrawer(props) {
             </React.Fragment>
           </Box>
         </List>
-        <Box justifyContent='center' display={isMobile ? 'none' : 'flex'}>
+        <Box
+          paddingTop={20}
+          justifyContent='center'
+          display={isMobile ? 'none' : 'flex'}>
           <Button
             size='small'
             color='primary'

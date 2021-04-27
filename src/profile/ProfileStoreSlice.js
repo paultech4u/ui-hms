@@ -50,7 +50,7 @@ function pending(state, action) {
 function fulfilled(state, action) {
   const { profile } = action.payload;
   state.user = profile;
-  state.isLoading = loadingStatus.SUCCESS;
+  state.isLoading = loadingStatus.IDLE;
 }
 
 function rejected(state, action) {

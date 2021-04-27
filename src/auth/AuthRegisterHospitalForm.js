@@ -70,13 +70,9 @@ function RegisterHospitalForm(props) {
       address: '',
     },
     onSubmit: async (values) => {
-      const payload = {
-        name: values.name,
-        email: values.email,
-        state: values.state,
-        zip_no: values.zip_no,
-        address: values.address,
-      };
+      let data = {};
+
+      const payload = Object.assign(data, values);
 
       dispatch(registerHosptialAction(payload));
     },
@@ -116,12 +112,8 @@ function RegisterHospitalForm(props) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur('name')}
               placeholder='wellcare hospital'
-              helperText={
-                !!formik.errors.name && formik.touched.name
-                  ? formik.errors.name
-                  : null
-              }
               error={!!formik.errors.name && formik.touched.name}
+              helperText={formik.touched.name ? formik.errors.name : null}
             />
             <TextInput
               name='email'
@@ -130,12 +122,8 @@ function RegisterHospitalForm(props) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur('email')}
               placeholder='wellcare@email.com'
-              helperText={
-                !!formik.errors.email && formik.touched.email
-                  ? formik.errors.email
-                  : null
-              }
               error={!!formik.errors.email && formik.touched.email}
+              helperText={formik.touched.email ? formik.errors.email : null}
             />
             <TextInput
               name='address'
@@ -144,12 +132,8 @@ function RegisterHospitalForm(props) {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur('address')}
               placeholder='lamido crescent'
-              helperText={
-                !!formik.errors.address && formik.touched.address
-                  ? formik.errors.address
-                  : null
-              }
               error={!!formik.errors.address && formik.touched.address}
+              helperText={formik.touched.address ? formik.errors.address : null}
             />
             <TextInput
               name='state'
@@ -158,12 +142,8 @@ function RegisterHospitalForm(props) {
               value={formik.values.state}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur('state')}
-              helperText={
-                !!formik.errors.state && formik.touched.state
-                  ? formik.errors.state
-                  : null
-              }
               error={!!formik.errors.state && formik.touched.state}
+              helperText={formik.touched.state ? formik.errors.state : null}
             />
             <TextInput
               name='zip_no'
@@ -172,12 +152,8 @@ function RegisterHospitalForm(props) {
               value={formik.values.zip_no}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur('zip_no')}
-              helperText={
-                !!formik.errors.zip_no && formik.touched.zip_no
-                  ? formik.errors.zip_no
-                  : null
-              }
               error={!!formik.errors.zip_no && formik.touched.zip_no}
+              helperText={formik.touched.zip_no ? formik.errors.zip_no : null}
             />
           </Box>
           <Divider />
@@ -194,20 +170,18 @@ function RegisterHospitalForm(props) {
   );
 }
 
-function TextInput(props) {
+/**
+ * @param {import("@material-ui/core").TextFieldProps} ...rest
+ */
+function TextInput({ title, ...rest }) {
   const styles = useStyles();
 
   return (
     <Box display='flex' flexDirection='column'>
       <Typography variant='caption' className={styles.textField_label}>
-        {props.title}
+        {title}
       </Typography>
-      <TextField
-        margin='dense'
-        variant='outlined'
-        className={styles.textField}
-        {...props}
-      />
+      <TextField variant='outlined' className={styles.textField} {...rest} />
     </Box>
   );
 }
