@@ -10,7 +10,7 @@ export const getProfileDetailAction = createAsyncThunk(
   }
 );
 
-const ProfileReducer = createSlice({
+const profileReducer = createSlice({
   name: 'profile',
   initialState: {
     user: null,
@@ -73,6 +73,6 @@ function clearError(state) {
 export const {
   clearError: clearErrorAction,
   success: successAction,
-} = ProfileReducer.actions;
+} = profileReducer.actions;
 
-export default ProfileReducer.reducer;
+export default profileReducer.reducer;
