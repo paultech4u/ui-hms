@@ -1,21 +1,21 @@
 import React from 'react';
-import { MdMoreHoriz } from 'react-icons/md';
 import { Card, CardContent, CardHeader, IconButton } from '@material-ui/core';
+// import { Loading } from '../common/Loading';
 
 /**
  *
  * @param {import("@material-ui/core").CardProps} props
  * @returns
  */
-export function CardItem(props) {
+export function DashboardItem(props) {
   return (
     <Card {...props}>
       <CardHeader
         title={props.title}
         subheader={props.subheader}
         action={
-          <IconButton size='small'>
-            <MdMoreHoriz />
+          <IconButton size='small' onClick={props.onClick}>
+            {props.icon}
           </IconButton>
         }
       />

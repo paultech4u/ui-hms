@@ -1,11 +1,13 @@
 import React, { Suspense, useEffect } from 'react';
 import { persistor } from './store';
+import MomentUtils from '@date-io/moment';
 import theme, { GlobalCss } from './theme';
 import { refreshToken } from './api/AuthAPI';
 import { lazyload, Loading } from './common/Loading';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { loginAction, logoutAction } from './auth/AuthStoreSlice';
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 
@@ -46,15 +48,17 @@ function App(props) {
   const Main = isAuthenticated ? AppProtected : AuthPage;
   return (
     <MuiThemeProvider theme={theme}>
-      <Suspense fallback={<Loading />}>
-        <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-            <CssBaseline />
-            <GlobalCss />
-            <Main />
-          </BrowserRouter>
-        </PersistGate>
-      </Suspense>
+      <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Suspense fallback={<Loading />}>
+          <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+              <CssBaseline />
+              <GlobalCss />
+              <Main />
+            </BrowserRouter>
+          </PersistGate>
+        </Suspense>
+      </MuiPickersUtilsProvider>
     </MuiThemeProvider>
   );
 }

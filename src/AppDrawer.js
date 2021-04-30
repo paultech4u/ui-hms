@@ -40,7 +40,7 @@ function AppDrawer(props) {
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const isDesktop = useIsDesktop();
-  const { drawer, handleDrawerClose } = props;
+  const { drawer, onDrawerClose } = props;
 
   const username = useSelector((state) => state.auth.username);
 
@@ -91,7 +91,7 @@ function AppDrawer(props) {
   return (
     <Drawer
       open={drawer}
-      onClose={handleDrawerClose}
+      onClose={onDrawerClose}
       className={clsx(styles.drawer, styles.root, {
         [styles.drawer_open]: drawer,
         [styles.drawer_close]: !drawer,

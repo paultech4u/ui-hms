@@ -1,116 +1,137 @@
 import React from 'react';
 import clsx from 'clsx';
-import { CardItem } from './DashboardCard';
+import {
+  Box,
+  makeStyles,
+  Typography,
+  InputAdornment,
+  IconButton,
+} from '@material-ui/core';
 import {
   doctorSelector,
   hospitalsSelector,
   specialistSelector,
 } from './DashboardStoreSlice';
-import { AutocompleteInput } from '../common/AutocompleteInput';
+import {
+  PatientCountLineChart,
+  PatientCountBarChartBySpec,
+} from './DashboardCharts';
 import { useSelector } from 'react-redux';
-import { Box, makeStyles, Typography } from '@material-ui/core';
-import { PatientChart } from './DashboardCharts';
+import { MdMoreHoriz } from 'react-icons/md';
+import { DashboardItem } from './DashboardCard';
+import { TextInput } from '../common/TextInput';
+import { DatePopper } from './DashboardDatePicker';
+import { BsFunnel, BsCalendar } from 'react-icons/bs';
+import { AutocompleteInput } from '../common/AutocompleteInput';
 
 function Dashboard(props) {
   const classes = useStyles();
-  const hospitals = useSelector(hospitalsSelector.selectAll);
   const doctors = useSelector(doctorSelector.selectAll);
+  const hospitals = useSelector(hospitalsSelector.selectAll);
   const specialist = useSelector(specialistSelector.selectAll);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const openDatePopper = (event) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
 
   return (
     <Box className={clsx(classes.card_container)}>
       <Box flex={1} display='flex' flexDirection='column'>
         <Box className={clsx(classes.card_item_filter_container)}>
-          <CardItem
+          <DashboardItem
             title='Hospitals'
+            icon={<BsFunnel />}
             className={clsx(
               classes.card_item,
               classes.card_item_adjust,
               classes.card_item_filter
             )}>
             <AutocompleteInput options={hospitals} />
-          </CardItem>
-          <CardItem
+          </DashboardItem>
+          <DashboardItem
             title='Doctors'
+            icon={<BsFunnel />}
             className={clsx(
               classes.card_item,
               classes.card_item_adjust,
               classes.card_item_filter
             )}>
             <AutocompleteInput options={doctors} />
-          </CardItem>
-          <CardItem
+          </DashboardItem>
+          <DashboardItem
             title='Specialist'
+            icon={<BsFunnel />}
             className={clsx(
               classes.card_item,
               classes.card_item_adjust,
               classes.card_item_filter
             )}>
             <AutocompleteInput options={specialist} />
-          </CardItem>
-          <CardItem
+          </DashboardItem>
+          <DashboardItem
             title='Date'
+            icon={<BsFunnel />}
             className={clsx(
               classes.card_item,
               classes.card_item_adjust,
               classes.card_item_filter
             )}>
-            <AutocompleteInput options={specialist} />
-          </CardItem>
+            <TextInput
+              variant='outlined'
+              size='small'
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position='end'>
+                    <IconButton size='small' onClick={openDatePopper}>
+                      <BsCalendar />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </DashboardItem>
+          <DatePopper open={open} anchorEl={anchorEl} placement='bottom-end' />
         </Box>
-        <Box>
-          <CardItem
+        <Box display='flex'>
+          <DashboardItem
             title='Patients Count by Week'
-            className={clsx(classes.card_item, classes.card_item_chart_line)}>
-            <PatientChart />
-          </CardItem>
+            className={clsx(
+              classes.card_item,
+              classes.card_item_adjust,
+              classes.card_item_lineChart
+            )}>
+            <PatientCountLineChart />
+          </DashboardItem>
+          <DashboardItem
+            title='Patients Count by Week'
+            className={clsx(
+              classes.card_item,
+              classes.card_item_adjust,
+              classes.card_item_barChart
+            )}>
+            <PatientCountBarChartBySpec />
+          </DashboardItem>
         </Box>
       </Box>
-      <Box
-        className={clsx(
-          classes.card_item_adjust,
-          classes.card_item_details_container
-        )}>
-        <CardItem
-          title='Doctors'
-          subheader='updated: 10:20am'
-          className={clsx(
-            classes.card_item,
-            classes.card_item_adjust,
-            classes.card_item_details
-          )}>
-          <Typography variant='h4'>40</Typography>
-        </CardItem>
-        <CardItem
-          title='Patients'
-          subheader='updated: 1:20pm'
-          className={clsx(
-            classes.card_item,
-            classes.card_item_adjust,
-            classes.card_item_details
-          )}>
-          <Typography variant='h4'>100</Typography>
-        </CardItem>
-        <CardItem
-          title='Admitted Patients'
-          subheader='updated: 1:20pm'
-          className={clsx(
-            classes.card_item,
-            classes.card_item_adjust,
-            classes.card_item_details
-          )}>
-          <Typography variant='h4'>10</Typography>
-        </CardItem>
-        <CardItem
-          title='Bed Occupancy Rate'
-          subheader='updated: 1:20pm'
-          className={clsx(
-            classes.card_item,
-            classes.card_item_adjust,
-            classes.card_item_details
-          )}>
-          <Typography variant='h4'>14.0%</Typography>
-        </CardItem>
+      <Box className={clsx(classes.card_item_details_container)}>
+        {details.map(({ title, data, date }, index) => (
+          <DashboardItem
+            key={index}
+            title={title}
+            subheader={date}
+            icon={<MdMoreHoriz />}
+            className={clsx(
+              classes.card_item,
+              classes.card_item_adjust,
+              classes.card_item_details
+            )}>
+            <Typography variant='h4'>{data}</Typography>
+          </DashboardItem>
+        ))}
       </Box>
     </Box>
   );
@@ -199,10 +220,16 @@ const useStyles = makeStyles((theme) => ({
       width: 150,
     },
   },
-  card_item_chart_line: {
+  card_item_lineChart: {
     width: 300,
     [theme.breakpoints.up('md')]: {
       width: 430,
+    },
+  },
+  card_item_barChart: {
+    width: 300,
+    [theme.breakpoints.up('md')]: {
+      width: 220,
     },
   },
   card_item_adjust: {
@@ -218,3 +245,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+const details = [
+  { title: 'Doctors', date: 'updated: 10:20am', data: 40 },
+  { title: 'Patients', date: 'updated: 10:20am', data: 100 },
+  { title: 'Admitted Patients', date: 'updated: 10:20am', data: 10 },
+  { title: 'Bed Occupancy Rate', date: 'updated: 10:19am', data: '14.0%' },
+];

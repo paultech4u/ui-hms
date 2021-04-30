@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 import { Autocomplete } from '@material-ui/lab';
-import { TextField, Checkbox, makeStyles } from '@material-ui/core';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import { TextField, Checkbox, makeStyles } from '@material-ui/core';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
@@ -17,13 +17,13 @@ export function AutocompleteInput(props) {
   const classes = useStyles();
   return (
     <Autocomplete
-      {...props}
       multiple
+      {...props}
       size='small'
       limitTags={1}
       disableCloseOnSelect
-      className={clsx(classes.clearIndicator, classes.input_item)}
       getOptionLabel={(option) => option.name}
+      className={clsx(classes.clearIndicator, classes.input_item)}
       renderOption={(option, { selected }) => (
         <React.Fragment>
           <Checkbox
