@@ -5,15 +5,16 @@ import {
   getProfileDetailAction,
   successAction as profileSuccessAction,
 } from './profile/ProfileStoreSlice';
-import { openDrawer, closeDrawer } from './AppStoreSlice';
-import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 import { useIsMobile } from './hooks';
 import { pageRoute } from './constants';
 import { Box } from '@material-ui/core';
+import { Footer } from './common/Footer';
 import { lazyload } from './common/Loading';
 import { NotifitionAlert } from './common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
+import { openDrawer, closeDrawer } from './AppStoreSlice';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 
 const Profile = lazyload(() => import('./profile/Profile'));
 const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
@@ -90,6 +91,9 @@ function AppProtected(props) {
             <Route path={pageRoute.EDITPROFILE} component={EditProfile} />
           )}
         </main>
+        <footer>
+          <Footer />
+        </footer>
       </Box>
       <NotifitionAlert
         open={openAlert}

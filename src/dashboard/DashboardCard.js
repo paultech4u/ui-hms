@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, IconButton } from '@material-ui/core';
  */
 export function DashboardItem(props) {
   return (
-    <Card {...props}>
+    <Card variant="outlined" {...props}>
       <CardHeader
         title={props.title}
         subheader={props.subheader}

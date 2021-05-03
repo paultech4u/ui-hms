@@ -131,7 +131,9 @@ function Dashboard(props) {
           </DashboardItem>
         </Box>
         <Box>
-          <DashboardItem title='Upcoming Appointments'>
+          <DashboardItem
+            title='Upcoming Appointments'
+            className={clsx(classes.card_item)}>
             <AppointmentTable />
           </DashboardItem>
         </Box>
@@ -231,7 +233,6 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'space-between',
     },
     [theme.breakpoints.up('md')]: {
-      width: 360,
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'center',
@@ -249,7 +250,7 @@ const useStyles = makeStyles((theme) => ({
   card_item_filter: {
     width: 300,
     [theme.breakpoints.up('md')]: {
-      width: 150,
+      maxWidth: 150,
     },
   },
   card_item_lineChart: {
