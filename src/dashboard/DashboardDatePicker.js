@@ -1,18 +1,17 @@
 import React from 'react';
 import { KeyboardDatePicker, DatePicker } from '@material-ui/pickers';
-import { CalenderPopper } from '../common/CustomCalenderPopper';
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, Paper, Button, Divider, makeStyles } from '@material-ui/core';
 
 /**
  *
- * @param {import('@material-ui/core').PopperProps} props
- * @returns
+ * @param {} props
  */
-export function DatePopper(props) {
+export function DatePickerPopper(props) {
   const classes = useStyles();
+  const { onDatePickerClose } = props;
   return (
-    <CalenderPopper {...props}>
-      <Box display='flex'>
+    <Paper>
+      <Box display='flex' padding={5}>
         <KeyboardDatePicker
           autoOk
           size='small'
@@ -36,47 +35,71 @@ export function DatePopper(props) {
           // onChange={(date) => handleDateChange(date)}
         />
       </Box>
-      <Box display='flex'>
-        <DatePicker
-          autoOk
-          disableToolbar
-          orientation='portrait'
-          variant='static'
-          openTo='date'
-          className={classes.datePicker}
-          // value={date}
-          // onChange={changeDate}
-        />
-        <DatePicker
-          autoOk
-          disableToolbar
-          orientation='portrait'
-          variant='static'
-          openTo='date'
-          className={classes.datePicker}
-          // value={date}
-          // onChange={changeDate}
-        />
+      <Paper
+        elevation={0}
+        variant='outlined'
+        className={classes.datePicker_container}>
+        <Box display='flex' justifyContent='space-between'>
+          <DatePicker
+            autoOk
+            disableToolbar
+            orientation='portrait'
+            variant='static'
+            openTo='date'
+            className={classes.datePicker}
+            // value={date}
+            // onChange={changeDate}
+          />
+          <DatePicker
+            autoOk
+            disableToolbar
+            orientation='portrait'
+            variant='static'
+            openTo='date'
+            className={classes.datePicker}
+            // value={date}
+            // onChange={changeDate}
+          />
+        </Box>
+      </Paper>
+      <Divider />
+      <Box display='flex' justifyContent='flex-end' padding={5}>
+        <Button
+          size='small'
+          color='primary'
+          variant='contained'
+          style={{ marginRight: 5 }}>
+          Apply
+        </Button>
+        <Button size='small' variant='outlined' onClick={onDatePickerClose}>
+          Cancel
+        </Button>
       </Box>
-    </CalenderPopper>
+    </Paper>
   );
 }
 
 const useStyles = makeStyles({
   keyboardPicker_input: {
+    flex: 1,
+    width: '20ch',
+    alignItems: 'flex-start',
     '& .MuiIconButton-root': {
       display: 'none',
     },
   },
-  datePicker: {
+  datePicker_container: {
+    margin: 5,
     '& .MuiPickersStaticWrapper-staticWrapperRoot': {
       minWidth: 0,
     },
-    '& .MuiPickersBasePicker-container': {
-      width: '200px',
-    },
     '& .MuiPickersBasePicker-pickerView': {
       minWidth: 0,
+    },
+  },
+  datePicker: {
+    '& .MuiPickersBasePicker-container': {
+      width: '100px',
     },
   },
 });

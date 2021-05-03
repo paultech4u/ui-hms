@@ -28,7 +28,7 @@ const FormKeys = {
 };
 
 function AuthLogin(props) {
-  const styles = useStyles();
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -63,9 +63,9 @@ function AuthLogin(props) {
       <AuthCard
         elevation={6}
         marginTop={30}
-        paperclassname={styles.authCard_paper}>
+        paperclassname={classes.authCard_paper}>
         <Box padding={15}>
-          <Typography variant='h6' className={styles.authCard_header_title}>
+          <Typography variant='h6' className={classes.authCard_header_title}>
             LOGIN
           </Typography>
         </Box>
@@ -76,7 +76,7 @@ function AuthLogin(props) {
           marginTop={10}
           alignItems='center'
           flexDirection='column'>
-          <Box className={styles.textField}>
+          <Box className={classes.textField}>
             <Typography variant='caption'>Email</Typography>
             <AuthTextInput
               name='email'
@@ -87,7 +87,7 @@ function AuthLogin(props) {
               placeholder='JohnDoe@gmail.com'
             />
           </Box>
-          <Box marginTop={10} className={styles.textField}>
+          <Box marginTop={10} className={classes.textField}>
             <Typography variant='caption'>Password</Typography>
             <AuthPasswordInput
               variant='outlined'
@@ -124,7 +124,7 @@ function AuthLogin(props) {
       </AuthCard>
       <Backdrop
         in={isLoading === 'pending' ? true : false}
-        className={styles.back_drop}>
+        className={classes.back_drop}>
         <CircularProgress color='inherit' />
       </Backdrop>
       <NotifitionAlert

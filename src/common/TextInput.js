@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField, makeStyles } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 
 /**
  *
@@ -19,11 +19,3 @@ export function PasswordInput(props) {
 export function TextInput(props) {
   return <TextField {...props} type='text' />;
 }
-
-const useStyles = makeStyles({
-  textInput: {
-    '& .MuiOutlinedInput-input': {
-      backgroundColor: '#e1bee7',
-    },
-  },
-});

@@ -17,7 +17,7 @@ import { TextInput } from '../common/TextInput';
 import { useHistory, useLocation } from 'react-router';
 
 function EditProfile(props) {
-  const styles = useStyles();
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
@@ -59,7 +59,7 @@ function EditProfile(props) {
               name='firstname'
               onChange={formik.handleChange}
               value={formik.values.firstname}
-              className={clsx(styles.text_field)}
+              className={clsx(classes.text_field)}
             />
           </Box>
           <Box marginBottom={5} display='flex' flexDirection='column'>
@@ -68,7 +68,7 @@ function EditProfile(props) {
               name='lastname'
               value={formik.values.lastname}
               onChange={formik.handleChange}
-              className={clsx(styles.text_field)}
+              className={clsx(classes.text_field)}
             />
           </Box>
           <Box marginBottom={5} display='flex' flexDirection='column'>

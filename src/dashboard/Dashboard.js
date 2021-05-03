@@ -2,10 +2,11 @@ import React from 'react';
 import clsx from 'clsx';
 import {
   Box,
+  Popper,
   makeStyles,
+  IconButton,
   Typography,
   InputAdornment,
-  IconButton,
 } from '@material-ui/core';
 import {
   doctorSelector,
@@ -20,8 +21,9 @@ import { useSelector } from 'react-redux';
 import { MdMoreHoriz } from 'react-icons/md';
 import { DashboardItem } from './DashboardCard';
 import { TextInput } from '../common/TextInput';
-import { DatePopper } from './DashboardDatePicker';
+import AppointmentTable from './DashboardApptTable';
 import { BsFunnel, BsCalendar } from 'react-icons/bs';
+import { DatePickerPopper } from './DashboardDatePicker';
 import { AutocompleteInput } from '../common/AutocompleteInput';
 
 function Dashboard(props) {
@@ -30,13 +32,16 @@ function Dashboard(props) {
   const hospitals = useSelector(hospitalsSelector.selectAll);
   const specialist = useSelector(specialistSelector.selectAll);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const anchorEl = React.useRef(null);
+  const [openDatePicker, setDatePicker] = React.useState(false);
 
-  const openDatePopper = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleDatePickerOpen = () => {
+    setDatePicker((prev) => !prev);
   };
 
-  const open = Boolean(anchorEl);
+  const handleDatePickerClose = () => {
+    setDatePicker((prev) => prev);
+  };
 
   return (
     <Box className={clsx(classes.card_container)}>
@@ -81,12 +86,15 @@ function Dashboard(props) {
               classes.card_item_filter
             )}>
             <TextInput
-              variant='outlined'
               size='small'
+              variant='outlined'
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>
-                    <IconButton size='small' onClick={openDatePopper}>
+                    <IconButton
+                      size='small'
+                      ref={anchorEl}
+                      onClick={handleDatePickerOpen}>
                       <BsCalendar />
                     </IconButton>
                   </InputAdornment>
@@ -94,9 +102,15 @@ function Dashboard(props) {
               }}
             />
           </DashboardItem>
-          <DatePopper open={open} anchorEl={anchorEl} placement='bottom-end' />
+          <Popper
+            placement='bottom'
+            open={openDatePicker}
+            anchorEl={anchorEl.current}
+            onDatePickerClose={handleDatePickerClose}>
+            <DatePickerPopper />
+          </Popper>
         </Box>
-        <Box display='flex'>
+        <Box className={classes.card_item_chart_container}>
           <DashboardItem
             title='Patients Count by Week'
             className={clsx(
@@ -114,6 +128,11 @@ function Dashboard(props) {
               classes.card_item_barChart
             )}>
             <PatientCountBarChartBySpec />
+          </DashboardItem>
+        </Box>
+        <Box>
+          <DashboardItem title='Upcoming Appointments'>
+            <AppointmentTable />
           </DashboardItem>
         </Box>
       </Box>
@@ -176,6 +195,19 @@ const useStyles = makeStyles((theme) => ({
         width: '90px',
         fontSize: '0.9rem',
       },
+    },
+  },
+  card_item_chart_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+      //   justifyContent: 'space-between',
+    },
+    [theme.breakpoints.up('md')]: {
+      flexWrap: 'no-wrap',
+      justifyContent: 'space-between',
     },
   },
   card_item_filter_container: {

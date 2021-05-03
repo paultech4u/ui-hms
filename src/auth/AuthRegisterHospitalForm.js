@@ -30,7 +30,7 @@ import GetStartedScreen from './AuthRegisterGetStartedScreen';
 // let horizontal = 'left';
 
 function RegisterHospitalForm(props) {
-  const styles = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
   const height = React.useRef(300);
   const [toggleForm, setToggleForm] = useState(false);
@@ -89,7 +89,7 @@ function RegisterHospitalForm(props) {
   // const isLoading = useSelector((state) => state.auth.isLoading);
 
   return (
-    <AuthCard variant='outlined' paperclassname={styles.authCard_paper}>
+    <AuthCard variant='outlined' paperclassname={classes.authCard_paper}>
       <Box paddingY={10}>
         <Typography variant='h5' align='center'>
           REGISTER HOSPITAL
@@ -103,7 +103,7 @@ function RegisterHospitalForm(props) {
             maxHeight={300}
             id='paper_content'
             className={clsx({
-              [styles.authCard_paper_content]: height.current === 300,
+              [classes.authCard_paper_content]: height.current === 300,
             })}>
             <TextInput
               name='name'
@@ -171,17 +171,17 @@ function RegisterHospitalForm(props) {
 }
 
 /**
- * @param {import("@material-ui/core").TextFieldProps} ...rest
+ * @param {import("@material-ui/core").TextFieldProps} props
  */
-function TextInput({ title, ...rest }) {
-  const styles = useStyles();
+function TextInput(props) {
+  const classes = useStyles();
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Typography variant='caption' className={styles.textField_label}>
-        {title}
+      <Typography variant='caption' className={classes.textField_label}>
+        {props.title}
       </Typography>
-      <TextField variant='outlined' className={styles.textField} {...rest} />
+      <TextField variant='outlined' className={classes.textField} {...props} />
     </Box>
   );
 }

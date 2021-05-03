@@ -24,7 +24,7 @@ import { useHistory, useLocation } from 'react-router';
 // import { toggleEditMode } from './ProfileSlice';
 
 function Profile(props) {
-  const styles = useStyles();
+  const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -55,14 +55,14 @@ function Profile(props) {
         <CustomCard
           elevation={2}
           variant='elevation'
-          className={styles.avatar_card}>
+          className={classes.avatar_card}>
           <Box display='flex' flexDirection='column'>
             <Box
               marginX={10}
               display='flex'
               marginTop='-50px'
               justifyContent='center'>
-              <Avatar className={clsx(styles.avatar, styles.avatar_large)} />
+              <Avatar className={clsx(classes.avatar, classes.avatar_large)} />
             </Box>
             <Box
               padding={8}
@@ -101,7 +101,7 @@ function Profile(props) {
         <CustomCard
           elevation={2}
           variant='elevation'
-          className={styles.details_card}>
+          className={classes.details_card}>
           <Box display='flex' paddingBottom={4}>
             <Box
               padding={8}
@@ -110,7 +110,7 @@ function Profile(props) {
               borderRadius={3}
               marginTop='-20px'
               bgcolor='primary.main'
-              className={clsx(styles.profile_header_icon)}>
+              className={clsx(classes.profile_header_icon)}>
               <MdPersonOutline size={30} />
             </Box>
             <Box
@@ -181,7 +181,7 @@ function Profile(props) {
         <EditProfile />
         <Backdrop
           in={isLoading === 'pending' ? true : false}
-          className={styles.back_drop}>
+          className={classes.back_drop}>
           <CircularProgress color='inherit' />
         </Backdrop>
       </Box>

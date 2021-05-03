@@ -1,12 +1,10 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
-  Box,
   Dialog,
   TextField,
-  makeStyles,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -14,8 +12,8 @@ import {
 } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 import { AuthButton } from './AuthCommon';
-import { authRoute } from '../constants';
-import { forgetPasswordAction, clearErrorAction } from './AuthStoreSlice';
+// import { authRoute } from '../constants';
+import { forgetPasswordAction } from './AuthStoreSlice';
 
 function EmailRequest(props) {
   // const styles = useStyles();
@@ -65,12 +63,8 @@ function EmailRequest(props) {
           value={formik.values.email}
           onChange={formik.handleChange}
           placeholder='johnDoe@email.com'
-          helperText={
-            !!formik.errors.email && formik.touched.email
-              ? formik.errors.email
-              : null
-          }
           error={!!formik.errors.email && formik.touched.email}
+          helperText={formik.touched.email ? formik.errors.email : null}
         />
       </DialogContent>
       <DialogActions>
