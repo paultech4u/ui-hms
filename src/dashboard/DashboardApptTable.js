@@ -1,22 +1,16 @@
 import React from 'react';
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  makeStyles,
-} from '@material-ui/core';
-import MOCK_DATA from './MOCK_DATA.json';
-import { useTable, useGlobalFilter } from 'react-table';
 import clsx from 'clsx';
+import MOCK_DATA from './MOCK_DATA.json';
+import { FixedSizeList } from 'react-window';
+import scrollbarWidth from '../common/ScrollbarWidth';
+import { Box, TextField, makeStyles, TableCell } from '@material-ui/core';
+import { useTable, useGlobalFilter, useBlockLayout } from 'react-table';
 
 function AppointmentTable(props) {
   const classes = useStyles();
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
+  const scrollbarSize = React.useMemo(() => scrollbarWidth(), []);
 
   const {
     getTableProps,
@@ -26,12 +20,14 @@ function AppointmentTable(props) {
     prepareRow,
     state,
     setGlobalFilter,
+    totalColumnsWidth,
   } = useTable(
     {
       columns,
       data,
     },
-    useGlobalFilter
+    useGlobalFilter,
+    useBlockLayout
   );
 
   const { globalFilter } = state;
@@ -41,49 +37,58 @@ function AppointmentTable(props) {
       <Box display='flex' justifyContent='center'>
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       </Box>
-      <Table {...getTableProps()} className={classes.table}>
-        <TableHead className={classes.tableHead}>
-          {headerGroups.map((headerGroup) => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <TableCell
-                  {...column.getHeaderProps({
-                    className: classes.tableHead_data,
-                  })}>
-                  {column.render('Header')}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
-            prepareRow(row);
-            return (
-              <TableRow
-                {...row.getRowProps({
-                  onClick: () => alert(`i was click ${index}`),
-                })}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell
-                      {...cell.getCellProps({
-                        className: clsx(classes.tableBody_data, {
-                          [classes.tableBody_data_statusPending]:
-                            cell.value === 'Pending',
-                          [classes.tableBody_data_statusComfirmed]:
-                            cell.value === 'Comfirmed',
-                        }),
-                      })}>
-                      {cell.render('Cell')}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <Box overflow='auto'>
+        <Box {...getTableProps()} className={classes.table}>
+          <Box className={classes.tableHead}>
+            {headerGroups.map((headerGroup) => (
+              <Box {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <Box
+                    {...column.getHeaderProps({
+                      className: classes.tableHead_data,
+                    })}>
+                    {column.render('Header')}
+                  </Box>
+                ))}
+              </Box>
+            ))}
+          </Box>
+          <Box {...getTableBodyProps()}>
+            <FixedSizeList
+              height={100}
+              itemSize={35}
+              itemCount={rows.length}
+              width={totalColumnsWidth + scrollbarSize}>
+              {({ index, style }) => {
+                const row = rows[index];
+                prepareRow(row);
+                return (
+                  <Box
+                    {...row.getRowProps({
+                      ...style,
+                    })}>
+                    {row.cells.map((cell) => {
+                      return (
+                        <Box
+                          {...cell.getCellProps({
+                            className: clsx(classes.tableBody_data, {
+                              [classes.tableBody_data_statusPending]:
+                                cell.value === 'Pending',
+                              [classes.tableBody_data_statusComfirmed]:
+                                cell.value === 'Comfirmed',
+                            }),
+                          })}>
+                          {cell.render('Cell')}
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                );
+              }}
+            </FixedSizeList>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 }
@@ -97,7 +102,7 @@ function GlobalFilter(props) {
       size='small'
       margin='dense'
       variant='outlined'
-      placeholder="Search..."
+      placeholder='Search...'
       value={filter || ''}
       onChange={(e) => setFilter(e.target.value)}
     />
@@ -106,7 +111,7 @@ function GlobalFilter(props) {
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    borderRadius: '20px',
+    display: 'inline-block',
     borderCollapse: 'collapse',
     border: `1px solid ${theme.palette.divider}`,
     '& $tableHead_data, $tableBody_data ': {
@@ -117,10 +122,13 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
   },
   tableHead_data: {
+    padding: 5,
     textAlign: 'center',
     color: theme.palette.common.white,
   },
-  tableBody_data: {},
+  tableBody_data: {
+    padding: 5,
+  },
   tableBody_data_statusPending: {
     color: theme.palette.warning.main,
   },
@@ -133,6 +141,7 @@ const COLUMNS = [
   {
     Header: 'Doctor Name',
     accessor: 'doctor_name',
+    width: 200,
   },
   {
     Header: 'Specialization',

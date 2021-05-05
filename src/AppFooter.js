@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { useIsDesktop } from '../hooks';
+import { useIsDesktop } from './hooks';
 
 import { Box, Paper, makeStyles, Typography } from '@material-ui/core';
 
@@ -14,7 +14,9 @@ export function Footer(params) {
         <a title='Term of Use'>Term of Use</a>
       </Box>
       <Box textAlign='center' marginTop={5}>
-        <Typography>@2021 HMS, Hospital Management System.</Typography>
+        <Typography variant='caption'>
+          Copyright@2021 HMS, Hospital Management System.
+        </Typography>
       </Box>
     </Paper>
   );
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 10,
     display: 'flex',
     alignItems: 'center',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     '& a': {
       marginRight: 10,
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     },
     '& a:hover': {
       color: theme.palette.primary.main,
+    },
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
     },
   },
 }));

@@ -133,7 +133,7 @@ function Dashboard(props) {
         <Box>
           <DashboardItem
             title='Upcoming Appointments'
-            className={clsx(classes.card_item)}>
+            className={clsx(classes.card_item, classes.card_item_apptTable)}>
             <AppointmentTable />
           </DashboardItem>
         </Box>
@@ -201,15 +201,15 @@ const useStyles = makeStyles((theme) => ({
   },
   card_item_chart_container: {
     display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
+    flexDirection: 'column',
     [theme.breakpoints.up('sm')]: {
       flexDirection: 'row',
       //   justifyContent: 'space-between',
     },
     [theme.breakpoints.up('md')]: {
       flexWrap: 'no-wrap',
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
     },
   },
   card_item_filter_container: {
@@ -222,7 +222,7 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.up('md')]: {
       flexWrap: 'no-wrap',
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
     },
   },
   card_item_details_container: {
@@ -250,7 +250,7 @@ const useStyles = makeStyles((theme) => ({
   card_item_filter: {
     width: 300,
     [theme.breakpoints.up('md')]: {
-      maxWidth: 150,
+      maxWidth: 155,
     },
   },
   card_item_lineChart: {
@@ -276,6 +276,15 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: 15,
       marginRight: 15,
     },
+  },
+  card_item_apptTable: {
+    maxWidth: 300,
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 667,
+    },
+    // '& .MuiCardContent-root': {
+    //   overflowX: 'auto',
+    // },
   },
 }));
 

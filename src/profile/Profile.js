@@ -45,7 +45,7 @@ function Profile(props) {
   };
 
   return (
-    <Box paddingTop={30}>
+    <Box paddingY={30}>
       <Box
         height={1}
         display='flex'

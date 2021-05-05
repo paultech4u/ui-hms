@@ -8,7 +8,7 @@ import {
 import { useIsMobile } from './hooks';
 import { pageRoute } from './constants';
 import { Box } from '@material-ui/core';
-import { Footer } from './common/Footer';
+import { Footer } from './AppFooter';
 import { lazyload } from './common/Loading';
 import { NotifitionAlert } from './common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
