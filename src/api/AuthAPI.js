@@ -1,7 +1,13 @@
+import dotenv from 'dotenv';
 import axios from 'axios';
 
+dotenv.config();
+
+
+console.log(process.env.NODE_ENV);
+
 export const http = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: process.env.REACT_APP_HOST,
 });
 
 http.interceptors.request.use(
