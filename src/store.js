@@ -38,7 +38,7 @@ const store = configureStore({
           REGISTER,
         ],
       },
-    }).concat(process.env.NODE_ENV === 'development' ? logger : null),
+    }).concat(process.env.NODE_ENV === 'development' ? logger : ''),
 });
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
