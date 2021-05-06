@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import MOCK_DATA from './MOCK_DATA.json';
 import { FixedSizeList } from 'react-window';
 import scrollbarWidth from '../common/ScrollbarWidth';
-import { Box, TextField, makeStyles, TableCell } from '@material-ui/core';
+import { Box, TextField, makeStyles } from '@material-ui/core';
 import { useTable, useGlobalFilter, useBlockLayout } from 'react-table';
 
 function AppointmentTable(props) {
