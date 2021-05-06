@@ -7,11 +7,14 @@ import {
   REGISTER,
 } from 'redux-persist';
 import rootReducer from './reducers';
-import { logger } from 'redux-logger';
 import { configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 import persistStore from 'redux-persist/lib/persistStore';
 import persistReducer from 'redux-persist/lib/persistReducer';
+
+if (process.env.NODE_ENV === 'development') {
+  var { logger } = require('redux-logger');
+}
 
 const rootPersistReducer = persistReducer(
   {
@@ -38,7 +41,7 @@ const store = configureStore({
           REGISTER,
         ],
       },
-    }).concat(process.env.NODE_ENV === 'development' ? logger : ''),
+    }).concat(logger),
 });
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
