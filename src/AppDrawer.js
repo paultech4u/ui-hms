@@ -45,25 +45,25 @@ function AppDrawer(props) {
   const username = useSelector((state) => state.auth.username);
 
   const [isOpen, setIsOpen] = React.useState({
-    1: false,
-    2: false,
-    3: false,
-    4: false,
+    main: false,
+    users: false,
+    labs: false,
+    beds: false,
   });
 
-  const handleRouteItemCollapes = (index) => {
-    switch (index) {
-      case 1:
-        setIsOpen({ 1: !isOpen[1] });
+  const handleRouteItemCollapes = (type) => {
+    switch (type) {
+      case 'main':
+        setIsOpen({ main: !isOpen.main });
         break;
-      case 2:
-        setIsOpen({ 2: !isOpen[2] });
+      case 'users':
+        setIsOpen({ users: !isOpen.users });
         break;
-      case 3:
-        setIsOpen({ 3: !isOpen[3] });
+      case 'labs':
+        setIsOpen({ labs: !isOpen.labs });
         break;
-      case 4:
-        setIsOpen({ 4: !isOpen[4] });
+      case 'beds':
+        setIsOpen({ beds: !isOpen.beds });
         break;
       default:
         break;
@@ -80,10 +80,10 @@ function AppDrawer(props) {
     if (drawer === false) {
       setIsOpen((p) => ({
         ...p,
-        1: false,
-        2: false,
-        3: false,
-        4: false,
+        main: false,
+        users: false,
+        labs: false,
+        beds: false,
       }));
     }
   }, [drawer]);
@@ -116,10 +116,10 @@ function AppDrawer(props) {
       <Box>
         <List>
           <DrawerItemCollapes
-            open={isOpen[1]}
+            open={isOpen.main}
             showExpandIcon={drawer}
             className={styles.routeList_item}
-            onClick={() => handleRouteItemCollapes(1)}
+            onClick={() => handleRouteItemCollapes('main')}
             label={username === null ? 'cksse88' : username}
             icon={
               <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
@@ -152,14 +152,14 @@ function AppDrawer(props) {
               ))}
             </React.Fragment>
             <React.Fragment>
-              {routeItemCollapes.map(({ icon, label, item, index }) => (
+              {routeItemCollapes.map(({ icon, label, item, type }) => (
                 <DrawerItemCollapes
                   icon={icon}
-                  key={index}
+                  key={type}
                   label={label}
-                  open={isOpen[index]}
+                  open={isOpen[type]}
                   showExpandIcon={drawer}
-                  onClick={() => handleRouteItemCollapes(index)}>
+                  onClick={() => handleRouteItemCollapes(type)}>
                   {item.map((item, index) => (
                     <DrawerItem
                       key={index}
@@ -239,14 +239,14 @@ DrawerItemCollapes.propTypes = {
 
 const routeItem = [
   { icon: <MdDashboard size={20} />, label: 'Dashboard', link: '/dashboard' },
-  { icon: <FaUserMd size={20} />, label: 'Doctor', link: '/doctors' },
+  { icon: <FaUserMd size={20} />, label: 'Doctor', link: '/doctor' },
   { icon: <FaWheelchair size={20} />, label: 'Patients', link: '/patients' },
   { icon: <FaFirstAid size={20} />, label: 'Medicine', link: '/medicine' },
 ];
 
 const routeItemCollapes = [
   {
-    index: 2,
+    type: 'users',
     icon: <MdPeople size={20} />,
     label: 'Users',
     item: [
@@ -256,13 +256,13 @@ const routeItemCollapes = [
     ],
   },
   {
-    index: 3,
+    type: 'labs',
     icon: <ImLab size={20} />,
     label: 'Labs',
     item: [{ icon: <BiRadioCircle size={20} />, label: 'Patients Test' }],
   },
   {
-    index: 4,
+    type: 'beds',
     icon: <BiHotel size={20} />,
     label: 'Beds',
     item: [{ icon: <BiRadioCircle size={20} />, label: 'Beds Categories' }],

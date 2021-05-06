@@ -13,14 +13,14 @@ export const hospitalRole = [
 ];
 
 export const pageRoute = {
+  DOCTOR: '/doctor',
   PROFILE: '/profile',
   REGISTER: '/register',
   DASHBOARD: '/dashboard',
-  EDITPROFILE: '/profile/edit',
 };
 
-export const ProfileRoute = {
-  EDIT: '/edit',
+export const profileRoute = {
+  EDIT: '/profile/edit',
 };
 
 export const loadingStatus = {

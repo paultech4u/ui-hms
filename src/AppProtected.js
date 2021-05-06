@@ -6,16 +6,17 @@ import {
   successAction as profileSuccessAction,
 } from './profile/ProfileStoreSlice';
 import { useIsMobile } from './hooks';
-import { pageRoute } from './constants';
 import { Box } from '@material-ui/core';
 import { Footer } from './AppFooter';
 import { lazyload } from './common/Loading';
 import { NotifitionAlert } from './common/Alert';
+import { pageRoute, profileRoute } from './constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDrawer, closeDrawer } from './AppStoreSlice';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 
+const Doctors = lazyload(() => import('./pages/Doctors'));
 const Profile = lazyload(() => import('./profile/Profile'));
 const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
@@ -84,11 +85,12 @@ function AppProtected(props) {
         <main style={{ flex: 1, overflowY: 'auto' }}>
           <Switch location={showBackground || location}>
             <Route exact path={pageRoute.PROFILE} component={Profile} />
+            <Route exact path={pageRoute.DOCTOR} component={Doctors} />
             <Route exact path={pageRoute.DASHBOARD} component={Dashboard} />
             <Redirect to={pageRoute.DASHBOARD} />
           </Switch>
           {showBackground && (
-            <Route path={pageRoute.EDITPROFILE} component={EditProfile} />
+            <Route path={profileRoute.EDIT} component={EditProfile} />
           )}
         </main>
         <footer>
