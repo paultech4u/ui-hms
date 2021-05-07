@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 export const http = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? process.env.REACT_APP_SERVER_LOCALHOST
+      : process.env.REACT_APP_HMS_BASE_URL,
 });
 
 http.interceptors.request.use(
