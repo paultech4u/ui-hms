@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const http = axios.create({
-  baseURL: process.env.REACT_APP_HMS_BASE_URL,
+  baseURL: 'https://hms-application.herokuapp.com',
 });
 
 http.interceptors.request.use(
