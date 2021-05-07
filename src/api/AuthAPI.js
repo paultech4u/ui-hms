@@ -1,12 +1,13 @@
-import dotenv from 'dotenv';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-
-
 export const http = axios.create({
-  baseURL: process.env.REACT_APP_HOST,
+  baseURL:
+    process.env.NODE_ENV === 'development'
+      ? process.env.REACT_APP_SERVER_LOCALHOST
+      : process.env.REACT_APP_HMS_BASE_URL,
 });
 
 http.interceptors.request.use(
