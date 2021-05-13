@@ -166,6 +166,7 @@ function AppDrawer(props) {
                       icon={item.icon}
                       label={item.label}
                       style={{ paddingLeft: 30 }}
+                      onClick={() => history.push(item.link)}
                     />
                   ))}
                 </DrawerItemCollapes>
@@ -217,7 +218,7 @@ function DrawerItemCollapes(props) {
   const { open, icon, label, children, showExpandIcon, ...others } = props;
 
   return (
-    <React.Fragment>
+    <>
       <ListItem button {...others}>
         <ListItemIcon>{icon}</ListItemIcon>
         <ListItemText primary={label} disableTypography />
@@ -228,7 +229,7 @@ function DrawerItemCollapes(props) {
       <Collapse in={open} timeout='auto' unmountOnExit>
         {children}
       </Collapse>
-    </React.Fragment>
+    </>
   );
 }
 
@@ -250,7 +251,7 @@ const routeItemCollapes = [
     icon: <MdPeople size={20} />,
     label: 'Users',
     item: [
-      { icon: <MdPerson size={20} />, label: 'Nurses' },
+      { icon: <MdPerson size={20} />, label: 'Nurses', link: '/nurse' },
       { icon: <MdPerson size={20} />, label: 'Pharmacist' },
       { icon: <MdPerson size={20} />, label: 'Laboraties' },
     ],

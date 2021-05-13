@@ -18,6 +18,7 @@ import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 
 const Profile = lazyload(() => import('./profile/Profile'));
 const Doctors = lazyload(() => import('./pages/doctor/Doctors'));
+const Nurses = lazyload(() => import('./pages/nurse/Nurses'));
 const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
 
@@ -86,6 +87,7 @@ function AppProtected(props) {
           <Switch location={showBackground || location}>
             <Route exact path={pageRoute.PROFILE} component={Profile} />
             <Route exact path={pageRoute.DOCTOR} component={Doctors} />
+            <Route exact path={pageRoute.NURSE} component={Nurses} />
             <Route exact path={pageRoute.DASHBOARD} component={Dashboard} />
             <Redirect to={pageRoute.DASHBOARD} />
           </Switch>

@@ -13,6 +13,7 @@ export const hospitalRole = [
 ];
 
 export const pageRoute = {
+  NURSE: '/nurse',
   DOCTOR: '/doctor',
   PROFILE: '/profile',
   REGISTER: '/register',

@@ -18,7 +18,7 @@ import { useGlobalFilter, useRowSelect, useTable } from 'react-table';
 import MOCK_DATA from './MOCK_DATA.json';
 import { MdAdd, MdBlock, MdDone, MdMoreVert } from 'react-icons/md';
 
-function DoctorsTable(props) {
+function NursesTable(props) {
   const classes = useStyles();
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
@@ -123,7 +123,7 @@ function DoctorsTable(props) {
   );
 }
 
-export default DoctorsTable;
+export default NursesTable;
 
 function TableFilterInput(props) {
   const { filter, setFilter } = props;
