@@ -92,10 +92,10 @@ function AppProtected(props) {
           {showBackground && (
             <Route path={profileRoute.EDIT} component={EditProfile} />
           )}
+          <footer>
+            <Footer />
+          </footer>
         </main>
-        <footer>
-          <Footer />
-        </footer>
       </Box>
       <NotifitionAlert
         open={openAlert}

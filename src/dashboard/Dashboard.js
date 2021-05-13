@@ -133,7 +133,11 @@ function Dashboard(props) {
         <Box>
           <DashboardItem
             title='Upcoming Appointments'
-            className={clsx(classes.card_item, classes.card_item_apptTable)}>
+            className={clsx(
+              classes.card_item,
+              classes.card_item_adjust,
+              classes.card_item_apptTable
+            )}>
             <AppointmentTable />
           </DashboardItem>
         </Box>

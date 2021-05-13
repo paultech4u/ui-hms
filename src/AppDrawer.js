@@ -298,6 +298,9 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiListItemText-root': {
       display: 'none',
     },
+    '& .MuiListItemIcon-root': {
+      justifyContent: 'center',
+    },
   },
   routeList_item: {
     marginBottom: 10,

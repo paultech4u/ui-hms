@@ -8,7 +8,7 @@ export function Footer(params) {
   const classes = useStyles();
   const isDesktop = useIsDesktop();
   return (
-    <Paper className={classes.footer_container}>
+    <Paper elevation={0} className={classes.footer_container}>
       <Box display='flex' justifyContent={isDesktop ? 'flex-end' : 'center'}>
         <a title='Privacy Policy'>Privacy Policy</a>
         <a title='Term of Use'>Term of Use</a>

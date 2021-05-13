@@ -21,6 +21,8 @@ function App(props) {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  // socket.connect();
+
   // Authentication State Check
   useEffect(() => {
     (async () => {
