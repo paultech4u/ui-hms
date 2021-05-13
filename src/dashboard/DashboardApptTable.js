@@ -44,13 +44,13 @@ function AppointmentTable(props) {
         justifyContent={isDesktop ? 'center' : 'flex-start'}
         overflow='auto'>
         <Box {...getTableProps()} className={classes.table}>
-          <Box className={classes.tableHead}>
+          <Box className={classes.th}>
             {headerGroups.map((headerGroup) => (
               <Box {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column) => (
                   <Box
                     {...column.getHeaderProps({
-                      className: classes.tableHead_data,
+                      className: classes.td,
                     })}>
                     {column.render('Header')}
                   </Box>
@@ -72,21 +72,18 @@ function AppointmentTable(props) {
                     {...row.getRowProps({
                       ...style,
                     })}>
-                    {row.cells.map((cell) => {
-                      return (
-                        <Box
-                          {...cell.getCellProps({
-                            className: clsx(classes.tableBody_data, {
-                              [classes.tableBody_data_statusPending]:
-                                cell.value === 'Pending',
-                              [classes.tableBody_data_statusComfirmed]:
-                                cell.value === 'Comfirmed',
-                            }),
-                          })}>
-                          {cell.render('Cell')}
-                        </Box>
-                      );
-                    })}
+                    {row.cells.map((cell) => (
+                      <Box
+                        {...cell.getCellProps({
+                          className: clsx(classes.tr_cell, {
+                            [classes.tr_cell_pending]: cell.value === 'Pending',
+                            [classes.tr_cell_comfirm]:
+                              cell.value === 'Comfirmed',
+                          }),
+                        })}>
+                        {cell.render('Cell')}
+                      </Box>
+                    ))}
                   </Box>
                 );
               }}
@@ -119,25 +116,25 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     borderCollapse: 'collapse',
     border: `1px solid ${theme.palette.divider}`,
-    '& $tableHead_data, $tableBody_data ': {
+    '& $th, $td ': {
       border: `1px solid ${theme.palette.divider}`,
     },
   },
-  tableHead: {
+  th: {
     backgroundColor: theme.palette.primary.main,
   },
-  tableHead_data: {
+  td: {
     padding: 5,
     textAlign: 'center',
     color: theme.palette.common.white,
   },
-  tableBody_data: {
+  tr_cell: {
     padding: 5,
   },
-  tableBody_data_statusPending: {
+  tr_cell_pending: {
     color: theme.palette.warning.main,
   },
-  tableBody_data_statusComfirmed: {
+  tr_cell_comfirm: {
     color: theme.palette.success.main,
   },
 }));
