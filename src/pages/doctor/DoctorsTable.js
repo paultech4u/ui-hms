@@ -15,14 +15,8 @@ function DoctorsTable(props) {
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
 
-  const {
-    prepareRow,
-    headerGroups,
-    getTableBodyProps,
-    getTableProps,
-    rows,
-    state,
-  } = useTable({ data, columns });
+  const { prepareRow, headerGroups, getTableBodyProps, getTableProps, rows } =
+    useTable({ data, columns });
 
   return (
     <Table {...getTableProps({ className: classes.table })}>
