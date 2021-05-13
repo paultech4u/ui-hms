@@ -1,11 +1,11 @@
-import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import {
   login,
   addHospital,
   forgetPassword,
   addHospitalAdmin,
-} from '../api/AuthAPI';
+} from '../api/authApi';
 import { authStatus, loadingStatus } from '../constants';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 
 export const loginAction = createAsyncThunk(
   'auth/login',

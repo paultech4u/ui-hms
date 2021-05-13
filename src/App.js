@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { persistor } from './store';
 import MomentUtils from '@date-io/moment';
 import theme, { GlobalCss } from './theme';
-import { refreshToken } from './api/AuthAPI';
+import { refreshToken } from './api/authApi';
 import { lazyload, Loading } from './common/Loading';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, useHistory } from 'react-router-dom';

@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "first_name": "Courtnay",
+        "last_name": "Flint",
+        "email": "cflint0@adobe.com",
+        "status": true,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 2,
+        "first_name": "Eli",
+        "last_name": "Shillan",
+        "email": "eshillan1@google.de",
+        "status": false,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 3,
+        "first_name": "Jordana",
+        "last_name": "Trewinnard",
+        "email": "jtrewinnard2@trellian.com",
+        "status": true,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 4,
+        "first_name": "Olag",
+        "last_name": "Boden",
+        "email": "oboden3@de.vu",
+        "status": true,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 5,
+        "first_name": "Westbrooke",
+        "last_name": "Mugford",
+        "email": "wmugford4@state.tx.us",
+        "status": false,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 6,
+        "first_name": "Haley",
+        "last_name": "Shillabear",
+        "email": "hshillabear5@uol.com.br",
+        "status": true,
+        "phone_number": "080567665684"
+    },
+    {
+        "id": 7,
+        "first_name": "Stacy",
+        "last_name": "Skin",
+        "email": "sskin6@prweb.com",
+        "status": false,
+        "phone_number": "080567665684"
+    }
+]

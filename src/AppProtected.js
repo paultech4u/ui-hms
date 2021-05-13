@@ -16,8 +16,8 @@ import { openDrawer, closeDrawer } from './AppStoreSlice';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 
-const Doctors = lazyload(() => import('./pages/Doctors'));
 const Profile = lazyload(() => import('./profile/Profile'));
+const Doctors = lazyload(() => import('./pages/doctor/Doctors'));
 const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
 

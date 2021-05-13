@@ -44,105 +44,72 @@ function Dashboard(props) {
   };
 
   return (
-    <Box className={clsx(classes.card_container)}>
-      <Box flex={1} display='flex' flexDirection='column'>
-        <Box className={clsx(classes.card_item_filter_container)}>
-          <DashboardItem
-            title='Hospitals'
-            icon={<BsFunnel />}
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_filter
-            )}>
-            <AutocompleteInput options={hospitals} />
-          </DashboardItem>
-          <DashboardItem
-            title='Doctors'
-            icon={<BsFunnel />}
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_filter
-            )}>
-            <AutocompleteInput options={doctors} />
-          </DashboardItem>
-          <DashboardItem
-            title='Specialist'
-            icon={<BsFunnel />}
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_filter
-            )}>
-            <AutocompleteInput options={specialist} />
-          </DashboardItem>
-          <DashboardItem
-            title='Date'
-            icon={<BsFunnel />}
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_filter
-            )}>
-            <TextInput
-              size='small'
-              variant='outlined'
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position='end'>
-                    <IconButton
-                      size='small'
-                      ref={anchorEl}
-                      onClick={handleDatePickerOpen}>
-                      <BsCalendar />
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </DashboardItem>
-          <Popper
-            placement='bottom'
-            open={openDatePicker}
-            anchorEl={anchorEl.current}
-            onDatePickerClose={handleDatePickerClose}>
-            <DatePickerPopper />
-          </Popper>
-        </Box>
-        <Box className={classes.card_item_chart_container}>
-          <DashboardItem
-            title='Patients Count by Week'
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_lineChart
-            )}>
-            <PatientCountLineChart />
-          </DashboardItem>
-          <DashboardItem
-            title='Patients Count by Week'
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_barChart
-            )}>
-            <PatientCountBarChartBySpec />
-          </DashboardItem>
-        </Box>
-        <Box>
-          <DashboardItem
-            title='Upcoming Appointments'
-            className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_apptTable
-            )}>
-            <AppointmentTable />
-          </DashboardItem>
-        </Box>
+    <Box className={clsx(classes.dashboard_container)}>
+      <Box className={clsx(classes.dashboardFilter_container)}>
+        <DashboardItem
+          title='Hospitals'
+          icon={<BsFunnel />}
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardFilter_item
+          )}>
+          <AutocompleteInput options={hospitals} />
+        </DashboardItem>
+        <DashboardItem
+          title='Doctors'
+          icon={<BsFunnel />}
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardFilter_item
+          )}>
+          <AutocompleteInput options={doctors} />
+        </DashboardItem>
+        <DashboardItem
+          title='Specialist'
+          icon={<BsFunnel />}
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardFilter_item
+          )}>
+          <AutocompleteInput options={specialist} />
+        </DashboardItem>
+        <DashboardItem
+          title='Date'
+          icon={<BsFunnel />}
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardFilter_item
+          )}>
+          <TextInput
+            size='small'
+            variant='outlined'
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    size='small'
+                    ref={anchorEl}
+                    onClick={handleDatePickerOpen}>
+                    <BsCalendar />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </DashboardItem>
+        <Popper
+          placement='bottom'
+          open={openDatePicker}
+          anchorEl={anchorEl.current}
+          onDatePickerClose={handleDatePickerClose}>
+          <DatePickerPopper />
+        </Popper>
       </Box>
-      <Box className={clsx(classes.card_item_details_container)}>
+      <Box className={clsx(classes.dashboardDetails_container)}>
         {details.map(({ title, data, date }, index) => (
           <DashboardItem
             key={index}
@@ -150,13 +117,45 @@ function Dashboard(props) {
             subheader={date}
             icon={<MdMoreHoriz />}
             className={clsx(
-              classes.card_item,
-              classes.card_item_adjust,
-              classes.card_item_details
+              classes.dashboardItem,
+              classes.dashboardItem_adjust,
+              classes.dashboardDetails_item
             )}>
             <Typography variant='h4'>{data}</Typography>
           </DashboardItem>
         ))}
+      </Box>
+
+      <Box className={classes.dashboardChart_container}>
+        <DashboardItem
+          title='Patients Count by Week'
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardLineChart
+          )}>
+          <PatientCountLineChart />
+        </DashboardItem>
+        <DashboardItem
+          title='Patients Count by Week'
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardBarChart
+          )}>
+          <PatientCountBarChartBySpec />
+        </DashboardItem>
+      </Box>
+      <Box className={classes.dashboardApptTable_container}>
+        <DashboardItem
+          title='Upcoming Appointments'
+          className={clsx(
+            classes.dashboardItem,
+            classes.dashboardItem_adjust,
+            classes.dashboardApptTable
+          )}>
+          <AppointmentTable />
+        </DashboardItem>
       </Box>
     </Box>
   );
@@ -165,22 +164,15 @@ function Dashboard(props) {
 export default Dashboard;
 
 const useStyles = makeStyles((theme) => ({
-  card_container: {
+  dashboard_container: {
+    paddingTop: 24,
     display: 'flex',
-    alignItems: 'center',
     flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
     [theme.breakpoints.up('md')]: {
-      paddingLeft: 24,
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
+      padding: 24,
     },
   },
-  card_item: {
+  dashboardItem: {
     display: 'flex',
     flexDirection: 'column',
     '& .MuiTypography-h5': {
@@ -203,92 +195,78 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  card_item_chart_container: {
+  dashboardFilter_container: {
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      //   justifyContent: 'space-between',
-    },
     [theme.breakpoints.up('md')]: {
-      flexWrap: 'no-wrap',
-      // justifyContent: 'space-between',
-    },
-  },
-  card_item_filter_container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      //   justifyContent: 'space-between',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexWrap: 'no-wrap',
-      // justifyContent: 'space-between',
-    },
-  },
-  card_item_details_container: {
-    display: 'flex',
-    flexDirection: 'column',
-    [theme.breakpoints.up('sm')]: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
       justifyContent: 'center',
+      flexDirection: 'row',
     },
   },
-  card_item_details: {
+  dashboardFilter_item: {
     width: 300,
     [theme.breakpoints.up('md')]: {
-      maxWidth: 150,
+      width: 235,
+    },
+  },
+  dashboardDetails_container: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+  },
+  dashboardDetails_item: {
+    width: 300,
+    [theme.breakpoints.up('md')]: {
+      width: 235,
       '& .MuiCardContent-root:last-child': {
         paddingBottom: 10,
       },
     },
   },
-  card_item_filter: {
-    width: 300,
+  dashboardChart_container: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
-      maxWidth: 155,
+      justifyContent: 'center',
+      flexDirection: 'row',
     },
   },
-  card_item_lineChart: {
+  dashboardLineChart: {
     width: 300,
     [theme.breakpoints.up('md')]: {
-      width: 430,
+      width: 485,
     },
   },
-  card_item_barChart: {
+  dashboardBarChart: {
     width: 300,
     [theme.breakpoints.up('md')]: {
-      width: 220,
+      width: 485,
     },
   },
-  card_item_adjust: {
+  dashboardItem_adjust: {
     marginRight: 0,
     marginBottom: 15,
-    [theme.breakpoints.up('sm')]: {
-      marginBottom: 15,
-      marginRight: 15,
-    },
     [theme.breakpoints.up('md')]: {
       marginBottom: 15,
       marginRight: 15,
     },
   },
-  card_item_apptTable: {
+  dashboardApptTable_container: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  dashboardApptTable: {
     maxWidth: 300,
     [theme.breakpoints.up('md')]: {
-      maxWidth: 667,
+      minWidth: 985,
     },
-    // '& .MuiCardContent-root': {
-    //   overflowX: 'auto',
-    // },
   },
 }));
 

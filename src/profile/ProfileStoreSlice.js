@@ -1,6 +1,6 @@
-import { getProfileDetails } from '../api';
 import { loadingStatus } from '../constants';
 import { logoutAction } from '../auth/AuthStoreSlice';
+import { getProfileDetails } from '../api/profileApi';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getProfileDetailAction = createAsyncThunk(

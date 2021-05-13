@@ -5,9 +5,11 @@ import { FixedSizeList } from 'react-window';
 import scrollbarWidth from '../common/ScrollbarWidth';
 import { Box, TextField, makeStyles } from '@material-ui/core';
 import { useTable, useGlobalFilter, useBlockLayout } from 'react-table';
+import { useIsDesktop } from '../hooks';
 
 function AppointmentTable(props) {
   const classes = useStyles();
+  const isDesktop = useIsDesktop();
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
   const scrollbarSize = React.useMemo(() => scrollbarWidth(), []);
@@ -37,7 +39,10 @@ function AppointmentTable(props) {
       <Box display='flex' justifyContent='center'>
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
       </Box>
-      <Box overflow='auto'>
+      <Box
+        display={isDesktop ? 'flex' : 'block'}
+        justifyContent={isDesktop ? 'center' : 'flex-start'}
+        overflow='auto'>
         <Box {...getTableProps()} className={classes.table}>
           <Box className={classes.tableHead}>
             {headerGroups.map((headerGroup) => (
