@@ -7,6 +7,7 @@ import {
   IconButton,
   Typography,
   InputAdornment,
+  Popover,
 } from '@material-ui/core';
 import {
   doctorSelector,
@@ -32,15 +33,16 @@ function Dashboard(props) {
   const hospitals = useSelector(hospitalsSelector.selectAll);
   const specialist = useSelector(specialistSelector.selectAll);
 
-  const anchorEl = React.useRef(null);
-  const [openDatePicker, setDatePicker] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleDatePickerOpen = () => {
-    setDatePicker((prev) => !prev);
+
+
+  const handleDatePickerOpen = (event) => {
+    setAnchorEl(event.currentTarget)
   };
 
   const handleDatePickerClose = () => {
-    setDatePicker((prev) => prev);
+   setAnchorEl(null)
   };
 
   return (
@@ -101,13 +103,22 @@ function Dashboard(props) {
             }}
           />
         </DashboardItem>
-        <Popper
+        <Popover
+          disablePortal
           placement='bottom'
-          open={openDatePicker}
-          anchorEl={anchorEl.current}
-          onDatePickerClose={handleDatePickerClose}>
-          <DatePickerPopper />
-        </Popper>
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          onClose={handleDatePickerClose}>
+          <DatePickerPopper onDateMenuClose={handleDatePickerClose} />
+        </Popover>
       </Box>
       <Box className={clsx(classes.dashboardDetails_container)}>
         {details.map(({ title, data, date }, index) => (

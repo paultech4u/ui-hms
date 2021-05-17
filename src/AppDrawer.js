@@ -118,9 +118,8 @@ function AppDrawer(props) {
           <DrawerItemCollapes
             open={isOpen.main}
             showExpandIcon={drawer}
-            className={styles.routeList_item}
             onClick={() => handleRouteItemCollapes('main')}
-            label={username === null ? 'cksse88' : username}
+            label={username === null ? 'John Doe' : username}
             icon={
               <Avatar className={clsx(styles.avatar, styles.avatar_small)}>
                 A
@@ -303,9 +302,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
   },
-  routeList_item: {
-    marginBottom: 10,
-  },
+
   avatar: {
     backgroundColor: deepPurple[500],
     color: theme.palette.getContrastText(deepPurple[500]),

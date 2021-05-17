@@ -1,9 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from 'react';
-import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
-  Box,
   Paper,
   TextField,
   InputAdornment,
@@ -15,15 +13,14 @@ import {
 
 export function AuthTextInput(props) {
   const styles = useStyles();
-  const { value, error, errortext, ...others } = props;
+  const { value, error, ...others } = props;
 
   return (
     <TextField
       size='small'
       error={error}
       value={value}
-      helperText={errortext}
-      className={styles.text_field}
+      className={styles.textField}
       {...others}
     />
   );
@@ -32,13 +29,12 @@ export function AuthTextInput(props) {
 AuthTextInput.propTypes = {
   value: PropTypes.string,
   error: PropTypes.bool,
-  errortext: PropTypes.oneOfType([PropTypes.string, PropTypes.any]),
 };
 
 export function AuthPasswordInput(props) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const { value, errortext, error, ...others } = props;
+  const { value, error, ...others } = props;
 
   const styles = useStyles();
 
@@ -52,9 +48,7 @@ export function AuthPasswordInput(props) {
       error={error}
       value={value}
       name='password'
-      placeholder='*****'
-      helperText={errortext}
-      className={styles.text_field}
+      className={styles.textField}
       type={showPassword ? 'text' : 'password'}
       InputProps={{
         endAdornment: (
@@ -75,29 +69,12 @@ export function AuthPasswordInput(props) {
 AuthPasswordInput.propTypes = {
   value: PropTypes.string,
   error: PropTypes.bool,
-  errortext: PropTypes.string,
   toggleVisibility: PropTypes.func,
 };
 
 export function AuthCard(props) {
-  const { children, elevation, variant, cardContentClass, ...others } = props;
-  return (
-    <Box {...others}>
-      <Paper
-        variant={variant}
-        elevation={elevation}
-        className={clsx(props.paperclassname)}>
-        {children}
-      </Paper>
-    </Box>
-  );
+  return <Paper {...props}>{props.children}</Paper>;
 }
-
-AuthCard.propTypes = {
-  paperClassName: PropTypes.object,
-  elevation: PropTypes.number,
-  variant: PropTypes.oneOf(['outlined', 'elevation']),
-};
 
 export function AuthButton(props) {
   const { children, ...rest } = props;
@@ -129,7 +106,7 @@ AuthNavBarLink.propTypes = {
 };
 
 const useStyles = makeStyles((theme) => ({
-  text_field: {
+  textField: {
     width: '30ch',
     [theme.breakpoints.up('md')]: {
       width: '40ch',

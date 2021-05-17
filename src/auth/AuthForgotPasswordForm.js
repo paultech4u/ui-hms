@@ -22,26 +22,16 @@ import { AuthCard, AuthTextInput, AuthButton } from './AuthCommon';
 
 function ForgetPassword(props) {
   const query = useQuery();
-  const styles = useStyles();
+  const classes = useStyles();
   const dispatch = useDispatch();
-  const [open, setOpen] = React.useState(false);
   const error = useSelector((state) => state.auth.error);
+  const [errorAlert, setErrorAlert] = React.useState(false);
   const isLoading = useSelector((state) => state.auth.isLoading);
 
-  const forgetPasswordSchema = Yup.object().shape({
-    email: Yup.string().email().required('Field is required'),
-    password: Yup.string()
-      .min(8, 'Must contain at least 8 characters')
-      .required('Field is required'),
-    comfirm_password: Yup.string()
-      .min(8, 'Must contain at least 8 characters')
-      .required('Field is required'),
-  });
-
   React.useEffect(() => {
-    if (open === true) {
+    if (errorAlert === true) {
       setTimeout(() => {
-        setOpen(false);
+        setErrorAlert(false);
       }, 2000);
     }
 
@@ -51,19 +41,27 @@ function ForgetPassword(props) {
   const formik = useFormik({
     initialValues: {
       email: query.get('email'),
-      password: '',
-      comfirm_password: '',
+      password1: '',
+      password2: '',
     },
-    validationSchema: forgetPasswordSchema,
+    validationSchema: Yup.object().shape({
+      email: Yup.string().email().required('Field is required'),
+      password: Yup.string()
+        .min(8, 'Must contain at least 8 characters')
+        .required('Field is required'),
+      comfirm_password: Yup.string()
+        .min(8, 'Must contain at least 8 characters')
+        .required('Field is required'),
+    }),
     onSubmit: (values) => {
-      const { comfirm_password, password, email } = values;
-      if (comfirm_password !== password) {
-        return setOpen((p) => !p);
+      const { password1, password2, email } = values;
+      if (password2 !== password1) {
+        return setErrorAlert((p) => !p);
       }
       const payload = {
         email,
-        password1: password,
-        password2: comfirm_password,
+        password: password1,
+        confirmPassword: password2,
       };
 
       dispatch(forgetPasswordAction(payload));
@@ -76,19 +74,18 @@ function ForgetPassword(props) {
 
   return (
     <AuthCard variant='outlined'>
-      <Collapse in={open} unmountOnExit>
+      <Collapse in={errorAlert} unmountOnExit>
         <Alert
+          severity='error'
           action={
             <IconButton
-              onClick={() => setOpen(false)}
-              aria-label='close'
               color='inherit'
-              size='small'>
+              size='small'
+              onClick={() => setErrorAlert(false)}>
               <MdCancel />
             </IconButton>
-          }
-          severity='error'>
-          Password did not match
+          }>
+          Both Password did not match
         </Alert>
       </Collapse>
       <Box display='flex' justifyContent='center' marginY={8}>
@@ -101,57 +98,43 @@ function ForgetPassword(props) {
             size='small'
             name='email'
             variant='outlined'
+            onBlur={formik.handleBlur}
             value={formik.values.email}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            errortext={
-              !!formik.errors.email && formik.touched.email
-                ? formik.errors.email
-                : null
-            }
             error={!!formik.errors.email && formik.touched.email}
+            helperText={formik.touched.email ? formik.errors.email : null}
           />
         </Box>
         <Box display='flex' flexDirection='column' paddingBottom={5}>
           <Typography variant='caption'>New Password</Typography>
           <TextField
             size='small'
-            name='password'
+            name='password1'
             variant='outlined'
-            placeholder='*****'
             onBlur={formik.handleBlur}
-            className={styles.text_field}
-            value={formik.values.password}
+            value={formik.values.password1}
             onChange={formik.handleChange}
+            className={classes.formTextFied}
+            error={!!formik.errors.password1 && formik.touched.password1}
             helperText={
-              !!formik.errors.password && formik.touched.password
-                ? formik.errors.password
-                : null
+              formik.touched.password1 ? formik.errors.password1 : null
             }
-            error={!!formik.errors.password && formik.touched.password}
           />
         </Box>
         <Box display='flex' flexDirection='column'>
           <Typography variant='caption'>Comfirm Password</Typography>
           <TextField
             size='small'
+            name='password2'
             variant='outlined'
-            placeholder='*****'
-            name='comfirm_password'
             onBlur={formik.handleBlur}
-            className={styles.text_field}
             onChange={formik.handleChange}
+            value={formik.values.password2}
+            className={classes.formTextFied}
             helperText={
-              !!formik.errors.comfirm_password &&
-              formik.touched.comfirm_password
-                ? formik.errors.comfirm_password
-                : null
+              formik.touched.password2 ? formik.errors.password2 : null
             }
-            error={
-              !!formik.errors.comfirm_password &&
-              formik.touched.comfirm_password
-            }
-            value={formik.values.comfirm_password}
+            error={!!formik.errors.password2 && formik.touched.password2}
           />
         </Box>
         <Box display='flex' justifyContent='center' marginY={10}>
@@ -162,7 +145,7 @@ function ForgetPassword(props) {
       </Box>
       <Backdrop
         in={isLoading === 'pending' ? true : false}
-        className={styles.back_drop}>
+        className={classes.backdrop}>
         <CircularProgress color='inherit' />
       </Backdrop>
       <NotifitionAlert
@@ -176,18 +159,18 @@ function ForgetPassword(props) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  text_field: {
+  formTextField: {
     width: '30ch',
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '35ch',
     },
     [theme.breakpoints.up('md')]: {
       width: '40ch',
     },
   },
-  back_drop: {
-    zIndex: theme.zIndex.drawer + 1,
+  backdrop: {
     color: '#fff',
+    zIndex: theme.zIndex.drawer + 1,
   },
 }));
 

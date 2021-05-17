@@ -2,13 +2,11 @@ import React from 'react';
 import { KeyboardDatePicker, DatePicker } from '@material-ui/pickers';
 import { Box, Paper, Button, Divider, makeStyles } from '@material-ui/core';
 
-/**
- *
- * @param {} props
- */
 export function DatePickerPopper(props) {
   const classes = useStyles();
-  const { onDatePickerClose } = props;
+  const [selectFromDate, handleSelectedFromDate] = React.useState(new Date());
+  const [selectToDate, handleSelectedToDate] = React.useState(new Date());
+  const { onDateMenuClose } = props;
   return (
     <Paper>
       <Box display='flex' padding={5}>
@@ -16,23 +14,21 @@ export function DatePickerPopper(props) {
           autoOk
           size='small'
           variant='inline'
-          inputVariant='outlined'
           format='MM/dd/yyyy'
-          className={classes.keyboardPicker_input}
-          // value={selectedDate}
-          // InputAdornmentProps={{ position: 'start' }}
-          // onChange={(date) => handleDateChange(date)}
+          value={selectFromDate}
+          inputVariant='outlined'
+          className={classes.keyboardPicker_input} 
+          onChange={(date) => handleSelectedFromDate(date)}
         />
         <KeyboardDatePicker
           autoOk
           size='small'
           variant='inline'
-          inputVariant='outlined'
           format='MM/dd/yyyy'
+          value={selectToDate}
+          inputVariant='outlined'
           className={classes.keyboardPicker_input}
-          // value={selectedDate}
-          // InputAdornmentProps={{ position: 'start' }}
-          // onChange={(date) => handleDateChange(date)}
+          onChange={(date) => handleSelectedToDate(date)}
         />
       </Box>
       <Paper
@@ -71,7 +67,7 @@ export function DatePickerPopper(props) {
           style={{ marginRight: 5 }}>
           Apply
         </Button>
-        <Button size='small' variant='outlined' onClick={onDatePickerClose}>
+        <Button size='small' variant='outlined' onClick={onDateMenuClose}>
           Cancel
         </Button>
       </Box>

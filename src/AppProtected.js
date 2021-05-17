@@ -6,7 +6,7 @@ import {
   successAction as profileSuccessAction,
 } from './profile/ProfileStoreSlice';
 import { useIsMobile } from './hooks';
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import { Footer } from './AppFooter';
 import { lazyload } from './common/Loading';
 import { NotifitionAlert } from './common/Alert';
@@ -23,6 +23,7 @@ const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
 
 function AppProtected(props) {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const isMobile = useIsMobile();
   const location = useLocation();
@@ -83,7 +84,7 @@ function AppProtected(props) {
       <AppDrawer drawer={drawer} onDrawerClose={toggleDrawer} />
       <Box flex={1} display='flex' flexDirection='column'>
         <AppNavbar drawer={drawer} handleDrawerOpen={toggleDrawer} />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
+        <main className={classes.main}>
           <Switch location={showBackground || location}>
             <Route exact path={pageRoute.PROFILE} component={Profile} />
             <Route exact path={pageRoute.DOCTOR} component={Doctors} />
@@ -108,5 +109,15 @@ function AppProtected(props) {
     </Box>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  main: {
+    flex: 1,
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+}));
 
 export default AppProtected;

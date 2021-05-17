@@ -4,9 +4,6 @@ import { authRoute } from '../constants';
 import { lazyload } from '../common/Loading';
 import { Box, Typography } from '@material-ui/core';
 import { Route, Switch, Redirect, useLocation } from 'react-router-dom';
-// import { Footer } from '../common/Footer';
-// import { useIsDesktop } from '../hooks';
-// import { useDispatch, useSelector } from 'react-redux';
 
 const LoginForm = lazyload(() => import('./AuthLoginForm'));
 const EmailRequest = lazyload(() => import('./AuthEmailRequest'));
@@ -19,7 +16,7 @@ function AuthPage(props) {
   const showBackground = location.state && location.state.background;
 
   return (
-    <Box height={1} display='flex' flexDirection='column'>
+    <Box height={1} display='flex' flexDirection='column' overflow='auto'>
       {location.pathname === authRoute.FORGOTPASSWORD ? (
         <Box>
           <Typography>Logo</Typography>

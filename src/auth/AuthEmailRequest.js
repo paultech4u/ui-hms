@@ -43,10 +43,6 @@ function EmailRequest(props) {
     history.push('/login');
   };
 
-  //   const clearError = () => {
-  //     dispatch(clearErrorAction());
-  //   };
-
   return (
     <Dialog fullWidth open={location.pathname === '/reset'} onClose={cancle}>
       <DialogTitle>Send Email Request</DialogTitle>

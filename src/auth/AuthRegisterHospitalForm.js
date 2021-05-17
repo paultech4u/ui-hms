@@ -10,24 +10,9 @@ import {
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { AuthCard, AuthButton } from './AuthCommon';
-// import { Progress } from '../common/Progress';
 import { useDispatch } from 'react-redux';
 import { registerHosptialAction } from './AuthStoreSlice';
 import GetStartedScreen from './AuthRegisterGetStartedScreen';
-
-// const admin = {
-//   role: values.role,
-//   email: values.email,
-//   lastname: values.lastname,
-//   username: values.username,
-//   password: values.password,
-//   firstname: values.firstname,
-//   phone_number: values.phone_number,
-//   hospital_name: values.hospitalName,
-// };
-
-// let vertical = 'bottom';
-// let horizontal = 'left';
 
 function RegisterHospitalForm(props) {
   const classes = useStyles();
@@ -38,28 +23,6 @@ function RegisterHospitalForm(props) {
   const toggleToFormScreen = () => {
     setToggleForm(!toggleForm);
   };
-
-  const regiterValidationschema = Yup.object().shape({
-    name: Yup.string()
-      .trim()
-      .min(6, 'Must contain 6 character')
-      .max(50, 'Max 50')
-      .required('required*'),
-    state: Yup.string()
-      .trim()
-      .min(3, 'Must contain 3 character')
-      .max(20, 'Max 20')
-      .required('required*'),
-    address: Yup.string()
-      .trim()
-      .min(6, 'Must contain 6 character')
-      .max(50, 'Max 50')
-      .required('Required*'),
-    zip_no: Yup.number()
-      .positive('Must be a non-negative number')
-      .notRequired(),
-    email: Yup.string().email('Invalid email').required('required*'),
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -76,7 +39,27 @@ function RegisterHospitalForm(props) {
 
       dispatch(registerHosptialAction(payload));
     },
-    validationSchema: regiterValidationschema,
+    validationSchema: Yup.object().shape({
+      name: Yup.string()
+        .trim()
+        .min(6, 'Must contain 6 character')
+        .max(50, 'Max 50')
+        .required('required*'),
+      state: Yup.string()
+        .trim()
+        .min(3, 'Must contain 3 character')
+        .max(20, 'Max 20')
+        .required('required*'),
+      address: Yup.string()
+        .trim()
+        .min(6, 'Must contain 6 character')
+        .max(50, 'Max 50')
+        .required('Required*'),
+      zip_no: Yup.number()
+        .positive('Must be a non-negative number')
+        .notRequired(),
+      email: Yup.string().email('Invalid email').required('required*'),
+    }),
   });
 
   React.useEffect(() => {
@@ -89,7 +72,7 @@ function RegisterHospitalForm(props) {
   // const isLoading = useSelector((state) => state.auth.isLoading);
 
   return (
-    <AuthCard variant='outlined' paperclassname={classes.authCard_paper}>
+    <AuthCard variant='outlined' className={classes.formContainer}>
       <Box paddingY={10}>
         <Typography variant='h5' align='center'>
           REGISTER HOSPITAL
@@ -103,7 +86,7 @@ function RegisterHospitalForm(props) {
             maxHeight={300}
             id='paper_content'
             className={clsx({
-              [classes.authCard_paper_content]: height.current === 300,
+              [classes.formContainer_content]: height.current === 300,
             })}>
             <TextInput
               name='name'
@@ -178,16 +161,20 @@ function TextInput(props) {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Typography variant='caption' className={classes.textField_label}>
+      <Typography variant='body2' className={classes.formTextField_label}>
         {props.title}
       </Typography>
-      <TextField variant='outlined' className={classes.textField} {...props} />
+      <TextField
+        {...props}
+        variant='outlined'
+        className={classes.formTextField}
+      />
     </Box>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  authCard_paper: {
+  formContainer: {
     width: '300px',
     [theme.breakpoints.up('sm')]: {
       width: '400px',
@@ -196,15 +183,15 @@ const useStyles = makeStyles((theme) => ({
       width: '400px',
     },
   },
-  authCard_paper_content: {
+  formContainer_content: {
     overflowY: 'scroll',
   },
-  textField: {
+  formTextField: {
     '& .MuiFormControl-marginDense': {
       marginTop: 0,
     },
   },
-  textField_label: {
+  formTextField_label: {
     paddingLeft: 1,
   },
 }));

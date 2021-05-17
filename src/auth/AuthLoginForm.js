@@ -59,15 +59,13 @@ function AuthLogin(props) {
   };
 
   return (
-    <Box>
+    <>
       <AuthCard
-        elevation={6}
-        marginTop={30}
-        paperclassname={classes.authCard_paper}>
-        <Box padding={15}>
-          <Typography variant='h6' className={classes.authCard_header_title}>
-            LOGIN
-          </Typography>
+        elevation={0}
+        variant='outlined'
+        className={classes.formContainer}>
+        <Box className={classes.formTitle}>
+          <Typography variant='h6'>LOGIN</Typography>
         </Box>
         <Divider />
         <Box
@@ -76,18 +74,18 @@ function AuthLogin(props) {
           marginTop={10}
           alignItems='center'
           flexDirection='column'>
-          <Box className={classes.textField}>
+          <Box className={classes.formInput}>
             <Typography variant='caption'>Email</Typography>
             <AuthTextInput
               name='email'
               variant='outlined'
               onBlur={formik.handleBlur}
               onInput={formik.handleChange}
-              value={formik.values[FormKeys.EMAIL]}
               placeholder='JohnDoe@gmail.com'
+              value={formik.values[FormKeys.EMAIL]}
             />
           </Box>
-          <Box marginTop={10} className={classes.textField}>
+          <Box marginTop={10} className={classes.formInput}>
             <Typography variant='caption'>Password</Typography>
             <AuthPasswordInput
               variant='outlined'
@@ -124,7 +122,7 @@ function AuthLogin(props) {
       </AuthCard>
       <Backdrop
         in={isLoading === 'pending' ? true : false}
-        className={classes.back_drop}>
+        className={classes.backdrop}>
         <CircularProgress color='inherit' />
       </Backdrop>
       <NotifitionAlert
@@ -133,31 +131,29 @@ function AuthLogin(props) {
         open={error === null ? false : true}>
         {error === undefined ? 'Network Error' : error}
       </NotifitionAlert>
-    </Box>
+    </>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
-  authCard_paper: {
-    width: '300px',
-    [theme.breakpoints.up('sm')]: {
-      width: '400px',
-    },
+  formContainer: {
+    width: 300,
     [theme.breakpoints.up('md')]: {
-      width: '400px',
+      width: 400,
     },
   },
-  authCard_header_title: {
-    marginBottom: '3px',
+  formTitle: {
+    padding: 15,
+    marginBottom: 3,
     textAlign: 'center',
     color: theme.palette.common.black,
     fontWeight: theme.typography.fontWeightLight.valueOf(500),
   },
-  back_drop: {
+  backdrop: {
     color: '#fff',
     zIndex: theme.zIndex.drawer + 1,
   },
-  textField: {
+  formInput: {
     display: 'flex',
     flexDirection: 'column',
   },
