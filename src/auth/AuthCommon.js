@@ -85,26 +85,6 @@ export function AuthButton(props) {
   );
 }
 
-export function AuthNavBarLink(props) {
-  const { isActive, icon, label, ...others } = props;
-
-  return (
-    <Button
-      {...others}
-      size='small'
-      color={isActive ? 'primary' : 'default'}
-      variant={isActive ? 'contained' : 'text'}>
-      {label}
-    </Button>
-  );
-}
-
-AuthNavBarLink.propTypes = {
-  active: PropTypes.bool,
-  icon: PropTypes.element,
-  label: PropTypes.string,
-};
-
 const useStyles = makeStyles((theme) => ({
   textField: {
     width: '30ch',

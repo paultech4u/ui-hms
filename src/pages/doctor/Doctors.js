@@ -18,6 +18,7 @@ import {
   Typography,
   MenuItem,
   Popover,
+  InputAdornment,
 } from '@material-ui/core';
 import {
   useGlobalFilter,
@@ -36,16 +37,14 @@ import {
   MdMoreVert,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
+  MdCached,
 } from 'react-icons/md';
+import undraw_empty from '../../assets/svg/undraw_empty.svg';
 
 function DoctorsTable(props) {
   const classes = useStyles();
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
-
-  const handleStatus = () => {
-    console.log('click');
-  };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -152,7 +151,7 @@ function DoctorsTable(props) {
             />
           </Box>
           <Box>
-            <TableContainer component={Paper}>
+            <TableContainer>
               <Table
                 size='small'
                 stickyHeader
@@ -177,7 +176,7 @@ function DoctorsTable(props) {
                         {row.cells.map((cell) => (
                           <TableCell
                             {...cell.getCellProps({ className: classes.td })}>
-                            {cell.render('Cell', { handleStatus })}
+                            {cell.render('Cell')}
                           </TableCell>
                         ))}
                       </TableRow>
@@ -187,6 +186,20 @@ function DoctorsTable(props) {
               </Table>
             </TableContainer>
           </Box>
+          {page.length <= 0 && (
+            <Box width={1} p={10}>
+              <Box
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+                flexDirection='column'>
+                <Box>
+                  <img src={undraw_empty} alt='no-data' width={50} height={50} />
+                </Box>
+                <Typography>No results found.</Typography>
+              </Box>
+            </Box>
+          )}
           <Box className={classes.pagination_container}>
             <Box mr={7}>
               <TextField
@@ -265,6 +278,15 @@ function TableColumnFilter(props) {
     setFilter: null,
   });
 
+  const [value, setValue] = React.useState(column.filterValue);
+
+  const [loading, setLoading] = React.useState(false);
+
+  const onChange = useAsyncDebounce((value) => {
+    setLoading(false);
+    column.setFilter(value || undefined);
+  }, 1000);
+
   React.useEffect(() => {
     if (selectedColumn) {
       switch (selectedColumn) {
@@ -333,8 +355,20 @@ function TableColumnFilter(props) {
         </TextField>
         <TextField
           label='Value'
-          value={column.filterValue}
-          onChange={(e) => column.setFilter(e.target.value || undefined)}
+          placeholder='Filter value'
+          value={value}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position='end'>
+                {loading && <MdCached />}
+              </InputAdornment>
+            ),
+          }}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setLoading(true);
+            onChange(e.target.value);
+          }}
         />
       </div>
     </Popover>
@@ -400,14 +434,14 @@ const COLUMNS = [
   {
     Header: 'Status',
     accessor: 'status',
-    Cell: ({ value, handleStatus }) => (
-      <IconButton size='small' onClick={handleStatus}>
+    Cell: ({ value }) => (
+      <>
         {value === true ? (
           <MdDone color='#8256DE' />
         ) : (
           <MdBlock color='#8256DE' />
         )}
-      </IconButton>
+      </>
     ),
   },
 ];

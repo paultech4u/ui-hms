@@ -92,12 +92,12 @@ function AppDrawer(props) {
     <Drawer
       open={drawer}
       onClose={onDrawerClose}
-      className={clsx(styles.drawer, styles.root, {
+      className={clsx(styles.drawer, {
         [styles.drawer_open]: drawer,
         [styles.drawer_close]: !drawer,
       })}
       classes={{
-        paper: clsx({
+        paper: clsx(styles.drawer_bg, {
           [styles.drawer_open]: drawer,
           [styles.drawer_close]: !drawer,
         }),
@@ -270,16 +270,19 @@ const routeItemCollapes = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  drawer_bg: {
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.primary.main,
+  },
+  drawer: {
+    width: DrawerWidth,
     '& .MuiListItemIcon-root': {
+      color: theme.palette.common.white,
       minWidth: 40,
     },
     '& .MuiListItem-root': {
       justifyContent: 'center',
     },
-  },
-  drawer: {
-    width: DrawerWidth,
   },
   drawer_open: {
     width: DrawerWidth,

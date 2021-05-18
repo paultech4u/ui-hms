@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
+import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
   Box,
@@ -45,6 +46,12 @@ function AuthLogin(props) {
 
       dispatch(loginAction(payload));
     },
+    validationSchema: Yup.object().shape({
+      [FormKeys.EMAIL]: Yup.string()
+        .email('Invalid email')
+        .required('Please enter your email'),
+      [FormKeys.PASSWORD]: Yup.string().required('Please enter your password'),
+    }),
   });
 
   const error = useSelector((state) => state.auth.error);
@@ -55,17 +62,27 @@ function AuthLogin(props) {
   };
 
   const handleEmailRequest = () => {
-    history.push({ pathname: '/reset', state: { background: location } });
+    history.push('/account/password/reset');
   };
 
   return (
-    <>
+    <Box
+      height={1}
+      display='flex'
+      alignItems='center'
+      justifyContent='center'
+      flexDirection='column'>
+      <Box display='flex' fontSize={19} marginBottom={10}>
+        <a href='/login' className={classes.logo_icon}>
+          Logo
+        </a>
+      </Box>
       <AuthCard
         elevation={0}
         variant='outlined'
         className={classes.formContainer}>
         <Box className={classes.formTitle}>
-          <Typography variant='h6'>LOGIN</Typography>
+          <Typography variant='h6'>Login to your account</Typography>
         </Box>
         <Divider />
         <Box
@@ -75,23 +92,46 @@ function AuthLogin(props) {
           alignItems='center'
           flexDirection='column'>
           <Box className={classes.formInput}>
-            <Typography variant='caption'>Email</Typography>
+            <Typography variant='caption' style={{ paddingBottom: 6 }}>
+              Email Address
+            </Typography>
             <AuthTextInput
               name='email'
               variant='outlined'
-              onBlur={formik.handleBlur}
+              onBlur={formik.handleBlur(FormKeys.EMAIL)}
               onInput={formik.handleChange}
-              placeholder='JohnDoe@gmail.com'
+              placeholder='Email Address'
               value={formik.values[FormKeys.EMAIL]}
+              error={
+                !!formik.errors[FormKeys.EMAIL] &&
+                formik.touched[FormKeys.EMAIL]
+              }
+              helperText={
+                formik.touched[FormKeys.EMAIL]
+                  ? formik.errors[FormKeys.EMAIL]
+                  : null
+              }
             />
           </Box>
           <Box marginTop={10} className={classes.formInput}>
-            <Typography variant='caption'>Password</Typography>
+            <Typography variant='caption' style={{ paddingBottom: 6 }}>
+              Password
+            </Typography>
             <AuthPasswordInput
               variant='outlined'
-              onBlur={formik.handleBlur}
+              placeholder='Password'
               onInput={formik.handleChange}
               value={formik.values[FormKeys.PASSWORD]}
+              onBlur={formik.handleBlur(FormKeys.PASSWORD)}
+              error={
+                !!formik.errors[FormKeys.PASSWORD] &&
+                formik.touched[FormKeys.PASSWORD]
+              }
+              helperText={
+                formik.touched[FormKeys.PASSWORD]
+                  ? formik.errors[FormKeys.PASSWORD]
+                  : null
+              }
             />
           </Box>
         </Box>
@@ -99,7 +139,6 @@ function AuthLogin(props) {
           display='flex'
           paddingTop={10}
           marginBottom={10}
-          alignItems='center'
           justifyContent='center'>
           <AuthButton
             variant='contained'
@@ -109,17 +148,31 @@ function AuthLogin(props) {
             Login
           </AuthButton>
         </Box>
-        <Box flex={1} textAlign='center' paddingY={6}>
+        <Divider />
+        <Box display='flex' justifyContent='center' paddingY={6}>
+          <Typography variant='body2'>New to HMS?</Typography>
           <Link
             style={{
               cursor: 'pointer',
+              marginLeft: 7,
             }}
-            title='click to reset password'
-            onClick={handleEmailRequest}>
-            forgot password?
+            title='click to register hospital'
+            onClick={() => history.push('/register')}>
+            Register Hospital
           </Link>
         </Box>
       </AuthCard>
+      <Box textAlign='center' paddingY={6}>
+        <Link
+          style={{
+            cursor: 'pointer',
+            color: 'white',
+          }}
+          title='click to reset password'
+          onClick={handleEmailRequest}>
+          Forgot your password?
+        </Link>
+      </Box>
       <Backdrop
         in={isLoading === 'pending' ? true : false}
         className={classes.backdrop}>
@@ -131,7 +184,7 @@ function AuthLogin(props) {
         open={error === null ? false : true}>
         {error === undefined ? 'Network Error' : error}
       </NotifitionAlert>
-    </>
+    </Box>
   );
 }
 
@@ -156,6 +209,17 @@ const useStyles = makeStyles((theme) => ({
   formInput: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  logo_icon: {
+    padding: '15px',
+    margin: '0 5px',
+    display: 'flex',
+    cursor: 'pointer',
+    lineHeight: '20px',
+    alignItems: 'center',
+    textDecoration: 'none',
+    color: theme.palette.common.black,
+    fontWeight: theme.typography.fontWeightBold,
   },
 }));
 

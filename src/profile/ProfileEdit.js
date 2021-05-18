@@ -59,7 +59,6 @@ function EditProfile(props) {
               name='firstname'
               onChange={formik.handleChange}
               value={formik.values.firstname}
-              className={clsx(classes.text_field)}
             />
           </Box>
           <Box marginBottom={5} display='flex' flexDirection='column'>
@@ -68,7 +67,6 @@ function EditProfile(props) {
               name='lastname'
               value={formik.values.lastname}
               onChange={formik.handleChange}
-              className={clsx(classes.text_field)}
             />
           </Box>
           <Box marginBottom={5} display='flex' flexDirection='column'>

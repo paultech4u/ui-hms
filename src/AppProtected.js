@@ -10,7 +10,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import { Footer } from './AppFooter';
 import { lazyload } from './common/Loading';
 import { NotifitionAlert } from './common/Alert';
-import { pageRoute, profileRoute } from './constants';
+import { route, profileRoute } from './constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { openDrawer, closeDrawer } from './AppStoreSlice';
 import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
@@ -65,7 +65,7 @@ function AppProtected(props) {
 
   // get user profile
   React.useEffect(() => {
-    if (location.pathname === pageRoute.PROFILE) {
+    if (location.pathname === route.PROFILE) {
       if (profile === null) {
         dispatch(getProfileDetailAction(accessToken));
         var timer = setTimeout(() => {
@@ -86,11 +86,11 @@ function AppProtected(props) {
         <AppNavbar drawer={drawer} handleDrawerOpen={toggleDrawer} />
         <main className={classes.main}>
           <Switch location={showBackground || location}>
-            <Route exact path={pageRoute.PROFILE} component={Profile} />
-            <Route exact path={pageRoute.DOCTOR} component={Doctors} />
-            <Route exact path={pageRoute.NURSE} component={Nurses} />
-            <Route exact path={pageRoute.DASHBOARD} component={Dashboard} />
-            <Redirect to={pageRoute.DASHBOARD} />
+            <Route exact path={route.PROFILE} component={Profile} />
+            <Route exact path={route.DOCTOR} component={Doctors} />
+            <Route exact path={route.NURSE} component={Nurses} />
+            <Route exact path={route.DASHBOARD} component={Dashboard} />
+            <Redirect to={route.DASHBOARD} />
           </Switch>
           {showBackground && (
             <Route path={profileRoute.EDIT} component={EditProfile} />

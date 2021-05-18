@@ -1,40 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { AuthNavBarLink } from './AuthCommon';
-import { Box, makeStyles } from '@material-ui/core';
-import { useIsDesktop } from '../hooks';
-import { useLocation, useHistory } from 'react-router-dom';
+import { Box, Button, makeStyles, Typography } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 function AuthNavBar(props) {
   const styles = useStyles();
-  const isDesktop = useIsDesktop();
-  const location = useLocation();
   const history = useHistory();
 
   return (
-    <Box
-      flex={1}
-      display='flex'
-      justifyContent='space-between'
-      marginX={isDesktop ? 150 : 10}>
-      <Box flex={1}>
-        <Box display='flex' fontSize={19}>
-          <a href='/login' className={styles.logo_icon}>
-            Logo
-          </a>
-        </Box>
+    <Box flex={1} display='flex' my={10}>
+      <Box display='flex' flex={1} justifyContent='center' fontSize={19}>
+        <a href='/login' className={styles.logo_icon}>
+          Logo
+        </a>
       </Box>
-      <Box display='flex' flex={1} justifyContent='space-around'>
-        <AuthNavBarLink
-          label='Register'
-          onClick={() => history.push('/register')}
-          isActive={location.pathname === '/register'}
-        />
-        <AuthNavBarLink
+      <Box
+        flex={1}
+        display='flex'
+        alignItems='center'
+        justifyContent='center'
+        color='white'>
+        <Typography variant='body1'>Hospital has registered?</Typography>
+        <Button
           label='Login'
-          onClick={() => history.push('/login')}
-          isActive={location.pathname === '/login'}
-        />
+          variant='outlined'
+          style={{ color: 'white', marginLeft: 7 }}
+          onClick={() => history.push('/login')}>
+          Login
+        </Button>
       </Box>
     </Box>
   );

@@ -70,7 +70,7 @@ function AppNavbar(props) {
                   color='primary'
                   variant='contained'
                   onClick={handleLogout}>
-                  Logout
+                  Sign Out
                 </Button>
               </Box>
             </Box>

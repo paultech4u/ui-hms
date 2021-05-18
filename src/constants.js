@@ -1,10 +1,4 @@
-export const authRoute = {
-  LOCK: '/lock',
-  LOGIN: '/login',
-  REGISTER: '/register',
-  REQUESTEMAIL: '/reset',
-  FORGOTPASSWORD: '/forgot-password',
-};
+
 
 export const hospitalRole = [
   { value: 'NURSE' },
@@ -12,12 +6,15 @@ export const hospitalRole = [
   { value: 'DOCTOR' },
 ];
 
-export const pageRoute = {
+export const route = {
   NURSE: '/nurse',
+  LOGIN: '/login',
   DOCTOR: '/doctor',
   PROFILE: '/profile',
   REGISTER: '/register',
   DASHBOARD: '/dashboard',
+  EMAILREQUEST: '/account/password/reset',
+  FORGOTPASSWORD: '/account/password/forgot-password',
 };
 
 export const profileRoute = {
