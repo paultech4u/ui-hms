@@ -14,7 +14,6 @@ import {
   IconButton,
   Checkbox,
   TableContainer,
-  Paper,
   Typography,
   MenuItem,
   Popover,
@@ -194,7 +193,12 @@ function DoctorsTable(props) {
                 justifyContent='center'
                 flexDirection='column'>
                 <Box>
-                  <img src={undraw_empty} alt='no-data' width={50} height={50} />
+                  <img
+                    src={undraw_empty}
+                    alt='no-data'
+                    width={50}
+                    height={50}
+                  />
                 </Box>
                 <Typography>No results found.</Typography>
               </Box>

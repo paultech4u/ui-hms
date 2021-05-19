@@ -20,8 +20,9 @@ import {
 import { MdArrowForward } from 'react-icons/md';
 import { NotifitionAlert } from '../common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { loginAction, clearErrorAction } from './AuthStoreSlice';
+import undraw_doctor from '../assets/svg/undraw_doctors.svg';
 
 const FormKeys = {
   EMAIL: 'email',
@@ -31,7 +32,6 @@ const FormKeys = {
 function AuthLogin(props) {
   const classes = useStyles();
   const history = useHistory();
-  const location = useLocation();
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -72,6 +72,9 @@ function AuthLogin(props) {
       alignItems='center'
       justifyContent='center'
       flexDirection='column'>
+      <Box position='absolute' right={20} bottom={-50}>
+        <img src={undraw_doctor} alt='doctor' width={400} height={400} />
+      </Box>
       <Box display='flex' fontSize={19} marginBottom={10}>
         <a href='/login' className={classes.logo_icon}>
           Logo

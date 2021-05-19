@@ -54,7 +54,10 @@ export function AuthPasswordInput(props) {
         endAdornment: (
           <InputAdornment position='end'>
             <IconButton aria-label='toggle-password' onClick={toggleVisibility}>
-              <Typography variant='caption' color='primary'>
+              <Typography
+                variant='caption'
+                style={{ fontSize: '0.6rem' }}
+                color='primary'>
                 {showPassword ? 'SHOW' : 'HIDE'}
               </Typography>
             </IconButton>

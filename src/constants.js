@@ -1,5 +1,3 @@
-
-
 export const hospitalRole = [
   { value: 'NURSE' },
   { value: 'ADMIN' },
@@ -13,6 +11,8 @@ export const route = {
   PROFILE: '/profile',
   REGISTER: '/register',
   DASHBOARD: '/dashboard',
+  ADDPATIENT: '/patient/add',
+  ADDNEWDOCTOR: '/doctor/add',
   EMAILREQUEST: '/account/password/reset',
   FORGOTPASSWORD: '/account/password/forgot-password',
 };

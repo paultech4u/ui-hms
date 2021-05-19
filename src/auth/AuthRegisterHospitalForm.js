@@ -18,7 +18,7 @@ import GetStartedScreen from './AuthRegisterGetStartedScreen';
 function RegisterHospitalForm(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const height = React.useRef(300);
+  // const height = React.useRef(300);
   const [toggleForm, setToggleForm] = useState(false);
 
   const toggleToFormScreen = () => {
