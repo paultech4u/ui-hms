@@ -1,11 +1,11 @@
 import React from 'react';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import {
   Box,
   Button,
   Dialog,
   Typography,
-  makeStyles,
+  // makeStyles,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -17,7 +17,7 @@ import { TextInput } from '../common/TextInput';
 import { useHistory, useLocation } from 'react-router';
 
 function EditProfile(props) {
-  const classes = useStyles();
+  // const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
 
@@ -99,23 +99,23 @@ function EditProfile(props) {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  text_field: {
-    width: '25ch',
-    [theme.breakpoints.up('md')]: {
-      width: '30ch',
-    },
-  },
-  text_field_item: {
-    display: 'flex',
-    justifyContent: 'center',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-  },
-  text_field_item_child: {
-    paddingTop: '20px',
-    marginBottom: '15px',
-  },
-}));
+// const useStyles = makeStyles((theme) => ({
+//   text_field: {
+//     width: '25ch',
+//     [theme.breakpoints.up('md')]: {
+//       width: '30ch',
+//     },
+//   },
+//   text_field_item: {
+//     display: 'flex',
+//     justifyContent: 'center',
+//     paddingLeft: '10px',
+//     paddingRight: '10px',
+//   },
+//   text_field_item_child: {
+//     paddingTop: '20px',
+//     marginBottom: '15px',
+//   },
+// }));
 
 export default EditProfile;
