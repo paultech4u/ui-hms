@@ -72,14 +72,14 @@ function AuthLogin(props) {
       alignItems='center'
       justifyContent='center'
       flexDirection='column'>
-      <Box position='absolute' right={20} bottom={-50}>
+      {/* <Box position='absolute' right={20} bottom={-50}>
         <img src={undraw_doctor} alt='doctor' width={400} height={400} />
       </Box>
       <Box display='flex' fontSize={19} marginBottom={10}>
         <a href='/login' className={classes.logo_icon}>
           Logo
         </a>
-      </Box>
+      </Box> */}
       <AuthCard
         elevation={0}
         variant='outlined'
