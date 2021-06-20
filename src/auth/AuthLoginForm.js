@@ -22,7 +22,7 @@ import { NotifitionAlert } from '../common/Alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { loginAction, clearErrorAction } from './AuthStoreSlice';
-import undraw_doctor from '../assets/svg/undraw_doctors.svg';
+// import undraw_doctor from '../assets/svg/undraw_doctors.svg';
 
 const FormKeys = {
   EMAIL: 'email',
