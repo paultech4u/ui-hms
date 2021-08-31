@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
   Box,
@@ -46,12 +45,6 @@ function AuthLogin(props) {
 
       dispatch(loginAction(payload));
     },
-    validationSchema: Yup.object().shape({
-      [FormKeys.EMAIL]: Yup.string()
-        .email('Invalid email')
-        .required('Please enter your email'),
-      [FormKeys.PASSWORD]: Yup.string().required('Please enter your password'),
-    }),
   });
 
   const error = useSelector((state) => state.auth.error);
@@ -72,14 +65,6 @@ function AuthLogin(props) {
       alignItems='center'
       justifyContent='center'
       flexDirection='column'>
-      {/* <Box position='absolute' right={20} bottom={-50}>
-        <img src={undraw_doctor} alt='doctor' width={400} height={400} />
-      </Box>
-      <Box display='flex' fontSize={19} marginBottom={10}>
-        <a href='/login' className={classes.logo_icon}>
-          Logo
-        </a>
-      </Box> */}
       <AuthCard
         elevation={0}
         variant='outlined'
@@ -101,19 +86,9 @@ function AuthLogin(props) {
             <AuthTextInput
               name='email'
               variant='outlined'
-              onBlur={formik.handleBlur(FormKeys.EMAIL)}
               onInput={formik.handleChange}
               placeholder='Email Address'
               value={formik.values[FormKeys.EMAIL]}
-              error={
-                !!formik.errors[FormKeys.EMAIL] &&
-                formik.touched[FormKeys.EMAIL]
-              }
-              helperText={
-                formik.touched[FormKeys.EMAIL]
-                  ? formik.errors[FormKeys.EMAIL]
-                  : null
-              }
             />
           </Box>
           <Box marginTop={10} className={classes.formInput}>
@@ -125,16 +100,6 @@ function AuthLogin(props) {
               placeholder='Password'
               onInput={formik.handleChange}
               value={formik.values[FormKeys.PASSWORD]}
-              onBlur={formik.handleBlur(FormKeys.PASSWORD)}
-              error={
-                !!formik.errors[FormKeys.PASSWORD] &&
-                formik.touched[FormKeys.PASSWORD]
-              }
-              helperText={
-                formik.touched[FormKeys.PASSWORD]
-                  ? formik.errors[FormKeys.PASSWORD]
-                  : null
-              }
             />
           </Box>
         </Box>

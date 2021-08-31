@@ -58,7 +58,7 @@ export function AuthPasswordInput(props) {
                 variant='caption'
                 style={{ fontSize: '0.6rem' }}
                 color='primary'>
-                {showPassword ? 'SHOW' : 'HIDE'}
+                {showPassword ? 'hide' : 'show'}
               </Typography>
             </IconButton>
           </InputAdornment>
