@@ -1,0 +1,9 @@
+{
+    "extends": "./paths.json",
+    "compilerOptions": {
+        "baseUrl": "src"
+      },    
+    "include": [
+        "src"
+    ]
+}

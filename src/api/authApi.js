@@ -6,7 +6,7 @@ dotenv.config();
 export const http = axios.create({
   baseURL:
     process.env.NODE_ENV === 'development'
-      ? process.env.REACT_APP_SERVER_LOCALHOST
+      ? process.env.REACT_APP_LOCALHOST_SERVER
       : process.env.REACT_APP_HMS_BASE_URL,
 });
 
@@ -21,6 +21,7 @@ http.interceptors.request.use(
 
 http.interceptors.response.use(
   (response) => {
+    console.log(response);
     return response;
   },
   (error) => {

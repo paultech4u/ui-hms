@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React from 'react';
 import {
   Box,
@@ -18,6 +19,7 @@ import {
   MenuItem,
   Popover,
   InputAdornment,
+  Menu
 } from '@material-ui/core';
 import {
   useGlobalFilter,
@@ -39,18 +41,22 @@ import {
   MdCached,
 } from 'react-icons/md';
 import undraw_empty from '../../assets/svg/undraw_empty.svg';
+import { useHistory } from 'react-router-dom';
 
 function DoctorsTable(props) {
   const classes = useStyles();
+  const history = useHistory()
   const columns = React.useMemo(() => COLUMNS, []);
   const data = React.useMemo(() => MOCK_DATA, []);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openRowMenu, setRowMenu] = React.useState(null)
+  const openRow = Boolean(openRowMenu)
 
   const handleTableActions = (index, event) => {
     switch (index) {
       case 0:
-        // setAnchorEl(event.currentTarget);
+        history.push('/doctor/add')
         break;
       case 1:
         setAnchorEl(event.currentTarget);
@@ -59,6 +65,18 @@ function DoctorsTable(props) {
         break;
     }
   };
+
+  // TODO bug fix table row actions
+  const handleTableRowActions = (index, event) => {
+    if (index == 0) setRowMenu(event.currentTarget);
+    // switch (index) {
+    //   case 0:
+    //     setRowMenu(event.currentTarget);
+    //     break;
+    //   default:
+    //     break;
+    // }
+  }
 
   const handleFilterClose = () => {
     setAnchorEl(null);
@@ -105,11 +123,20 @@ function DoctorsTable(props) {
         {
           id: 'actions',
           Header: 'Actions',
-          Cell: () => (
-            <IconButton size='small'>
-              <MdMoreVert />
-            </IconButton>
-          ),
+          Cell: ({ row }) => {
+            const id = row.id
+            return (
+              <React.Fragment>
+                <IconButton aria-controls="row-actions" size='small' onClick={(e) => handleTableRowActions(id, e)}>
+                  <MdMoreVert />
+                </IconButton>
+                <Menu id="row-actions" open={openRow} anchorEl={openRowMenu}>
+                  <MenuItem>Edit</MenuItem>
+                  <MenuItem>Delete</MenuItem>
+                </Menu>
+              </React.Fragment>
+            )
+          },
         },
       ])
   );

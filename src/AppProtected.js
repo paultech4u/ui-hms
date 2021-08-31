@@ -18,6 +18,7 @@ import { successAction as authSuccessAction } from './auth/AuthStoreSlice';
 
 const Profile = lazyload(() => import('./profile/Profile'));
 const Doctors = lazyload(() => import('./pages/doctor/Doctors'));
+const AddDoctors = lazyload(() => import('./pages/doctor/AddDoctor'))
 const Nurses = lazyload(() => import('./pages/nurse/Nurses'));
 const Dashboard = lazyload(() => import('./dashboard/Dashboard'));
 const EditProfile = lazyload(() => import('./profile/ProfileEdit'));
@@ -90,6 +91,7 @@ function AppProtected(props) {
             <Route exact path={route.DOCTOR} component={Doctors} />
             <Route exact path={route.NURSE} component={Nurses} />
             <Route exact path={route.DASHBOARD} component={Dashboard} />
+            <Route exact path={route.ADDNEWDOCTOR} component={AddDoctors}/>
             <Redirect to={route.DASHBOARD} />
           </Switch>
           {showBackground && (

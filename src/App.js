@@ -3,7 +3,7 @@ import { persistor } from './store';
 import MomentUtils from '@date-io/moment';
 import theme, { GlobalCss } from './theme';
 import { refreshToken } from './api/authApi';
-import { lazyload, Loading } from './common/Loading';
+import { lazyload, Loading } from 'common/Loading';
 import { useSelector, useDispatch } from 'react-redux';
 import { BrowserRouter, useHistory } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
